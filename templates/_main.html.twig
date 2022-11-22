@@ -1,0 +1,80 @@
+{% set strategy = 'html' %}
+{% set _side = block('side') %}
+{% set _title = block('title') %}
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Pieter Smets (pieter@steps4it.be)">
+
+        <meta name="mobile-web-app-capable" content="yes">
+
+        <title>{% if _title %}{% block title %}{% endblock %} | {% endif %}VZW LA:CH</title>
+
+        <!-- Core CSS -->
+        {{ encore_entry_link_tags('bootstrap') }}
+        <!-- Custom styles for this template -->
+        {% block stylesheets %}{% endblock %}
+
+    </head>
+
+    <body class="bg-white">
+ 
+        {% block header %}{% endblock %}
+        {% block top %}{% endblock %}
+
+        <div class="container-xl">
+            <div class="row">
+            {% block body %}
+                <div class="col col-12 {% if _side %}col-md-9 col-lg-8 col-xl-9{%endif%} col-print-12 mt-4">
+                  <div id="notices" class="pl-2 pr-2 p-md-0">
+                    {% include 'modules/alerts.html.twig' %}
+                  </div>
+                  {% block lead %}{% endblock %}
+                  {% block main %}{% endblock %}
+                </div>
+              {% if _side is not empty %}
+                <div class="col col-12 col-md-3 col-lg-4 col-xl-3 mt-4 d-print-none">
+                   {% block side %}{% endblock %}
+                </div>
+              {% endif %}
+
+            {% endblock %}
+
+            </div><!-- /div row -->
+        </div><!-- /div container -->
+
+        {% block bottom %}{% endblock %}
+        {% block footer %}{% endblock %}
+
+        <a id="toTop" href="javascript:;" style="visibility:hidden;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="/assets/img/to-top@2x.png"></a>
+
+{% if app.user %}
+        <div class="modal fade" id="sessionModal" tabindex="-1" role="dialog" aria-labelledby="sessionModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="sessionModalLabel">{{'session.timeout'|trans}}</h5>
+              </div>
+              <div class="modal-body">{{'session.message'|trans}}<br>{{'session.remaining_before'|trans}}<span id="sessionModalRemaining"></span>{{'session.remaining_after'|trans}}</div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-medium" data-logout="{{path('security_logout')}}">{{'session.logout'|trans}}</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{{'session.continue'|trans}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endif %}
+
+        <!-- JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        {% block javascripts %}{% endblock %}
+
+    </body>
+
+</html>

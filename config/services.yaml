@@ -4,6 +4,22 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    domain: 'localhost'
+    app.timezone: 'Europe/Brussels'
+    app.locales: ['nl']
+    app.default_locale: 'nl'
+    app.session_max_idle_time: 1500
+    app.about.name: 'vzw LA:CH'
+    app.about.abbr: 'vzw la:ch'
+    app.mailer.from: 'leden@vzw-lach.be'
+    app.mailer.name: '%app.about.name%'
+    app.path.public: /public_html
+    app.path.member.img: /upload/img/member
+    app.path.calendar.doc: /upload/doc/calendar
+    app.path.calendar.img: /upload/img/calendar
+    app.defaults.shortTitle: 20
+    doctrine_behaviors_translatable_fetch_mode: "LAZY"
+    doctrine_behaviors_translation_fetch_mode: "LAZY"
 
 services:
     # default configuration for services in *this* file
@@ -18,6 +34,8 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
+            - '../src/Migrations/'
+            - '../src/Tests/'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed

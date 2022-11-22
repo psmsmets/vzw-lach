@@ -1,0 +1,22 @@
+{
+  "entrypoints": {
+    "vzw-lach": {
+      "js": [
+        "/assets/build/runtime.js",
+        "/assets/build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js.js",
+        "/assets/build/vzw-lach.js"
+      ],
+      "css": [
+        "/assets/build/vzw-lach.css"
+      ]
+    },
+    "bootstrap": {
+      "js": [
+        "/assets/build/runtime.js"
+      ],
+      "css": [
+        "/assets/build/bootstrap.css"
+      ]
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{# templates/bundles/TwigBundle/Exception/error.html.twig #}
+{% extends '_error.html.twig' %}
+
+{% block error_message %}{{status_text}}{% endblock %}
+{% block error_unicode %}&#x1f92f;{% endblock %}
+{% block error_handling %}
+   Er is iets niet ok. Laat ons weten wat je aan het doen was toen deze fout optrad
+   en we zullen het zo snel mogelijk oplossen. Excuses voor het eventuele ongemak.
+{% endblock %}

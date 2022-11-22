@@ -1,0 +1,25 @@
+{% block eu_cookie_message %}
+
+<div class="modal fade" id="cookie-law-modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard=false>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-primary" id="exampleModalLabel">{{ 'cookie.title'|trans({}, 'EuCookieLawBundle') }}</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{ 'cookie.message'|trans({}, 'EuCookieLawBundle') }}</p>
+        <p>{{ 'cookie.readmore'|trans({'%link_start%' : '<a href="/privacy">', '%link_end%' : '</a>'}, 'EuCookieLawBundle') | raw }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="cookie-law-close-button"><i class="fas fa-cookie-bite"></i> {{ 'cookie.message.accept'|trans({}, 'EuCookieLawBundle') }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block eu_cookie_message_js %}
+  {{ encore_entry_script_tags('eu_cookie') }}
+{% endblock %}

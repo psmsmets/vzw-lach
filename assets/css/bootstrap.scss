@@ -1,0 +1,146 @@
+/* 
+    sint-franciscus_bootstrap.scss
+
+    to compile run: sass --watch sass:public_html/assets
+
+*/
+
+// variable overrides
+
+// Typography
+$headings-font-weight: 300;
+$headings-line-height: 1.2;
+
+// Import all of Bootstrap
+@import "../bootstrap-5.2.3/scss/bootstrap";
+
+
+/* 
+    Custom Styling
+*/
+html,
+body {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+a.text-decoration-none:hover { 
+  text-decoration: none;
+}
+
+.text-white-50 { 
+  color: rgba($white, .5);
+}
+
+.lh-100 { line-height: 1; }
+.lh-125 { line-height: 1.25; }
+.lh-150 { line-height: 1.5; }
+
+
+/* bg */
+.bg-primary {
+  & a.nav-link { color:$white; }
+  & a.nav-link:hover { color:rgba(0,0,0,.5); }
+}
+.bg-secondary {
+  color: $white; 
+  background-color: $blue;
+}
+
+/* nav-header  */
+.nav-header {
+  margin-top: 72px;
+}
+
+/* navbar */
+.navbar-brand {
+  //margin-top: .175rem;
+}
+
+.btn-white, a.btn-white {
+  background: $white;
+  border-color: $white;
+}
+
+/* cards */
+.card.groups {
+  min-height: 12.5rem;
+}
+
+/* carousel */
+.carousel-caption {
+  bottom: 20%;
+}
+
+.carousel-caption .btn {
+  min-width: 35px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.navbar.small {
+  .nav-item {
+    padding-left:0;
+    padding-right:0;
+  }
+  .nav-link {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left:.5rem;
+    padding-right:.5rem;
+  }
+}
+
+/* 
+    RESPONSIVE CSS
+*/
+@media (max-width: 991.98px) {
+
+  /* all 10% smaller */
+  h1,.h1 { font-size: 2.25rem; }
+  h2,.h2 { font-size: 1.8rem; }
+  h3,.h3 { font-size: 1.575rem; }
+  h4,.h4 { font-size: 1.35rem; }
+  h5,.h5 { font-size: 1.125rem; }
+
+  .display-1 { font-size: 4.5rem; }
+  .display-2 { font-size: 4.0rem; }
+  .display-3 { font-size: 3.2rem; }
+  .display-4 { font-size: 2.5rem; }
+
+}
+
+@media print {
+  .container {
+    width: auto;
+  }
+  body {
+    padding-top: 0;
+  }
+  .bg-light {
+    background-color: none;
+  }
+  .col-print-1 {width:8%;  float:left;}
+  .col-print-2 {width:16%; float:left;}
+  .col-print-3 {width:25%; float:left;}
+  .col-print-4 {width:33%; float:left;}
+  .col-print-5 {width:42%; float:left;}
+  .col-print-6 {width:50%; float:left;}
+  .col-print-7 {width:58%; float:left;}
+  .col-print-8 {width:66%; float:left;}
+  .col-print-9 {width:75%; float:left;}
+  .col-print-10{width:83%; float:left;}
+  .col-print-11{width:92%; float:left;}
+  .col-print-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    width:100%;
+    float: left;
+  }
+}

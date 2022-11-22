@@ -1,0 +1,32 @@
+{# templates/bundles/TwigBundle/Exception/error.html.twig #}
+{% extends '_main.html.twig' %}
+
+{% block title %}{{status_code}}{% endblock %}
+
+
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('security') }}
+{% endblock %}
+
+
+{% block body %}
+
+  <div class="col-12 col-md-6 offset-md-3 text-center">
+
+    <img class="mb-4 d-none d-md-inline" src="{{ asset('assets/img/logo/sint-franciscus.svg') }}" alt="" height="250">
+
+    <h1 class="text-primary pb-3">Oeps! Er gaat iets verkeerd</h1>
+
+    <h2>Serverfout "<strong>{{status_code}}</strong> {% block error_message %}{% endblock %}"</h2>
+
+    <p style="font-size:7.5rem;" class="mb-0">{% block error_unicode %}{% endblock %}</p>
+
+    <p class="lead">{% block error_handling %}{% endblock %}</p>
+    <p class="lead text-right">
+        <a href="{{ path('homepage') }}"><i class="fas fa-angle-double-right"></i> ga naar de startpagina <i class="fad fa-home"></i></a>
+    </p>
+
+  </div>
+
+{% endblock %}

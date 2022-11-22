@@ -1,5 +1,21 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    globals:
+        default_locale: '%app.default_locale%'
+        locales: '%app.locales%'
+        timezone: '%app.timezone%'
+        mailer_from: '%app.mailer.from%'
+        mailer_name: '%app.mailer.name%'
+        public: '%app.path.public%'
+        org : {'name': '%app.about.name%', 'abbr':'%app.about.abbr%'}
+#        calendarManager: '@App\Service\CalendarManager'
+#        contactManager: '@App\Service\ContactManager'
+#        memberManager: '@App\Service\MemberManager'
+    form_themes:
+         - 'bootstrap_5_layout.html.twig'
+#        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
 
 when@test:
     twig:
