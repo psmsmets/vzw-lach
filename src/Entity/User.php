@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -30,6 +33,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column]
+    private ?bool $enabled = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column(length: 15, nullable: true)]
+    private ?string $mobilePhone = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Associate::class)]
+    private Collection $associates;
+
+    public function __construct()
+    {
+        $this->associates = new ArrayCollection();
+    }
+
+    /**
+     * ...
+     */
     public function getId(): ?Uuid
     {
         return $this->id;
@@ -117,5 +143,83 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreated(\DateTimeInterface $createdAt): self
+    {
+        $this->created = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updated = $updatedAt;
+
+        return $this;
+    }
+
+    public function isEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getMobilePhone(): ?string
+    {
+        return $this->mobilePhone;
+    }
+
+    public function setMobilePhone(?string $mobilePhone): self
+    {
+        $this->mobilePhone = $mobilePhone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Associate>
+     */
+    public function getAssociates(): Collection
+    {
+        return $this->associates;
+    }
+
+    public function addAssociate(Associate $associate): self
+    {
+        if (!$this->associates->contains($associate)) {
+            $this->associates->add($associate);
+            $associate->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssociate(Associate $associate): self
+    {
+        if ($this->associates->removeElement($associate)) {
+            // set the owning side to null (unless already changed)
+            if ($associate->getUser() === $this) {
+                $associate->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
