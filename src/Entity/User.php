@@ -36,10 +36,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $enabled = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\Column(length: 15, nullable: true)]
@@ -51,6 +51,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->associates = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable("now");
+        $this->updatedAt = null;
+        $this->enabled = true;
     }
 
     /**
@@ -150,21 +153,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->createdAt;
     }
 
-    public function setCreated(\DateTimeInterface $createdAt): self
-    {
-        $this->created = $createdAt;
-
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+
+    public function setUpdatedAt(): self
     {
-        $this->updated = $updatedAt;
+        $this->updatedAt = new \DateTimeImmutable("now");
 
         return $this;
     }

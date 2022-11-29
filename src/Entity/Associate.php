@@ -16,10 +16,10 @@ class Associate
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\Column]
@@ -35,7 +35,7 @@ class Associate
     private ?bool $singer = null;
 
     #[ORM\Column]
-    private ?bool $singerSolo = null;
+    private ?bool $singerSoloist = null;
 
     #[ORM\Column(length: 255)]
     private ?string $companion = null;
@@ -54,9 +54,9 @@ class Associate
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?AssociateDetails $memberDetails = null;
+    private ?AssociateDetails $associateDetails = null;
 
-    #[ORM\ManyToOne(inversedBy: 'members')]
+    #[ORM\ManyToOne(inversedBy: 'associates')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -69,6 +69,8 @@ class Associate
     public function __construct()
     {
         $this->category = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable("now");
+        $this->updatedAt = null;
     }
 
     public function getId(): ?int
@@ -81,21 +83,14 @@ class Associate
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new \DateTimeImmutable("now");
 
         return $this;
     }
@@ -150,12 +145,12 @@ class Associate
 
     public function isSingerSolo(): ?bool
     {
-        return $this->singerSolo;
+        return $this->singerSoloist;
     }
 
-    public function setSingerSolo(bool $singerSolo): self
+    public function setSingerSolo(bool $singerSoloist): self
     {
-        $this->singerSolo = $singerSolo;
+        $this->singerSoloist = $singerSoloist;
 
         return $this;
     }
@@ -222,12 +217,12 @@ class Associate
 
     public function getAssociateDetails(): ?AssociateDetails
     {
-        return $this->memberDetails;
+        return $this->associateDetails;
     }
 
-    public function setAssociateDetails(AssociateDetails $memberDetails): self
+    public function setAssociateDetails(AssociateDetails $associateDetails): self
     {
-        $this->memberDetails = $memberDetails;
+        $this->associateDetails = $associateDetails;
 
         return $this;
     }

@@ -38,6 +38,11 @@ class Category
     #[ORM\ManyToOne(inversedBy: 'category')]
     private ?Associate $associate = null;
 
+    public function __construct()
+    {
+        $this->enabled = true;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
