@@ -2,20 +2,20 @@
   "entrypoints": {
     "vzw-lach": {
       "js": [
-        "/assets/build/runtime.js",
-        "/assets/build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js.js",
-        "/assets/build/vzw-lach.js"
+        "/assets/build/runtime.a213e7a1.js",
+        "/assets/build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js.65fc588e.js",
+        "/assets/build/vzw-lach.8946a301.js"
       ],
       "css": [
-        "/assets/build/vzw-lach.css"
+        "/assets/build/vzw-lach.70462b40.css"
       ]
     },
     "bootstrap": {
       "js": [
-        "/assets/build/runtime.js"
+        "/assets/build/runtime.a213e7a1.js"
       ],
       "css": [
-        "/assets/build/bootstrap.css"
+        "/assets/build/bootstrap.499f7758.css"
       ]
     }
   }

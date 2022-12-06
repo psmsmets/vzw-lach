@@ -23,7 +23,7 @@ class AssociateDeclarationsType extends AbstractType
                 'label' => 'Ik verklaar geheimhouding over de inhoud van de voorstelling',
                 'required' => true,
             ])
-            ->add('declareRisks', CheckboxType::class, [
+            ->add('declareTerms', CheckboxType::class, [
                 'label' => 'Ik verklaar kennis genomen te hebben van de verzekerde risico’s binnen de vrijwilligerswerking van vzw LA:CH',
                 'required' => true,
             ])

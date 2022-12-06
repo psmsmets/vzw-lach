@@ -6,9 +6,10 @@ use App\Entity\Associate;
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, CollectionField, DateField, TextField};
+//use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, CollectionField, DateField, ImageField, TextField};
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AssociateCrudController extends AbstractCrudController
 {
@@ -28,33 +29,59 @@ class AssociateCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield BooleanField::new('enabled')->renderAsSwitch(false)->hideOnForm();
+        yield BooleanField::new('enabled')->renderAsSwitch(false)->onlyOnDetail();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
 
         yield Field::new('createdAt')->onlyOnDetail();
 
-        yield TextField::new('firstname');
-        yield TextField::new('lastname');
+        yield ImageField::new('imagePortrait', 'Foto portrait')
+            ->setBasePath('/uploads/associates/portrait')
+            ->hideOnForm()
+            ;
+/*
+        yield ImageField::new('imagePortraitFile', 'Foto portrait')
+            ->setFormType(VichImageType::class)
+            ->setUploadDir('public_html/uploads/associates/portrait')
+            ->onlyOnForms()
+            ;
+*/
 
-        yield BooleanField::new('singer')->renderAsSwitch(false)->hideOnForm();
-        yield BooleanField::new('singer')->renderAsSwitch(true)->onlyOnForms();
+        yield ImageField::new('imageEntire', 'Foto volledig')
+            ->setBasePath('/uploads/associates/entire')
+            ->hideOnForm()
+            ;
+/*
+        yield ImageField::new('imageEntireFile', 'Foto volledig')
+            ->setFormType(VichImageType::class)
+            ->setUploadDir('public_html/uploads/associates/entire')
+            ->onlyOnForms()
+            ;
+*/
 
-        yield BooleanField::new('singerSoloist')->renderAsSwitch(false)->hideOnForm();
-        yield BooleanField::new('singerSoloist')->renderAsSwitch(true)->onlyOnForms();
+        yield TextField::new('firstname', 'Voornaam');
+        yield TextField::new('lastname', 'Familienaam');
 
-        yield TextField::new('companion');
+        yield TextField::new('categoryPreferencesList', 'Voorkeur')->hideOnForm();
 
-        yield BooleanField::new('declarePresent')->hideOnIndex();
-        yield BooleanField::new('declareSecrecy')->hideOnIndex();
-        yield BooleanField::new('declareRisks')->hideOnIndex();
+        yield BooleanField::new('singer', 'Zanger')->renderAsSwitch(false)->hideOnForm();
+        yield BooleanField::new('singer', 'Zanger')->renderAsSwitch(true)->onlyOnForms();
 
-        yield DateField::new('details.birthdate')
+        yield BooleanField::new('singerSoloist', 'Zanger solist')->renderAsSwitch(false)->hideOnForm();
+        yield BooleanField::new('singerSoloist', 'Zanger solist')->renderAsSwitch(true)->onlyOnForms();
+
+        yield TextField::new('companion', 'Samen met ...');
+
+        yield BooleanField::new('declarePresent', 'Akkoord aanwezig')->hideOnIndex();
+        yield BooleanField::new('declareSecrecy', 'Akkoord geheimhouding')->hideOnIndex();
+        yield BooleanField::new('declareTerms', 'Akkoord voorwaarden')->hideOnIndex();
+
+        yield DateField::new('details.birthdate', 'Geboortedatum')
             ->setFormType(DateType::class)
             ->setFormTypeOptions(['input'  => 'datetime_immutable'])
             ->hideOnIndex()
             ;
 
-        yield AssociationField::new('categories')
+        yield AssociationField::new('categories', 'Categoriën')
             ->setFormTypeOptions([
                 'by_reference' => false,
             ])

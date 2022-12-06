@@ -12,13 +12,14 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+//    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+//    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -46,13 +47,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $passwordUpdatedAt = null;
 
     #[ORM\Column(length: 15, nullable: true)]
-    private ?string $mobilePhone = null;
+    private ?string $phone = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Associate::class)]
     private Collection $associates;
 
     public function __construct()
     {
+        $this->id = Uuid::v4();
         $this->createdAt = new \DateTimeImmutable("now");
         $this->updatedAt = null;
         $this->enabled = true;
@@ -65,6 +67,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
 //        return $this->email;
         return strval($this->getId());
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'createdAt' => $this->createdAt,
+            'updatedAt' => $this->updatedAt,
+            'passwordUpdatedAt' => $this->passwordUpdatedAt,
+            'enabled' => $this->enabled,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'roles' => $this->roles,
+        ];
+    }
+
+    public function __unserialize(array $serialized): void 
+    {
+        $this->id = $serialized['id'];
+        $this->createdAt = $serialized['createdAt'];
+        $this->updatedAt = $serialized['updatedAt'];
+        $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
+        $this->enabled = $serialized['enabled'];
+        $this->email = $serialized['email'];
+        $this->phone = $serialized['phone'];
+        $this->roles = $serialized['roles'];
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate()
+    {
+        $this->setUpdatedAt();
     }
 
     public function getId(): ?Uuid
@@ -207,14 +241,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getMobilePhone(): ?string
+    public function getPhone(): ?string
     {
-        return $this->mobilePhone;
+        return $this->phone;
     }
 
-    public function setMobilePhone(?string $mobilePhone): self
+    public function setPhone(?string $phone): self
     {
-        $this->mobilePhone = $mobilePhone;
+        $this->phone = $phone;
 
         return $this;
     }
@@ -247,5 +281,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function countAssociates(): int
+    {
+        return count($this->associates);
+    }
+
+    public function getAssociateNames(string $separator=', '): string
+    {
+        $associateNames = [];
+        foreach ($this->associates as $associate) {
+            $associateNames[] = $associate->getFirstName();
+        }
+        return implode($separator, $associateNames);
     }
 }

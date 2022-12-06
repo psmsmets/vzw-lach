@@ -15,13 +15,15 @@ class AssociateAddressType extends AbstractType
     {
         $builder
             ->add('line1', TextType::class, [
-                'label' => 'Adresregel 1',
+                'label' => 'Straat + nummer',
                 'required' => true,
             ])
+/*
             ->add('line2', TextType::class, [
                 'label' => 'Adresregel 2',
                 'required' => false,
             ])
+*/
             ->add('zip', TextType::class, [
                 'label' => 'Postcode',
                 'required' => true,

@@ -54,4 +54,5 @@ class CategoryCrudController extends AbstractCrudController
             ->hideOnForm()
             ;
 
-    }}
+    }
+}

@@ -15,4 +15,10 @@ class DefaultController extends AbstractController
             'controller_name' => 'Leden vzw LA:CH',
         ]);
     }
+
+    #[Route('/voorwaarden', name: 'voorwaarden')]
+    public function static_voorwaarden(): Response
+    {
+        return $this->render('default/voorwaarden.html.twig', []);
+    }
 }

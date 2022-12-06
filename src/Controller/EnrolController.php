@@ -67,8 +67,11 @@ class EnrolController extends AbstractController
                 $this->entityManager->persist($user);
             }
             $this->entityManager->flush();
-            if ( ($userAssociates = count($user->getAssociates())) ) {
-                $session->getFlashBag()->add('alert-primary', 'Je hebt al ' . ($userAssociates == 1 ? '1 eerdere inschrijving' : $userAssociates . ' eerdere inschrijvingen') . ' op dit e-mailadres.');
+            if ($user->countAssociates() > 0) {
+                $session->getFlashBag()->add('alert-primary',
+                    'Je hebt al ' . $user->countAssociates() .
+                    ' eerdere inschrijving(en) op dit e-mailadres: ' . $user->getAssociateNames()
+                );
             }
             $session->set('user', $user);
 
@@ -93,14 +96,23 @@ class EnrolController extends AbstractController
         $user = $session->get('user', false);
         if (!$user) return $this->redirectToRoute('app_enrol_user', [], Response::HTTP_SEE_OTHER);
 
-        $associate = $session->get('associate', new Associate());
-        $associate->setUser($user);
+        if (!($associate = $this->doctrine->getRepository(Associate::class)->findOneById($session->get('associate')))) {
+            $associate = new Associate();
+            $associate->setUser($user);
+        }
 
         $form = $this->createForm(AssociateBaseType::class, $associate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session->set('associate', $associate);
+
+            if (!$session->get('associate', false)) {
+                $this->entityManager->merge($associate);
+            }
+            $this->entityManager->flush();
+
+            $session->set('associate', $associate->getId());
+
             return $this->redirectToRoute('app_enrol_associate_details', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -124,14 +136,14 @@ class EnrolController extends AbstractController
         $user = $session->get('user', false);
         if (!$user) return $this->redirectToRoute('app_enrol_user', [], Response::HTTP_SEE_OTHER);
 
-        $associate = $session->get('associate', false);
+        $associate = $this->doctrine->getRepository(Associate::class)->findOneById($session->get('associate'));
         if (!$associate) return $this->redirectToRoute('app_enrol_associate_base', [], Response::HTTP_SEE_OTHER);
 
         $form = $this->createForm(AssociateDetailsType::class, $associate->getDetails());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session->set('associate', $associate);
+            $this->entityManager->flush();
             return $this->redirectToRoute('app_enrol_associate_address', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -154,14 +166,13 @@ class EnrolController extends AbstractController
         $user = $session->get('user', false);
         if (!$user) return $this->redirectToRoute('app_enrol_user', [], Response::HTTP_SEE_OTHER);
 
-        $associate = $session->get('associate', false);
+        $associate = $this->doctrine->getRepository(Associate::class)->findOneById($session->get('associate'));
         if (!$associate) return $this->redirectToRoute('app_enrol_associate_base', [], Response::HTTP_SEE_OTHER);
 
         $form = $this->createForm(AssociateAddressType::class, $associate->getAddress());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session->set('associate', $associate);
             return $this->redirectToRoute('app_enrol_associate_declarations', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -185,20 +196,17 @@ class EnrolController extends AbstractController
         $user = $session->get('user', false);
         if (!$user) return $this->redirectToRoute('app_enrol_user', [], Response::HTTP_SEE_OTHER);
 
-        $associate = $session->get('associate', false);
+        $associate = $this->doctrine->getRepository(Associate::class)->findOneById($session->get('associate'));
         if (!$associate) return $this->redirectToRoute('app_enrol_associate_base', [], Response::HTTP_SEE_OTHER);
 
         $form = $this->createForm(AssociateDeclarationsType::class, $associate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->merge($associate);
             $this->entityManager->flush();
 
-            $session->getFlashBag()->add('alert-success', $associate->getName() . ' is ingeschreven');
-
             $session->clear();
-            $session->set('user', $user);
+            $session->getFlashBag()->add('alert-success', $associate->getName() . ' is ingeschreven');
 
             return $this->redirectToRoute('app_enrol_index', [], Response::HTTP_SEE_OTHER);
         }

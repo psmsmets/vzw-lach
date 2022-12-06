@@ -14,9 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Associate;
 use App\Entity\Category;
+use App\Entity\Page;
 use App\Entity\User;
 use App\Controller\Admin\AssociateCrudController;
 use App\Controller\Admin\CategoryCrudController;
+use App\Controller\Admin\PageCrudController;
 use App\Controller\Admin\UserCrudController;
 
 class AdminController extends AbstractDashboardController
@@ -117,6 +119,9 @@ class AdminController extends AbstractDashboardController
 
             MenuItem::section('Groepen'),
             MenuItem::linkToCrud('Groepen', 'fa fa-user-group', Category::class),
+
+            MenuItem::section('Static'),
+            MenuItem::linkToCrud('Pagina\'s', 'fa fa-file', Page::class),
         ];
     }
 

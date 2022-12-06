@@ -12,3 +12,41 @@
     {{ form_end(form) }}
 
 {% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+<script>
+
+    let acteurCheckbox = document.getElementById("associate_base_categoryPreferences_0");
+    let figurantCheckbox = document.getElementById("associate_base_categoryPreferences_1");
+
+    let extraFields = document.getElementsByClassName('acteur-figurant');
+
+
+    function hideExtraFields() {
+        for (let i = 0; i < extraFields.length; i++) {
+            extraFields[i].classList.add("d-none");
+        }
+    }
+
+    function showExtraFields() {
+        for (let i = 0; i < extraFields.length; i++) {
+            extraFields[i].classList.remove("d-none");
+        }
+    }
+
+    function ActeurFigurantIsChecked() {
+        if ( acteurCheckbox.checked || figurantCheckbox.checked ) {
+            showExtraFields();
+        } else {
+            hideExtraFields();
+        }
+    }
+
+    acteurCheckbox.addEventListener( "change", ActeurFigurantIsChecked);
+    figurantCheckbox.addEventListener( "change", ActeurFigurantIsChecked);
+
+    ActeurFigurantIsChecked();
+
+</script>
+{% endblock %}

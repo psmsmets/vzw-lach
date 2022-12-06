@@ -1,11 +1,20 @@
+# config/packages/vich_uploader.yaml
 vich_uploader:
     db_driver: orm
 
+#    metadata:
+#        type: attribute
     metadata:
-        type: attribute
+        auto_detection: false
 
     mappings:
-        associates:
-            uri_prefix: /images/associates
-            upload_destination: '%kernel.project_dir%/asssets/images/associates'
+        associates_entire:
+            uri_prefix:         '%app.path.associates.entire%'
+            upload_destination: '%kernel.project_dir%/public_html%app.path.associates.entire%'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false 
+        associates_portrait:
+            uri_prefix:         '%app.path.associates.portrait%'
+            upload_destination: '%kernel.project_dir%/public_html%app.path.associates.portrait%'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
