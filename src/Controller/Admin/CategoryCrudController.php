@@ -7,7 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, AssociationField, BooleanField, SlugField, TextField, TextAreaField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, AssociationField, BooleanField, SlugField, TextField, TextareaField};
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class CategoryCrudController extends AbstractCrudController
@@ -35,7 +35,7 @@ class CategoryCrudController extends AbstractCrudController
 
         yield TextField::new('name');
 
-        yield TextAreaField::new('description')->hideOnIndex();
+        yield TextareaField::new('description')->hideOnIndex();
 
         yield SlugField::new('slug')->setTargetFieldName('name')->hideOnIndex();
 

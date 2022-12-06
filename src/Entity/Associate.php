@@ -86,6 +86,7 @@ class Associate
         $this->details = new AssociateDetails($this);
         $this->measurements = new AssociateMeasurements($this);
         $this->categories = new ArrayCollection();
+        $this->user = null;
     }
 
     public function __toString(): string
@@ -151,7 +152,7 @@ class Associate
         return $this;
     }
 
-    public function getName(bool $reverse=false, string $separator=' '): ?string
+    public function getName(bool $reverse=false, string $separator=' '): string
     {
         return $reverse ? $this->lastname . $separator . $this->firstname : $this->firstname . $separator . $this->lastname;
     }

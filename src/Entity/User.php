@@ -230,8 +230,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function addAssociate(Associate $associate): self
     {
         if (!$this->associates->contains($associate)) {
-            $this->associates->add($associate);
             $associate->setUser($this);
+            $this->associates->add($associate);
         }
 
         return $this;

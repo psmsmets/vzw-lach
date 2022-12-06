@@ -96,12 +96,12 @@ class AssociateAddress
 
     public function getNation(): ?string
     {
-        return $this->Nation;
+        return $this->nation;
     }
 
-    public function setNation(?string $Nation): self
+    public function setNation(?string $nation): self
     {
-        $this->Nation = $Nation;
+        $this->nation = $nation;
 
         return $this;
     }
