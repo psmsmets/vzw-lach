@@ -1,23 +1,8 @@
-{% for alert in ['danger','warning','success'] %}
-  {% for flashMessage in app.session.flashbag.get(alert) %}
-    <div class="alert alert-{{alert}} alert-dismissible fade fade-in mt-3 show" role="alert">
-      {{ flashMessage }}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
+{% for type in ['primary', 'secondary', 'danger','warning','success'] %}
+  {% for alert in app.session.flashbag.get('alert-'~type) %}
+    <div class="alert alert-{{type}} alert-dismissible mt-3 show" role="alert">
+      {{ alert|raw }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   {% endfor %}
-{% endfor %}
-
-{% for msg in app.session.flashbag.get('scheduleNotice') %}
-  <div class="alert alert-{{msg.type}} alert-dismissible fade fade-in mt-3 show scheduleNotice" role="alert" data-cname="{{msg.cookie}}" data-cvalue={{msg.md5}}>
-    <i class="fas fa-exclamation-triangle"></i> {{msg.title}} voor<span class="d-none d-lg-inline"> de </span>
-    {% for item in msg.categories %}
-      <a class="alert-link ml-1 mr-1 d-lg-none" href="{{item.url}}">{{item.abbr}}</a>
-      <a class="alert-link ml-1 mr-1 d-none d-lg-inline" href="{{item.url}}">{{item.name}}</a>
-    {% endfor %}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-     <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
 {% endfor %}
