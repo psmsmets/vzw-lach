@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Associate{% endblock %}
+
+{% block body %}
+    <h1>Edit Associate</h1>
+
+    {{ include('associate/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_associate_index') }}">back to list</a>
+
+    {{ include('associate/_delete_form.html.twig') }}
+{% endblock %}

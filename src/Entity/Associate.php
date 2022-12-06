@@ -7,14 +7,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
+
+use App\Entity\AssociateAddress;
+use App\Entity\AssociateDetails;
+use App\Entity\AssociateMeasurements;
 
 #[ORM\Entity(repositoryClass: AssociateRepository::class)]
 class Associate
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -37,7 +43,7 @@ class Associate
     #[ORM\Column]
     private ?bool $singerSoloist = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length:255, nullable: true)]
     private ?string $companion = null;
 
     #[ORM\Column]
@@ -54,26 +60,40 @@ class Associate
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?AssociateDetails $associateDetails = null;
-
-    #[ORM\ManyToOne(inversedBy: 'associates')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private ?AssociateAddress $address = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?AssociateDetails $details = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?AssociateMeasurements $measurements = null;
 
-    #[ORM\OneToMany(mappedBy: 'associate', targetEntity: Category::class)]
-    private Collection $category;
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'associates')]
+    private Collection $categories;
+
+    #[ORM\ManyToOne(inversedBy: 'associates')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $user = null;
 
     public function __construct()
     {
-        $this->category = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable("now");
         $this->updatedAt = null;
+        $this->enabled = true;
+        $this->address = new AssociateAddress($this);
+        $this->details = new AssociateDetails($this);
+        $this->measurements = new AssociateMeasurements($this);
+        $this->categories = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -131,6 +151,11 @@ class Associate
         return $this;
     }
 
+    public function getName(bool $reverse=false, string $separator=' '): ?string
+    {
+        return $reverse ? $this->lastname . $separator . $this->firstname : $this->firstname . $separator . $this->lastname;
+    }
+
     public function isSinger(): ?bool
     {
         return $this->singer;
@@ -143,24 +168,24 @@ class Associate
         return $this;
     }
 
-    public function isSingerSolo(): ?bool
+    public function isSingerSoloist(): ?bool
     {
         return $this->singerSoloist;
     }
 
-    public function setSingerSolo(bool $singerSoloist): self
+    public function setSingerSoloist(bool $singerSoloist): self
     {
         $this->singerSoloist = $singerSoloist;
 
         return $this;
     }
 
-    public function getCompanion(): ?string
+    public function getCompanion(): ?string 
     {
         return $this->companion;
     }
 
-    public function setCompanion(string $companion): self
+    public function setCompanion(?string $companion): self
     {
         $this->companion = $companion;
 
@@ -215,29 +240,30 @@ class Associate
         return $this;
     }
 
-    public function getAssociateDetails(): ?AssociateDetails
+    public function getDetails(): ?AssociateDetails
     {
-        return $this->associateDetails;
+        return $this->details;
     }
 
-    public function setAssociateDetails(AssociateDetails $associateDetails): self
+    public function setDetails(AssociateDetails $details): self
     {
-        $this->associateDetails = $associateDetails;
+        $this->details = $details;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getAddress(): ?AssociateAddress
     {
-        return $this->user;
+        return $this->address;
     }
 
-    public function setUser(?User $user): self
+    public function setAddress(AssociateAddress $address): self
     {
-        $this->user = $user;
+        $this->address = $address;
 
         return $this;
     }
+
 
     public function getMeasurements(): ?AssociateMeasurements
     {
@@ -254,16 +280,15 @@ class Associate
     /**
      * @return Collection<int, Category>
      */
-    public function getCategory(): Collection
+    public function getCategories(): Collection
     {
-        return $this->category;
+        return $this->categories;
     }
 
     public function addCategory(Category $category): self
     {
-        if (!$this->category->contains($category)) {
-            $this->category->add($category);
-            $category->setAssociate($this);
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
         }
 
         return $this;
@@ -271,12 +296,21 @@ class Associate
 
     public function removeCategory(Category $category): self
     {
-        if ($this->category->removeElement($category)) {
-            // set the owning side to null (unless already changed)
-            if ($category->getAssociate() === $this) {
-                $category->setAssociate(null);
-            }
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

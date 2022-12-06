@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,10 +19,10 @@ class Category
     #[ORM\Column]
     private ?bool $enabled = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -35,12 +37,18 @@ class Category
     #[ORM\Column]
     private ?bool $isActor = null;
 
-    #[ORM\ManyToOne(inversedBy: 'category')]
-    private ?Associate $associate = null;
+    #[ORM\ManyToMany(targetEntity: Associate::class, mappedBy: 'categories', cascade: ['persist'])]
+    private Collection $associates;
 
     public function __construct()
     {
         $this->enabled = true;
+        $this->associates = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -79,7 +87,7 @@ class Category
 
     public function setSlug(string $slug): self
     {
-        $this->slug = $slug;
+        $this->slug = strtolower($slug);
 
         return $this;
     }
@@ -132,14 +140,29 @@ class Category
         return $this;
     }
 
-    public function getAssociate(): ?Associate
+    /**
+     * @return Collection<Uuid, Associate>
+     */
+    public function getAssociates(): Collection
     {
-        return $this->associate;
+        return $this->associates;
     }
 
-    public function setAssociate(?Associate $associate): self
+    public function addAssociate(Associate $associate): self
     {
-        $this->associate = $associate;
+        if (!$this->associates->contains($associate)) {
+            $this->associates->add($associate);
+            $associate->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssociate(Associate $associate): self
+    {
+        if ($this->associates->removeElement($associate)) {
+            $associate->removeCategory($this);
+        }
 
         return $this;
     }

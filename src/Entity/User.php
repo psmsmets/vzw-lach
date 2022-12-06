@@ -42,6 +42,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeInterface $passwordUpdatedAt = null;
+
     #[ORM\Column(length: 15, nullable: true)]
     private ?string $mobilePhone = null;
 
@@ -50,15 +53,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->associates = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable("now");
         $this->updatedAt = null;
         $this->enabled = true;
+        $this->passwordUpdatedAt = null;
+        $this->password = bin2hex(random_bytes(64));
+        $this->associates = new ArrayCollection();
     }
 
-    /**
-     * ...
-     */
+    public function __toString(): string
+    {
+//        return $this->email;
+        return strval($this->getId());
+    }
+
     public function getId(): ?Uuid
     {
         return $this->id;
@@ -113,6 +121,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function isAdmin(): bool
+    {
+        foreach ($this->roles as $role) {
+            if ($role === 'ROLE_ADMIN' or $role === 'ROLE_SUPER_ADMIN') return true;
+        }
+        return false;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        foreach ($this->roles as $role) {
+            if ($role === 'ROLE_SUPER_ADMIN') return true;
+        }
+        return false;
+    }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -123,6 +147,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword(string $password): self
     {
+        $this->passwordUpdatedAt = new \DateTimeImmutable("now");
         $this->password = $password;
 
         return $this;
@@ -158,12 +183,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->updatedAt;
     }
 
-
     public function setUpdatedAt(): self
     {
         $this->updatedAt = new \DateTimeImmutable("now");
 
         return $this;
+    }
+
+    public function getPasswordUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->passwordUpdatedAt;
     }
 
     public function isEnabled(): ?bool

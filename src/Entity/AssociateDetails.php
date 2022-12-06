@@ -5,67 +5,64 @@ namespace App\Entity;
 use App\Repository\AssociateDetailsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: AssociateDetailsRepository::class)]
 class AssociateDetails
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $secondaryEmail = null;
+    private ?string $email = null;
 
     #[ORM\Column(length: 15, nullable: true)]
-    private ?string $secondaryPhone = null;
+    private ?string $phone = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $birthdate = null;
 
-    #[ORM\Column(length: 1)]
+    #[ORM\Column(length: 1, nullable: true)]
     private ?string $gender = null;
 
-    #[ORM\Column(length: 3, nullable: true)]
-    private ?string $addressNation = null;
+    public function __construct(Associate $associate)
+    {
+      $this->associate = $associate;
+    }
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $addressStreet = null;
-
-    #[ORM\Column(length: 10, nullable: true)]
-    private ?string $addressNumber = null;
-
-    #[ORM\Column(length: 12, nullable: true)]
-    private ?string $addressZip = null;
-
-    #[ORM\Column(length: 40, nullable: true)]
-    private ?string $addressTown = null;
-
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
 
-    public function getSecondaryEmail(): ?string
+    public function getAssociate(): ?Associate
     {
-        return $this->secondaryEmail;
+        return $this->associate;
     }
 
-    public function setSecondaryEmail(?string $secondaryEmail): self
+    public function getEmail(): ?string
     {
-        $this->secondaryEmail = $secondaryEmail;
+        return $this->Email;
+    }
+
+    public function setEmail(?string $Email): self
+    {
+        $this->Email = $Email;
 
         return $this;
     }
 
-    public function getSecondaryPhone(): ?string
+    public function getPhone(): ?string
     {
-        return $this->secondaryPhone;
+        return $this->Phone;
     }
 
-    public function setSecondaryPhone(?string $secondaryPhone): self
+    public function setPhone(?string $Phone): self
     {
-        $this->secondaryPhone = $secondaryPhone;
+        $this->Phone = $Phone;
 
         return $this;
     }
@@ -75,11 +72,21 @@ class AssociateDetails
         return $this->birthdate;
     }
 
-    public function setBirthdate(\DateTimeImmutable $birthdate): self
+    public function setBirthdate(?\DateTimeImmutable $birthdate): self
     {
         $this->birthdate = $birthdate;
 
         return $this;
+    }
+
+    public function getBirthyear(): ?int
+    {
+        return (int) $this->birthdate->format('Y');
+    }
+
+    public function getAge($ref = new \DateTimeImmutable("01-08-2023")): ?int
+    {
+        return (int) $ref->diff($this->birthdate)->y;
     }
 
     public function getGender(): ?string
@@ -90,66 +97,6 @@ class AssociateDetails
     public function setGender(string $gender): self
     {
         $this->gender = $gender;
-
-        return $this;
-    }
-
-    public function getAddressNation(): ?string
-    {
-        return $this->addressNation;
-    }
-
-    public function setAddressNation(?string $addressNation): self
-    {
-        $this->addressNation = $addressNation;
-
-        return $this;
-    }
-
-    public function getAddressStreet(): ?string
-    {
-        return $this->addressStreet;
-    }
-
-    public function setAddressStreet(?string $addressStreet): self
-    {
-        $this->addressStreet = $addressStreet;
-
-        return $this;
-    }
-
-    public function getAddressNumber(): ?string
-    {
-        return $this->addressNumber;
-    }
-
-    public function setAddressNumber(?string $addressNumber): self
-    {
-        $this->addressNumber = $addressNumber;
-
-        return $this;
-    }
-
-    public function getAddressZip(): ?string
-    {
-        return $this->addressZip;
-    }
-
-    public function setAddressZip(?string $addressZip): self
-    {
-        $this->addressZip = $addressZip;
-
-        return $this;
-    }
-
-    public function getAddressTown(): ?string
-    {
-        return $this->addressTown;
-    }
-
-    public function setAddressTown(?string $addressTown): self
-    {
-        $this->addressTown = $addressTown;
 
         return $this;
     }

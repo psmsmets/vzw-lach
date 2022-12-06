@@ -49,20 +49,16 @@ class AdminController extends AbstractDashboardController
             // the name visible to end users
             ->setTitle('vzw LA:CH')
             // you can include HTML contents too (e.g. to link to an image)
-            ->setTitle('<img src="..."> ACME <span class="text-small">Corp.</span>')
+//            ->setTitle('<img src="..."> ACME <span class="text-small">Corp.</span>')
 
             // by default EasyAdmin displays a black square as its default favicon;
             // use this method to display a custom favicon: the given path is passed
             // "as is" to the Twig asset() function:
             // <link rel="shortcut icon" href="{{ asset('...') }}">
-            ->setFaviconPath('favicon.svg')
+//            ->setFaviconPath('favicon.svg')
 
             // the domain used by default is 'messages'
-            ->setTranslationDomain('my-custom-domain')
-
-            // there's no need to define the "text direction" explicitly because
-            // its default value is inferred dynamically from the user locale
-            ->setTextDirection('ltr')
+//            ->setTranslationDomain('my-custom-domain')
 
             // set this option if you prefer the page content to span the entire
             // browser width, instead of the default design which sets a max width
@@ -86,18 +82,18 @@ class AdminController extends AbstractDashboardController
             // parameter in the admin dashboard URL (e.g. '/admin/{_locale}').
             // the name of each locale will be rendered in that locale
             // (in the following example you'll see: "English", "Polski")
-            ->setLocales(['nl'])
+//            ->setLocales(['nl'])
             // to customize the labels of locales, pass a key => value array
             // (e.g. to display flags; although it's not a recommended practice,
             // because many languages/locales are not associated to a single country)
-            ->setLocales([
-                'nl' => 'Nederlands',
-            ])
+//            ->setLocales([
+//                'nl' => 'Nederlands',
+//            ])
             // to further customize the locale option, pass an instance of
             // EasyCorp\Bundle\EasyAdminBundle\Config\Locale
-            ->setLocales([
-                'nl', // locale without custom options
-            ])
+//            ->setLocales([
+//                'nl', // locale without custom options
+//            ])
         ;
     }
 

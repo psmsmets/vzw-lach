@@ -9,7 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, EmailField, TextField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, AssociationField, BooleanField, ChoiceField, EmailField, TextField, TelephoneField};
 use Symfony\Component\Form\Extension\Core\Type\{PasswordType, RepeatedType};
 use Symfony\Component\Form\{FormBuilderInterface, FormEvent, FormEvents};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -36,14 +36,20 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $fields = [
-            IdField::new('id')->hideOnForm(),
-            EmailField::new('email'),
-            Field::new('enabled'),
-            Field::new('mobilePhone'),
-        ];
+        yield IdField::new('id')->hideOnForm();
 
-        $password = TextField::new('password')
+        yield BooleanField::new('enabled')->renderAsSwitch(false)->hideOnForm();
+        yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
+
+        yield Field::new('createdAt')->onlyOnDetail();
+
+        yield EmailField::new('email');
+        yield TelephoneField::new('mobilePhone')->hideOnIndex();
+
+        yield AssociationField::new('associates')->autocomplete();
+
+        // password
+        yield TextField::new('password')
             ->setFormType(RepeatedType::class)
             ->setFormTypeOptions([
                 'type' => PasswordType::class,
@@ -54,9 +60,18 @@ class UserCrudController extends AbstractCrudController
             ->setRequired($pageName === Crud::PAGE_NEW)
             ->onlyOnForms()
             ;
-        $fields[] = $password;
 
-        return $fields;
+        yield BooleanField::new('isAdmin')->renderAsSwitch(false)->hideOnForm();
+        yield ChoiceField::new('roles')
+            ->setChoices([
+                'ROLE_USER' => 'ROLE_USER',
+                'ROLE_ADMIN' => 'ROLE_ADMIN',
+                'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
+            ])
+            ->allowMultipleChoices()
+            ->autocomplete()
+            ->hideOnIndex()
+            ;
     }
 
     public function createNewFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
@@ -78,16 +93,19 @@ class UserCrudController extends AbstractCrudController
 
     private function hashPassword() {
         return function($event) {
+
             $form = $event->getForm();
             if (!$form->isValid()) {
                 return;
             }
+            $user = $form->getData();
             $password = $form->get('password')->getData();
             if ($password === null) {
                 return;
             }
 
-            $hash = $this->userPasswordHasher->hashPassword($this->getUser(), $password);
+            //$hash = $this->userPasswordHasher->hashPassword($this->getUser(), $password);
+            $hash = $this->userPasswordHasher->hashPassword($user, $password);
             $form->getData()->setPassword($hash);
         };
     }

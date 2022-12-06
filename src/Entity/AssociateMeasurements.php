@@ -5,14 +5,16 @@ namespace App\Entity;
 use App\Repository\AssociateMeasurementsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: AssociateMeasurementsRepository::class)]
 class AssociateMeasurements
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $shoeSize = null;
@@ -83,9 +85,19 @@ class AssociateMeasurements
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $detail17 = null;
 
-    public function getId(): ?int
+    public function __construct(Associate $associate)
+    {
+      $this->associate = $associate;
+    }
+
+    public function getId(): ?Uuid
     {
         return $this->id;
+    }
+
+    public function getAssociate(): ?Associate
+    {
+        return $this->associate;
     }
 
     public function getShoeSize(): ?int
