@@ -18,12 +18,10 @@ class UserType extends AbstractType
                 'required' => true,
                 'label' => 'E-mailadres',
             ])
-/*
             ->add('phone', TelType::class, [
-                'required' => false,
-                'label' => 'Telefoonnummer (optioneel)',
+                'required' => true,
+                'label' => 'Telefoonnummer',
             ])
-*/
         ;
     }
 

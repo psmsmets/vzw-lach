@@ -5,6 +5,8 @@
 {% block main %}
     <h1>STAP <i class="bi bi-{{enrol_step}}-square"></i> - {{enrol_title}}</h1>
 
+    {{enrol_info|raw}}
+
     {{ form_start(form) }}
         {{ form_widget(form) }}
         {% if enrol_prev %}<a href="{{ path(enrol_prev) }}" class="btn btn-secondary">Vorige</a>{% endif %}

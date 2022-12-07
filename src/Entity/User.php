@@ -288,11 +288,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return count($this->associates);
     }
 
-    public function getAssociateNames(string $separator=', '): string
+    public function getAssociateNames(int $length = 0, string $separator = ', '): string
     {
         $associateNames = [];
         foreach ($this->associates as $associate) {
-            $associateNames[] = $associate->getFirstName();
+            $associateNames[] = $length > 0 ? mb_substr($associate->getFirstName(), 0, $length) . '. ' . mb_substr($associate->getLastName(), 0, $length) . '.'  : $associate->getFirstName();
         }
         return implode($separator, $associateNames);
     }

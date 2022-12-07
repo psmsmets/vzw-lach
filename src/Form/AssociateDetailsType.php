@@ -6,9 +6,7 @@ use App\Entity\AssociateDetails;
 use App\Entity\AssociateAddress;
 use App\Form\AssociateAddressType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\{BirthdayType, ChoiceType, EmailType, TelType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -32,6 +30,14 @@ class AssociateDetailsType extends AbstractType
                     'X' => 'x',
                 ],
                 'required' => true,
+            ])
+            ->add('email', EmailType::class, [
+                'required' => false,
+                'label' => 'E-mailadres van deelnemer (optioneel)',
+            ])
+            ->add('phone', TelType::class, [
+                'required' => false,
+                'label' => 'Telefoonnummer van deelnemer (optioneel)',
             ])
         ;
     }

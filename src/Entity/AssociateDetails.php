@@ -46,24 +46,24 @@ class AssociateDetails
 
     public function getEmail(): ?string
     {
-        return $this->Email;
+        return $this->email;
     }
 
-    public function setEmail(?string $Email): self
+    public function setEmail(?string $email): self
     {
-        $this->Email = $Email;
+        $this->Email = $email;
 
         return $this;
     }
 
     public function getPhone(): ?string
     {
-        return $this->Phone;
+        return $this->phone;
     }
 
-    public function setPhone(?string $Phone): self
+    public function setPhone(?string $phone): self
     {
-        $this->Phone = $Phone;
+        $this->Phone = $phone;
 
         return $this;
     }

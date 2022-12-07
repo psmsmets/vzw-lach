@@ -70,7 +70,7 @@ class EnrolController extends AbstractController
             if ($user->countAssociates() > 0) {
                 $session->getFlashBag()->add('alert-primary',
                     'Je hebt al ' . $user->countAssociates() .
-                    ' eerdere inschrijving(en) op dit e-mailadres: ' . $user->getAssociateNames()
+                    ' eerdere inschrijving(en) op dit e-mailadres: ' . $user->getAssociateNames(0)
                 );
             }
             $session->set('user', $user);
@@ -81,6 +81,7 @@ class EnrolController extends AbstractController
         return $this->renderForm('enrol/form.html.twig', [
             'enrol_step' => 1,
             'enrol_title' => 'Contactgegevens',
+            'enrol_info' => '<p>Wens je meerdere personen in te schrijven op één e-mailadres, dan kan je hier steeds dezelfde gegevens invullen.<br/>In de volgende stappen vragen we de specifieke gegevens voor elke deelnemer.</p>',
             'enrol_prev' => false,
             'enrol_btn' => 'Volgende',
             'user' => $user,
@@ -119,6 +120,7 @@ class EnrolController extends AbstractController
         return $this->renderForm('enrol/form.html.twig', [
             'enrol_step' => 2,
             'enrol_title' => 'Deelnemer',
+            'enrol_info' => '',
             'enrol_prev' => 'app_enrol_user',
             'enrol_btn' => 'Volgende',
             'user' => $user,
@@ -150,6 +152,7 @@ class EnrolController extends AbstractController
         return $this->renderForm('enrol/form.html.twig', [
             'enrol_step' => 3,
             'enrol_title' => 'Gegevens',
+            'enrol_info' => '',
             'enrol_prev' => 'app_enrol_associate_base',
             'enrol_btn' => 'Volgende',
             'user' => $user,
@@ -179,6 +182,7 @@ class EnrolController extends AbstractController
         return $this->renderForm('enrol/form.html.twig', [
             'enrol_step' => 4,
             'enrol_title' => 'Adres',
+            'enrol_info' => '',
             'enrol_prev' => 'app_enrol_associate_details',
             'enrol_btn' => 'Volgende',
             'user' => $user,
@@ -214,6 +218,7 @@ class EnrolController extends AbstractController
         return $this->renderForm('enrol/form.html.twig', [
             'enrol_step' => 5,
             'enrol_title' => 'Voorwaarden',
+            'enrol_info' => '',
             'enrol_prev' => 'app_enrol_associate_address',
             'enrol_btn' => 'Verzenden',
             'user' => $user,

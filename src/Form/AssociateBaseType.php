@@ -80,13 +80,16 @@ class AssociateBaseType extends AbstractType
             ->add('companion', TextType::class, [
                 'required' => false,
                 'label' => 'Ik zou graag in dezelfde scènes zitten als',
+                'attr' => [
+                    'placeholder' => 'Geef één of meerdere namen in',
+                ],
                 'row_attr' => [
                     'class' => 'acteur-figurant mb-3',
                 ],
             ])
             ->add('imagePortraitFile', VichImageType::class, [
                 'required' => false,
-                'label' => 'Een portraitfoto van jezelf.',
+                'label' => 'Een portretfoto van jezelf.',
                 'allow_delete' => true,
                 'asset_helper' => true,
                 'row_attr' => [
