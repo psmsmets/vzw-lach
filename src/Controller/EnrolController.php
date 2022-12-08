@@ -46,9 +46,10 @@ class EnrolController extends AbstractController
     public function index($name = null): Response
     {
         $session = $this->requestStack->getSession();
-        $user = $session->clear();
+        $enrolled = $session->get('enrolled', false);
+        $session->clear();
 
-        return $this->render('enrol/index.html.twig', []);
+        return $this->render('enrol/index.html.twig', ['enrolled' => $enrolled]);
     }
 
     #[Route('/stap-1', name: 'enrol_user', methods: ['GET', 'POST'])]
@@ -210,7 +211,7 @@ class EnrolController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->flush();
 
-            $session->clear();
+            $session->set('enrolled', true);
             $session->getFlashBag()->add('alert-success', $associate->getFullName() . ' is ingeschreven');
 
             return $this->redirectToRoute('enrol_index', [], Response::HTTP_SEE_OTHER);
