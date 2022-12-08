@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AssociateBaseType extends AbstractType
@@ -26,16 +27,23 @@ class AssociateBaseType extends AbstractType
     const PREF_PRODUCTIE = 'productieteam';
     const PREF_ARTISTIEK = 'artistiek team';
 
+    public function __construct(ParameterBagInterface $params)
+    {
+        $this->params = $params;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('firstname', TextType::class, [
                 'required' => true,
                 'label' => 'Voornaam',
+                'attr' => ['pattern' => $this->params->get('app.regex.name')],
             ])
             ->add('lastname', TextType::class, [
                 'required' => true,
                 'label' => 'Familienaam',
+                'attr' => ['pattern' => $this->params->get('app.regex.name')],
             ])
             ->add('categoryPreferences', ChoiceType::class, [
                 'required' => true,
@@ -51,6 +59,7 @@ class AssociateBaseType extends AbstractType
                     // 'Productieteam' => self::PREF_PRODUCTIE, // protected
                     'Artistiek team' => self::PREF_ARTISTIEK,
                 ],
+                'help' => 'Je kan meerdere opties aanduiden.',
                 'label_attr' => [
                     'class' => 'checkbox-switch',
                 ],

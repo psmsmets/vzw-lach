@@ -3,7 +3,7 @@
 {% set _title = block('title') %}
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 <!DOCTYPE html>
-<html>
+<html lang="{{default_locale}}">
 
     <head>
         <meta charset="UTF-8">

@@ -68,7 +68,7 @@ class EnrolController extends AbstractController
             }
             $this->entityManager->flush();
             if ($user->countAssociates() > 0) {
-                $session->getFlashBag()->add('alert-primary',
+                $session->getFlashBag()->add('alert-secondary',
                     'Je hebt al ' . $user->countAssociates() .
                     ' eerdere inschrijving(en) op dit e-mailadres: ' . $user->getAssociateNames(0)
                 );
@@ -176,6 +176,7 @@ class EnrolController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->flush();
             return $this->redirectToRoute('enrol_associate_declarations', [], Response::HTTP_SEE_OTHER);
         }
 

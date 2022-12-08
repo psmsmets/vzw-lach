@@ -184,6 +184,11 @@ class Associate
         return $this;
     }
 
+    public function hasCompletedEnrolment(): ?bool
+    {
+        return $this->declarePresent & $this->declareSecrecy & $this->declareTerms;
+    }
+
     public function getFirstname(): ?string
     {
         return $this->firstname;

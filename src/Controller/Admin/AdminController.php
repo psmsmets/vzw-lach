@@ -73,7 +73,7 @@ class AdminController extends AbstractDashboardController
             // by default, users can select between a "light" and "dark" mode for the
             // backend interface. Call this method if you prefer to disable the "dark"
             // mode for any reason (e.g. if your interface customizations are not ready for it)
-            ->disableDarkMode()
+            //->disableDarkMode()
 
             // by default, all backend URLs are generated as absolute URLs. If you
             // need to generate relative URLs instead, call this method
@@ -145,12 +145,11 @@ class AdminController extends AbstractDashboardController
             ->setGravatarEmail($user->getUserIdentifier())
 
             // you can use any type of menu item, except submenus
-            ->addMenuItems([
-                MenuItem::linkToRoute('My Profile', 'fa fa-id-card', '...', ['...' => '...']),
-                MenuItem::linkToRoute('Settings', 'fa fa-user-cog', '...', ['...' => '...']),
-                MenuItem::section(),
-                MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
-            ]);
+            //->addMenuItems([
+            //    //MenuItem::linkToRoute('My Profile', 'fa fa-id-card', '...', ['...' => '...']),
+            //    MenuItem::linkToRoute('Settings', 'fa fa-user-cog', '...', ['...' => '...']),
+            //])
+            ;
     }
 
 }

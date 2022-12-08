@@ -9,9 +9,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{BirthdayType, ChoiceType, EmailType, TelType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class AssociateDetailsType extends AbstractType
 {
+    private $params;
+
+    public function __construct(ParameterBagInterface $params)
+    {
+        $this->params = $params;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -34,10 +42,13 @@ class AssociateDetailsType extends AbstractType
             ->add('email', EmailType::class, [
                 'required' => false,
                 'label' => 'E-mailadres van deelnemer (optioneel)',
+                 'attr' => ['pattern' => $this->params->get('app.regex.email')],
             ])
             ->add('phone', TelType::class, [
                 'required' => false,
                 'label' => 'Telefoonnummer van deelnemer (optioneel)',
+                'help'    => 'Enkel een Belgisch of Nederlands telefoonnummer beginnende met de landcode',
+                'attr' => ['placeholder' => '+32...', 'pattern' => $this->params->get('app.regex.phone')],
             ])
         ;
     }

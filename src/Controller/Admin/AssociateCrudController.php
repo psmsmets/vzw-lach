@@ -30,6 +30,8 @@ class AssociateCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        yield BooleanField::new('completedEnrolment', 'Volledige registratie')->renderAsSwitch(false)->hideOnForm();
+
         yield BooleanField::new('enabled')->renderAsSwitch(false)->onlyOnDetail();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
 

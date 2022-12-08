@@ -1,12 +1,12 @@
-
-
 # security
 security_signout:
     path: /loguit
     methods: GET
+    controller: App\Controller\SecurityController::signout
 
 security_signin:
     path: /login
+    controller: App\Controller\SecurityController::signin
 
 # enrol
 enrol_index:
