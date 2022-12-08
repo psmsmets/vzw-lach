@@ -39,7 +39,19 @@ class PageCrudController extends AbstractCrudController
         yield SlugField::new('slug')->setTargetFieldName('title')->onlyWhenCreating();
         yield TextField::new('slug')->hideWhenCreating()->hideOnForm();
 
-        yield TextEditorField::new('body')->setNumOfRows(30)->hideOnIndex();
+        yield TextEditorField::new('body')
+            ->setTrixEditorConfig([
+                'blockAttributes' => [
+                    'default' => ['tagName' => 'p'],
+                    'heading1' => ['tagName' => 'h3'],
+                ],
+                'css' => [
+                    'attachment' => 'bootstrap.css',
+                ],
+            ])
+            ->setNumOfRows(20)
+            ->onlyOnForms()
+            ;
 
         yield DateTimeField::new('createdAt')->onlyOnDetail();
 
