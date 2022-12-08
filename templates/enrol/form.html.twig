@@ -45,10 +45,11 @@
         }
     }
 
-    acteurCheckbox.addEventListener( "change", ActeurFigurantIsChecked);
-    figurantCheckbox.addEventListener( "change", ActeurFigurantIsChecked);
-
-    ActeurFigurantIsChecked();
+    if(typeof(acteurCheckbox) != 'undefined' && acteurCheckbox != null && typeof(figurantCheckbox) != 'undefined' && figurantCheckbox != null) {
+        acteurCheckbox.addEventListener( "change", ActeurFigurantIsChecked);
+        figurantCheckbox.addEventListener( "change", ActeurFigurantIsChecked);
+        ActeurFigurantIsChecked();
+    }
 
 </script>
 {% endblock %}
