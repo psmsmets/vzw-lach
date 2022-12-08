@@ -36,6 +36,7 @@ $grays: (
 // fusv-enable
 
 // scss-docs-start color-variables
+$wine:    #B01824 !default;
 $blue:    #0d6efd !default;
 $indigo:  #6610f2 !default;
 $purple:  #6f42c1 !default;
@@ -50,6 +51,7 @@ $cyan:    #0dcaf0 !default;
 
 // scss-docs-start colors-map
 $colors: (
+  "wine":       $wine,
   "blue":       $blue,
   "indigo":     $indigo,
   "purple":     $purple,
@@ -76,6 +78,16 @@ $color-contrast-dark:      $black !default;
 $color-contrast-light:     $white !default;
 
 // fusv-disable
+$wine-100: tint-color($wine, 80%) !default;
+$wine-200: tint-color($wine, 60%) !default;
+$wine-300: tint-color($wine, 40%) !default;
+$wine-400: tint-color($wine, 20%) !default;
+$wine-500: $wine !default;
+$wine-600: shade-color($wine, 20%) !default;
+$wine-700: shade-color($wine, 40%) !default;
+$wine-800: shade-color($wine, 60%) !default;
+$wine-900: shade-color($wine, 80%) !default;
+
 $blue-100: tint-color($blue, 80%) !default;
 $blue-200: tint-color($blue, 60%) !default;
 $blue-300: tint-color($blue, 40%) !default;
@@ -175,6 +187,18 @@ $cyan-600: shade-color($cyan, 20%) !default;
 $cyan-700: shade-color($cyan, 40%) !default;
 $cyan-800: shade-color($cyan, 60%) !default;
 $cyan-900: shade-color($cyan, 80%) !default;
+
+$wines: (
+  "wine-100": $wine-100,
+  "wine-200": $wine-200,
+  "wine-300": $wine-300,
+  "wine-400": $wine-400,
+  "wine-500": $wine-500,
+  "wine-600": $wine-600,
+  "wine-700": $wine-700,
+  "wine-800": $wine-800,
+  "wine-900": $wine-900
+) !default;
 
 $blues: (
   "blue-100": $blue-100,
@@ -298,7 +322,7 @@ $cyans: (
 // fusv-enable
 
 // scss-docs-start theme-color-variables
-$primary:       $blue !default;
+$primary:       $wine !default;
 $secondary:     $gray-600 !default;
 $success:       $green !default;
 $info:          $cyan !default;
@@ -560,7 +584,7 @@ $font-weight-semibold:        600 !default;
 $font-weight-bold:            700 !default;
 $font-weight-bolder:          bolder !default;
 
-$font-weight-base:            $font-weight-normal !default;
+$font-weight-base:            $font-weight-light !default;
 
 $line-height-base:            1.5 !default;
 $line-height-sm:              1.25 !default;

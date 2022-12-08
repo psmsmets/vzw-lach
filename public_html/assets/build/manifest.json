@@ -1,7 +1,10 @@
 {
-  "assets/build/vzw-lach.css": "/assets/build/vzw-lach.css",
-  "assets/build/vzw-lach.js": "/assets/build/vzw-lach.js",
-  "assets/build/bootstrap.css": "/assets/build/bootstrap.css",
-  "assets/build/runtime.js": "/assets/build/runtime.js",
-  "assets/build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js.js": "/assets/build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js.js"
+  "assets/build/vzw-lach.css": "/assets/build/vzw-lach.159433eb.css",
+  "assets/build/vzw-lach.js": "/assets/build/vzw-lach.8946a301.js",
+  "assets/build/form-signin.css": "/assets/build/form-signin.916b48d8.css",
+  "assets/build/bootstrap.css": "/assets/build/bootstrap.852e1b35.css",
+  "assets/build/safari_select_fix.css": "/assets/build/safari_select_fix.9da0ecc8.css",
+  "assets/build/runtime.js": "/assets/build/runtime.a213e7a1.js",
+  "assets/build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js.65fc588e.js": "/assets/build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js.65fc588e.js",
+  "assets/build/images/bg.jpg": "/assets/build/images/bg.37393e97.jpg"
 }

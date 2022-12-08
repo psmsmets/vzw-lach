@@ -3,7 +3,7 @@
 {% set _title = block('title') %}
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 <!DOCTYPE html>
-<html>
+<html lang="{{default_locale}}">
 
     <head>
         <meta charset="UTF-8">
@@ -17,18 +17,21 @@
 
         <!-- Core CSS -->
         {{ encore_entry_link_tags('bootstrap') }}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+        {{ encore_entry_link_tags('safari_select_fix') }}
+        {{ encore_entry_link_tags('vzw-lach') }}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
         <!-- Custom styles for this template -->
         {% block stylesheets %}{% endblock %}
 
     </head>
 
-    <body class="bg-white">
+    <body class="bg">
  
-        {% block header %}{% endblock %}
-        {% block top %}{% endblock %}
+        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
-        <div class="container">
+            {% block header %}{% endblock %}
+
             <div class="row">
             {% block body %}
                 <div class="col col-12 {% if _side %}col-md-9 col-lg-8 col-xl-9{%endif%} col-print-12 mt-4">
@@ -47,29 +50,12 @@
             {% endblock %}
 
             </div><!-- /div row -->
+
+            {% block footer %}{% endblock %}
+
         </div><!-- /div container -->
 
-        {% block bottom %}{% endblock %}
-        {% block footer %}{% endblock %}
-
         <a id="toTop" href="javascript:;" style="visibility:hidden;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="/assets/img/to-top@2x.png"></a>
-
-{% if app.user %}
-        <div class="modal fade" id="sessionModal" tabindex="-1" role="dialog" aria-labelledby="sessionModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="sessionModalLabel">{{'session.timeout'|trans}}</h5>
-              </div>
-              <div class="modal-body">{{'session.message'|trans}}<br>{{'session.remaining_before'|trans}}<span id="sessionModalRemaining"></span>{{'session.remaining_after'|trans}}</div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-medium" data-logout="{{path('security_logout')}}">{{'session.logout'|trans}}</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">{{'session.continue'|trans}}</button>
-              </div>
-            </div>
-          </div>
-        </div>
-{% endif %}
 
         <!-- JavaScript
         ================================================== -->

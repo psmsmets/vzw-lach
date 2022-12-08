@@ -42,16 +42,17 @@ class EnrolController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/', name: 'app_enrol_index', methods: ['GET'])]
-    public function index(): Response
+    #[Route('/', name: 'enrol_index', methods: ['GET'])]
+    public function index($name = null): Response
     {
         $session = $this->requestStack->getSession();
-        $user = $session->clear();
+        $enrolled = $session->get('enrolled', false);
+        $session->clear();
 
-        return $this->render('enrol/index.html.twig', []);
+        return $this->render('enrol/index.html.twig', ['enrolled' => $enrolled]);
     }
 
-    #[Route('/stap-1', name: 'app_enrol_user', methods: ['GET', 'POST'])]
+    #[Route('/stap-1', name: 'enrol_user', methods: ['GET', 'POST'])]
     public function newUser(Request $request): Response
     {
         $session = $this->requestStack->getSession();
@@ -67,17 +68,21 @@ class EnrolController extends AbstractController
                 $this->entityManager->persist($user);
             }
             $this->entityManager->flush();
-            if ( ($userAssociates = count($user->getAssociates())) ) {
-                $session->getFlashBag()->add('alert-primary', 'Je hebt al ' . ($userAssociates == 1 ? '1 eerdere inschrijving' : $userAssociates . ' eerdere inschrijvingen') . ' op dit e-mailadres.');
+            if ($user->countAssociates() > 0) {
+                $session->getFlashBag()->add('alert-secondary',
+                    'Je hebt al ' . $user->countAssociates() .
+                    ' eerdere inschrijving(en) op dit e-mailadres: ' . $user->getAssociateNames(0)
+                );
             }
             $session->set('user', $user);
 
-            return $this->redirectToRoute('app_enrol_associate_base', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('enrol_associate_base', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('enrol/form.html.twig', [
             'enrol_step' => 1,
             'enrol_title' => 'Contactgegevens',
+            'enrol_info' => '<p>Wens je meerdere personen in te schrijven op één e-mailadres, dan kan je hier steeds dezelfde gegevens invullen.<br/>In de volgende stappen vragen we de specifieke gegevens voor elke deelnemer.</p>',
             'enrol_prev' => false,
             'enrol_btn' => 'Volgende',
             'user' => $user,
@@ -85,29 +90,39 @@ class EnrolController extends AbstractController
         ]);
     }
 
-    #[Route('/stap-2', name: 'app_enrol_associate_base', methods: ['GET', 'POST'])]
+    #[Route('/stap-2', name: 'enrol_associate_base', methods: ['GET', 'POST'])]
     public function newAssociate(Request $request): Response
     {
         $session = $this->requestStack->getSession();
 
         $user = $session->get('user', false);
-        if (!$user) return $this->redirectToRoute('app_enrol_user', [], Response::HTTP_SEE_OTHER);
+        if (!$user) return $this->redirectToRoute('enrol_user', [], Response::HTTP_SEE_OTHER);
 
-        $associate = $session->get('associate', new Associate());
-        $associate->setUser($user);
+        if (!($associate = $this->doctrine->getRepository(Associate::class)->findOneById($session->get('associate')))) {
+            $associate = new Associate();
+            $associate->setUser($user);
+        }
 
         $form = $this->createForm(AssociateBaseType::class, $associate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session->set('associate', $associate);
-            return $this->redirectToRoute('app_enrol_associate_details', [], Response::HTTP_SEE_OTHER);
+
+            if (!$session->get('associate', false)) {
+                $this->entityManager->merge($associate);
+            }
+            $this->entityManager->flush();
+
+            $session->set('associate', $associate->getId());
+
+            return $this->redirectToRoute('enrol_associate_details', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('enrol/form.html.twig', [
             'enrol_step' => 2,
             'enrol_title' => 'Deelnemer',
-            'enrol_prev' => 'app_enrol_user',
+            'enrol_info' => '',
+            'enrol_prev' => 'enrol_user',
             'enrol_btn' => 'Volgende',
             'user' => $user,
             'associate' => $associate,
@@ -116,29 +131,30 @@ class EnrolController extends AbstractController
         ]);
     }
 
-    #[Route('/stap-3', name: 'app_enrol_associate_details', methods: ['GET', 'POST'])]
+    #[Route('/stap-3', name: 'enrol_associate_details', methods: ['GET', 'POST'])]
     public function setAssociateDetails(Request $request): Response
     {
         $session = $this->requestStack->getSession();
 
         $user = $session->get('user', false);
-        if (!$user) return $this->redirectToRoute('app_enrol_user', [], Response::HTTP_SEE_OTHER);
+        if (!$user) return $this->redirectToRoute('enrol_user', [], Response::HTTP_SEE_OTHER);
 
-        $associate = $session->get('associate', false);
-        if (!$associate) return $this->redirectToRoute('app_enrol_associate_base', [], Response::HTTP_SEE_OTHER);
+        $associate = $this->doctrine->getRepository(Associate::class)->findOneById($session->get('associate'));
+        if (!$associate) return $this->redirectToRoute('enrol_associate_base', [], Response::HTTP_SEE_OTHER);
 
         $form = $this->createForm(AssociateDetailsType::class, $associate->getDetails());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session->set('associate', $associate);
-            return $this->redirectToRoute('app_enrol_associate_address', [], Response::HTTP_SEE_OTHER);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('enrol_associate_address', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('enrol/form.html.twig', [
             'enrol_step' => 3,
             'enrol_title' => 'Gegevens',
-            'enrol_prev' => 'app_enrol_associate_base',
+            'enrol_info' => '',
+            'enrol_prev' => 'enrol_associate_base',
             'enrol_btn' => 'Volgende',
             'user' => $user,
             'associate' => $associate,
@@ -146,29 +162,30 @@ class EnrolController extends AbstractController
         ]);
     }
 
-    #[Route('/stap-4', name: 'app_enrol_associate_address', methods: ['GET', 'POST'])]
+    #[Route('/stap-4', name: 'enrol_associate_address', methods: ['GET', 'POST'])]
     public function setAssociateAddress(Request $request): Response
     {
         $session = $this->requestStack->getSession();
 
         $user = $session->get('user', false);
-        if (!$user) return $this->redirectToRoute('app_enrol_user', [], Response::HTTP_SEE_OTHER);
+        if (!$user) return $this->redirectToRoute('enrol_user', [], Response::HTTP_SEE_OTHER);
 
-        $associate = $session->get('associate', false);
-        if (!$associate) return $this->redirectToRoute('app_enrol_associate_base', [], Response::HTTP_SEE_OTHER);
+        $associate = $this->doctrine->getRepository(Associate::class)->findOneById($session->get('associate'));
+        if (!$associate) return $this->redirectToRoute('enrol_associate_base', [], Response::HTTP_SEE_OTHER);
 
         $form = $this->createForm(AssociateAddressType::class, $associate->getAddress());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session->set('associate', $associate);
-            return $this->redirectToRoute('app_enrol_associate_declarations', [], Response::HTTP_SEE_OTHER);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('enrol_associate_declarations', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('enrol/form.html.twig', [
             'enrol_step' => 4,
             'enrol_title' => 'Adres',
-            'enrol_prev' => 'app_enrol_associate_details',
+            'enrol_info' => '',
+            'enrol_prev' => 'enrol_associate_details',
             'enrol_btn' => 'Volgende',
             'user' => $user,
             'associate' => $associate,
@@ -177,36 +194,34 @@ class EnrolController extends AbstractController
     }
 
 
-    #[Route('/stap-5', name: 'app_enrol_associate_declarations', methods: ['GET', 'POST'])]
+    #[Route('/stap-5', name: 'enrol_associate_declarations', methods: ['GET', 'POST'])]
     public function setAssociateDeclarations(Request $request): Response
     {
         $session = $this->requestStack->getSession();
 
         $user = $session->get('user', false);
-        if (!$user) return $this->redirectToRoute('app_enrol_user', [], Response::HTTP_SEE_OTHER);
+        if (!$user) return $this->redirectToRoute('enrol_user', [], Response::HTTP_SEE_OTHER);
 
-        $associate = $session->get('associate', false);
-        if (!$associate) return $this->redirectToRoute('app_enrol_associate_base', [], Response::HTTP_SEE_OTHER);
+        $associate = $this->doctrine->getRepository(Associate::class)->findOneById($session->get('associate'));
+        if (!$associate) return $this->redirectToRoute('enrol_associate_base', [], Response::HTTP_SEE_OTHER);
 
         $form = $this->createForm(AssociateDeclarationsType::class, $associate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->merge($associate);
             $this->entityManager->flush();
 
-            $session->getFlashBag()->add('alert-success', $associate->getName() . ' is ingeschreven');
+            $session->set('enrolled', true);
+            $session->getFlashBag()->add('alert-success', $associate->getFullName() . ' is ingeschreven');
 
-            $session->clear();
-            $session->set('user', $user);
-
-            return $this->redirectToRoute('app_enrol_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('enrol_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('enrol/form.html.twig', [
             'enrol_step' => 5,
             'enrol_title' => 'Voorwaarden',
-            'enrol_prev' => 'app_enrol_associate_address',
+            'enrol_info' => '',
+            'enrol_prev' => 'enrol_associate_address',
             'enrol_btn' => 'Verzenden',
             'user' => $user,
             'associate' => $associate,

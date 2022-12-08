@@ -23,17 +23,10 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-//    .addStyleEntry('easy_admin', './assets/css/easy_admin.scss')
-//    .addStyleEntry('security', './assets/css/security.scss')
-//    .addStyleEntry('animate', './assets/css/animate.css')
+    .addStyleEntry('form-signin', './assets/css/form-signin.scss')
     .addStyleEntry('bootstrap', './assets/css/bootstrap.scss')
-//    .addStyleEntry('safari_select_fix', './assets/css/safari_select_fix.scss')
-//    .addEntry('sortable', './assets/js/sortable.js')
+    .addStyleEntry('safari_select_fix', './assets/css/safari_select_fix.scss')
     .addEntry('vzw-lach', './assets/js/vzw-lach.js')
-//    .addEntry('form_default', './assets/js/form_default.js')
-//    .addEntry('form_extended', './assets/js/form_extended.js')
-//    .addEntry('nav-toc', './assets/js/nav-toc.js')
-    //.addEntry('eu_cookie', './assets/js/eu_cookie.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -53,7 +46,8 @@ Encore
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
-    .enableVersioning(Encore.isProduction())
+    .enableVersioning()
+    //.enableVersioning(Encore.isProduction())
 
     // enables @babel/preset-env polyfills
     //.configureBabel(() => {}, {

@@ -6,7 +6,7 @@
 parameters:
     domain: 'localhost'
     app.timezone: 'Europe/Brussels'
-    app.locales: ['nl']
+    app.locales: ['nl', 'en']
     app.default_locale: 'nl'
     app.session_max_idle_time: 1500
     app.about.name: 'vzw LA:CH'
@@ -14,9 +14,14 @@ parameters:
     app.mailer.from: 'leden@vzw-lach.be'
     app.mailer.name: '%app.about.name%'
     app.path.public: /public_html
-    app.path.member.img: /upload/img/member
-    app.path.calendar.doc: /upload/doc/calendar
-    app.path.calendar.img: /upload/img/calendar
+    app.path.associates.entire: /uploads/associates/entire
+    app.path.associates.portrait: /uploads/associates/portrait
+    app.regex.email: '^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+(@)[a-zA-Z0-9-]+\.([a-zA-Z0-9-]{2,})*$'
+    app.regex.phone: '^(\+|00)(32|31)([1-9]\d{7,8})$' # enkel Belgie en Nederland
+    app.regex.name: '^([ \u00c0-\u01ffa-zA-Z\-]){2,}$'
+    app.regex.streetnr: '^[ a-zA-Z\-]{2,}(\d+)[ a-zA-Z1-9]{0,}$'
+    app.regex.zip: '^([1-9]{1}\d{3})(|[A-Z]{2})$'
+    app.regex.datestring: '^((0[1-9]|[12]\d|3[01]|[1-9])[/.-](0[1-9]|1[0-2]|[1-9])[/.-][12]\d{3})$'
     app.defaults.shortTitle: 20
     doctrine_behaviors_translatable_fetch_mode: "LAZY"
     doctrine_behaviors_translation_fetch_mode: "LAZY"

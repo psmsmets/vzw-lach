@@ -6,6 +6,7 @@ use App\Repository\AssociateAddressRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Intl\Countries;
 
 #[ORM\Entity(repositoryClass: AssociateAddressRepository::class)]
 class AssociateAddress
@@ -31,9 +32,15 @@ class AssociateAddress
     #[ORM\Column(length: 3, nullable: true)]
     private ?string $nation = null;
 
-    public function __construct(Associate $associate)
+    public function __construct(Associate $associate=null)
     {
       $this->associate = $associate;
+      $this->nation = 'BE';
+    }
+
+    public function __toString(): string
+    {
+        return $this->getAddress();
     }
 
     public function getId(): ?Uuid
@@ -44,6 +51,11 @@ class AssociateAddress
     public function getAssociate(): ?Associate
     {
         return $this->associate;
+    }
+
+    public function getAddress(): ?string
+    {
+        return empty($this->line1) ? '__NA__' : sprintf("%s, %s %s, %s", $this->getLine1(), $this->getZip(), $this->getTown(), $this->getNation());
     }
 
     public function getLine1(): ?string
@@ -94,9 +106,9 @@ class AssociateAddress
         return $this;
     }
 
-    public function getNation(): ?string
+    public function getNation(bool $code = false): ?string
     {
-        return $this->nation;
+        return $code ? $this->nation : Countries::getName($this->nation);
     }
 
     public function setNation(?string $nation): self

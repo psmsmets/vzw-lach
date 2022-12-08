@@ -14,9 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Associate;
 use App\Entity\Category;
+use App\Entity\Page;
 use App\Entity\User;
 use App\Controller\Admin\AssociateCrudController;
 use App\Controller\Admin\CategoryCrudController;
+use App\Controller\Admin\PageCrudController;
 use App\Controller\Admin\UserCrudController;
 
 class AdminController extends AbstractDashboardController
@@ -71,7 +73,7 @@ class AdminController extends AbstractDashboardController
             // by default, users can select between a "light" and "dark" mode for the
             // backend interface. Call this method if you prefer to disable the "dark"
             // mode for any reason (e.g. if your interface customizations are not ready for it)
-            ->disableDarkMode()
+            //->disableDarkMode()
 
             // by default, all backend URLs are generated as absolute URLs. If you
             // need to generate relative URLs instead, call this method
@@ -117,6 +119,9 @@ class AdminController extends AbstractDashboardController
 
             MenuItem::section('Groepen'),
             MenuItem::linkToCrud('Groepen', 'fa fa-user-group', Category::class),
+
+            MenuItem::section('Static'),
+            MenuItem::linkToCrud('Pagina\'s', 'fa fa-file', Page::class),
         ];
     }
 
@@ -127,25 +132,24 @@ class AdminController extends AbstractDashboardController
         // if you prefer to create the user menu from scratch, use: return UserMenu::new()->...
         return parent::configureUserMenu($user)
             // use the given $user object to get the user name
-            ->setName($user->getFullName())
+            ->setName($user->getUserIdentifier())
             // use this method if you don't want to display the name of the user
             ->displayUserName(false)
 
             // you can return an URL with the avatar image
-            ->setAvatarUrl('https://...')
-            ->setAvatarUrl($user->getProfileImageUrl())
+            //->setAvatarUrl('https://...')
+            //->setAvatarUrl($user->getProfileImageUrl())
             // use this method if you don't want to display the user image
             ->displayUserAvatar(false)
             // you can also pass an email address to use gravatar's service
-            ->setGravatarEmail($user->getMainEmailAddress())
+            ->setGravatarEmail($user->getUserIdentifier())
 
             // you can use any type of menu item, except submenus
-            ->addMenuItems([
-                MenuItem::linkToRoute('My Profile', 'fa fa-id-card', '...', ['...' => '...']),
-                MenuItem::linkToRoute('Settings', 'fa fa-user-cog', '...', ['...' => '...']),
-                MenuItem::section(),
-                MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
-            ]);
+            //->addMenuItems([
+            //    //MenuItem::linkToRoute('My Profile', 'fa fa-id-card', '...', ['...' => '...']),
+            //    MenuItem::linkToRoute('Settings', 'fa fa-user-cog', '...', ['...' => '...']),
+            //])
+            ;
     }
 
 }
