@@ -46,6 +46,11 @@ class AssociateAddress
         return $this->associate;
     }
 
+    public function getAddress(): ?string
+    {
+        return empty($this->line1) ? null : implode(', ', [$this->line1, $this->zip.' '.$this->town, $this->nation]);
+    }
+
     public function getLine1(): ?string
     {
         return $this->line1;

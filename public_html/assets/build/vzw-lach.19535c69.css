@@ -1,0 +1,162 @@
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].oneOf[1].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[4].oneOf[1].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].oneOf[1].use[4]!./assets/css/vzw-lach.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*
+ *
+ * vzw-lach.scss
+ *
+ */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: "assets/img/bg.jpg";
+}
+
+#toTop {
+  text-decoration: none;
+  position: fixed;
+  bottom: 1.85rem;
+  right: 0.85rem;
+  overflow: hidden;
+  border: none;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+}
+
+th .btn-sm {
+  padding: 0;
+  text-align: left;
+  font-weight: bold;
+  line-height: 1.4;
+  color: inherit;
+  font-size: unset;
+}
+
+th .btn-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/*
+ * Calendar
+*/
+.cal-cancelled {
+  text-decoration: line-through;
+}
+
+.cal-link {
+  cursor: pointer;
+}
+
+.cal-link:hover {
+  background-color: #f8f9fa;
+}
+
+.badge.cal {
+  width: 48px;
+  height: 48px;
+  font-weight: 300;
+  line-height: 1.2;
+  font-size: 1.65rem;
+  text-align: center;
+  padding: .5rem;
+}
+
+.badge.cal.cal-md {
+  width: 48px;
+  height: 48px;
+  font-weight: 300;
+  line-height: .8;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: .3rem;
+}
+
+.badge.cal.cal-sm {
+  width: 28px;
+  height: 28px;
+  font-size: .85rem;
+  padding: .2rem;
+  line-height: .85;
+  margin-top: .15rem;
+}
+
+ul.cal-small i {
+  width: 1.25rem;
+}
+
+ul.cal-smaller i {
+  width: 1.5rem;
+}
+
+.badge.cal-1 {
+  background-color: #ed1c24;
+}
+
+a.badge.cal-1:hover {
+  background-color: #af0e14;
+}
+
+.badge.cal-2 {
+  background-color: #d4af37;
+}
+
+a.badge.cal-2:hover {
+  background-color: #9d8022;
+}
+
+.badge.cal-3 {
+  background-color: #6c757d;
+}
+
+a.badge.cal-3:hover {
+  background-color: #494f54;
+}
+
+.badge.cal-4 {
+  background-color: #343a40;
+}
+
+a.badge.cal-4:hover {
+  background-color: #121416;
+}
+
+.badge.cal-5 {
+  background-color: #ffc107;
+}
+
+a.badge.cal-5:hover {
+  background-color: #ba8b00;
+}
+
+/* make keyframes that tell the start state and the end state of our object */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  /* make things invisible upon start */
+  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+  animation: fadeIn ease-in 1;
+  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+}
+
+.scroll-fade-in {
+  opacity: 0;
+}
+
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidnp3LWxhY2guMTk1MzVjNjkuY3NzIiwibWFwcGluZ3MiOiI7OztBQUFBOzs7O0VBSUU7QUFFRjs7RUFFRSxZQUFZO0FBQWQ7O0FBR0E7RUFDRSxxQ0FBcUM7QUFBdkM7O0FBR0E7RUFDRSxxQkFBcUI7RUFDckIsZUFBZTtFQUNmLGVBQWU7RUFDZixjQUFjO0VBQ2QsZ0JBQWdCO0VBQ2hCLFlBQVk7RUFDWixZQUFZO0VBQ1osV0FBVztFQUNYLFlBQVk7QUFBZDs7QUFHQTtFQUNFLFVBQVU7RUFDVixnQkFBZ0I7RUFDaEIsaUJBQWlCO0VBQ2pCLGdCQUFnQjtFQUNoQixjQUFjO0VBQ2QsZ0JBQWdCO0FBQWxCOztBQUdBO0VBQ0UscUJBQXFCO0VBQ3JCLGNBQWM7QUFBaEI7O0FBR0E7O0NBQ0M7QUFFRDtFQUNFLDZCQUE2QjtBQUEvQjs7QUFHQTtFQUNFLGVBQWU7QUFBakI7O0FBREE7RUFHSSx5QkFBeUI7QUFFN0I7O0FBR0E7RUFDRSxXQUFXO0VBQ1gsWUFBWTtFQUNaLGdCQUFnQjtFQUNoQixnQkFBZ0I7RUFDaEIsa0JBQWtCO0VBQ2xCLGtCQUFrQjtFQUNsQixjQUFjO0FBQWhCOztBQVBBO0VBVUksV0FBVztFQUNYLFlBQVk7RUFDWixnQkFBZ0I7RUFDaEIsZUFBZTtFQUNmLGlCQUFpQjtFQUNqQixrQkFBa0I7RUFDbEIsY0FBYztBQUNsQjs7QUFqQkE7RUFvQkksV0FBVztFQUNYLFlBQVk7RUFDWixpQkFBaUI7RUFDakIsY0FBYztFQUNkLGdCQUFnQjtFQUNoQixrQkFBa0I7QUFDdEI7O0FBR0E7RUFDRSxjQUFjO0FBQWhCOztBQUdBO0VBQ0UsYUFBYTtBQUFmOztBQU1FO0VBQ0UseUJBSmM7QUFDbEI7O0FBS0U7RUFDRSx5QkFBcUM7QUFGekM7O0FBRkU7RUFDRSx5QkFKMEI7QUFTOUI7O0FBSEU7RUFDRSx5QkFBcUM7QUFNekM7O0FBVkU7RUFDRSx5QkFKc0M7QUFpQjFDOztBQVhFO0VBQ0UseUJBQXFDO0FBY3pDOztBQWxCRTtFQUNFLHlCQUprRDtBQXlCdEQ7O0FBbkJFO0VBQ0UseUJBQXFDO0FBc0J6Qzs7QUExQkU7RUFDRSx5QkFKOEQ7QUFpQ2xFOztBQTNCRTtFQUNFLHlCQUFxQztBQThCekM7O0FBMUJBOztBQUdBO0VBQW9CO0lBQU8sVUFBUztFQStDbEM7RUEvQ3NDO0lBQUssVUFBUztFQWtEcEQ7QUFDRjs7QUFqREE7RUFDRSxVQUFTO0VBQUc7RUFDeUI7RUFFckMsMkJBQTBCO0VBRWE7RUFFdkMsNkJBQTRCO0VBSTVCLHNCQUFxQjtBQXFEdkI7O0FBbERBO0VBQ0UsVUFBUztBQXFEWCIsInNvdXJjZXMiOlsid2VicGFjazovLy8uL2Fzc2V0cy9jc3Mvdnp3LWxhY2guc2NzcyJdLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICpcbiAqIHZ6dy1sYWNoLnNjc3NcbiAqXG4gKi9cblxuaHRtbCxcbmJvZHkge1xuICBoZWlnaHQ6IDEwMCU7XG59XG5cbmJvZHkge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiBcImFzc2V0cy9pbWcvYmcuanBnXCI7XG59XG5cbiN0b1RvcCB7XG4gIHRleHQtZGVjb3JhdGlvbjogbm9uZTtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBib3R0b206IDEuODVyZW07XG4gIHJpZ2h0OiAwLjg1cmVtO1xuICBvdmVyZmxvdzogaGlkZGVuO1xuICBib3JkZXI6IG5vbmU7XG4gIHotaW5kZXg6IDEwMDtcbiAgd2lkdGg6IDQ0cHg7XG4gIGhlaWdodDogNDRweDtcbn1cblxudGggLmJ0bi1zbSB7XG4gIHBhZGRpbmc6IDA7XG4gIHRleHQtYWxpZ246IGxlZnQ7XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xuICBsaW5lLWhlaWdodDogMS40O1xuICBjb2xvcjogaW5oZXJpdDtcbiAgZm9udC1zaXplOiB1bnNldDtcbn1cblxudGggLmJ0bi1saW5rOmhvdmVyIHtcbiAgdGV4dC1kZWNvcmF0aW9uOiBub25lO1xuICBjb2xvcjogaW5oZXJpdDtcbn1cblxuLypcbiAqIENhbGVuZGFyXG4qL1xuLmNhbC1jYW5jZWxsZWQge1xuICB0ZXh0LWRlY29yYXRpb246IGxpbmUtdGhyb3VnaDtcbn1cblxuLmNhbC1saW5rIHtcbiAgY3Vyc29yOiBwb2ludGVyO1xuICAmOmhvdmVyIHtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjhmOWZhO1xuICB9XG5cbn1cbiBcbi5iYWRnZS5jYWwge1xuICB3aWR0aDogNDhweDtcbiAgaGVpZ2h0OiA0OHB4O1xuICBmb250LXdlaWdodDogMzAwO1xuICBsaW5lLWhlaWdodDogMS4yO1xuICBmb250LXNpemU6IDEuNjVyZW07XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgcGFkZGluZzogLjVyZW07XG5cbiAgJi5jYWwtbWQge1xuICAgIHdpZHRoOiA0OHB4O1xuICAgIGhlaWdodDogNDhweDtcbiAgICBmb250LXdlaWdodDogMzAwO1xuICAgIGxpbmUtaGVpZ2h0OiAuODtcbiAgICBmb250LXNpemU6IDEuNXJlbTtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gICAgcGFkZGluZzogLjNyZW07XG4gIH1cblxuICAmLmNhbC1zbSB7XG4gICAgd2lkdGg6IDI4cHg7XG4gICAgaGVpZ2h0OiAyOHB4O1xuICAgIGZvbnQtc2l6ZTogLjg1cmVtO1xuICAgIHBhZGRpbmc6IC4ycmVtO1xuICAgIGxpbmUtaGVpZ2h0OiAuODU7XG4gICAgbWFyZ2luLXRvcDogLjE1cmVtO1xuICB9XG59XG5cbnVsLmNhbC1zbWFsbCBpIHtcbiAgd2lkdGg6IDEuMjVyZW07XG59XG5cbnVsLmNhbC1zbWFsbGVyIGkge1xuICB3aWR0aDogMS41cmVtO1xufVxuXG4kY2FsczogKDE6ICNlZDFjMjQsIDI6ICNkNGFmMzcsIDM6ICM2Yzc1N2QsIDQ6ICMzNDNhNDAsIDU6ICNmZmMxMDcpO1xuXG5AZWFjaCAkY2FsLCAkY29sb3IgaW4gJGNhbHMge1xuICAuYmFkZ2UuY2FsLSN7JGNhbH0ge1xuICAgIGJhY2tncm91bmQtY29sb3I6ICRjb2xvcjtcbiAgfVxuICBhLmJhZGdlLmNhbC0jeyRjYWx9OmhvdmVyIHtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiBkYXJrZW4oJGNvbG9yLCAxNSUpO1xuICB9XG59XG5cbi8qIG1ha2Uga2V5ZnJhbWVzIHRoYXQgdGVsbCB0aGUgc3RhcnQgc3RhdGUgYW5kIHRoZSBlbmQgc3RhdGUgb2Ygb3VyIG9iamVjdCAqL1xuQC13ZWJraXQta2V5ZnJhbWVzIGZhZGVJbiB7IGZyb20geyBvcGFjaXR5OjA7IH0gdG8geyBvcGFjaXR5OjE7IH0gfVxuQC1tb3ota2V5ZnJhbWVzIGZhZGVJbiB7IGZyb20geyBvcGFjaXR5OjA7IH0gdG8geyBvcGFjaXR5OjE7IH0gfVxuQGtleWZyYW1lcyBmYWRlSW4geyBmcm9tIHsgb3BhY2l0eTowOyB9IHRvIHsgb3BhY2l0eToxOyB9IH1cblxuLmZhZGUtaW4ge1xuICBvcGFjaXR5OjA7ICAvKiBtYWtlIHRoaW5ncyBpbnZpc2libGUgdXBvbiBzdGFydCAqL1xuICAtd2Via2l0LWFuaW1hdGlvbjpmYWRlSW4gZWFzZS1pbiAxOyAgLyogY2FsbCBvdXIga2V5ZnJhbWUgbmFtZWQgZmFkZUluLCB1c2UgYW5pbWF0dGlvbiBlYXNlLWluIGFuZCByZXBlYXQgaXQgb25seSAxIHRpbWUgKi9cbiAgLW1vei1hbmltYXRpb246ZmFkZUluIGVhc2UtaW4gMTtcbiAgYW5pbWF0aW9uOmZhZGVJbiBlYXNlLWluIDE7XG5cbiAgLXdlYmtpdC1hbmltYXRpb24tZmlsbC1tb2RlOmZvcndhcmRzOyAgLyogdGhpcyBtYWtlcyBzdXJlIHRoYXQgYWZ0ZXIgYW5pbWF0aW9uIGlzIGRvbmUgd2UgcmVtYWluIGF0IHRoZSBsYXN0IGtleWZyYW1lIHZhbHVlIChvcGFjaXR5OiAxKSovXG4gIC1tb3otYW5pbWF0aW9uLWZpbGwtbW9kZTpmb3J3YXJkcztcbiAgYW5pbWF0aW9uLWZpbGwtbW9kZTpmb3J3YXJkcztcblxuICAtd2Via2l0LWFuaW1hdGlvbi1kdXJhdGlvbjoxcztcbiAgLW1vei1hbmltYXRpb24tZHVyYXRpb246MXM7XG4gIGFuaW1hdGlvbi1kdXJhdGlvbjoxcztcbn1cblxuLnNjcm9sbC1mYWRlLWluIHtcbiAgb3BhY2l0eTowO1xufVxuIl0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9*/

@@ -210,7 +210,7 @@ class EnrolController extends AbstractController
             $this->entityManager->flush();
 
             $session->clear();
-            $session->getFlashBag()->add('alert-success', $associate->getName() . ' is ingeschreven');
+            $session->getFlashBag()->add('alert-success', $associate->getFullName() . ' is ingeschreven');
 
             return $this->redirectToRoute('app_enrol_index', [], Response::HTTP_SEE_OTHER);
         }

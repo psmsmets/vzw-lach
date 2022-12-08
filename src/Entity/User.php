@@ -73,12 +73,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return [
             'id' => $this->id,
+            'enabled' => $this->enabled,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
-            'passwordUpdatedAt' => $this->passwordUpdatedAt,
-            'enabled' => $this->enabled,
             'email' => $this->email,
             'phone' => $this->phone,
+            'password' => $this->password,
+            'passwordUpdatedAt' => $this->passwordUpdatedAt,
             'roles' => $this->roles,
         ];
     }
@@ -86,12 +87,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __unserialize(array $serialized): void 
     {
         $this->id = $serialized['id'];
+        $this->enabled = $serialized['enabled'];
         $this->createdAt = $serialized['createdAt'];
         $this->updatedAt = $serialized['updatedAt'];
-        $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
-        $this->enabled = $serialized['enabled'];
         $this->email = $serialized['email'];
         $this->phone = $serialized['phone'];
+        $this->password = $serialized['password'];
+        $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
         $this->roles = $serialized['roles'];
     }
 

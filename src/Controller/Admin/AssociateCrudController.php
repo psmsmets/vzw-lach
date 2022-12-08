@@ -7,7 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 //use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, CollectionField, DateField, ImageField, TextField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, CollectionField, DateField, ImageField, TextField, EmailField, TelephoneField};
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
@@ -24,6 +24,7 @@ class AssociateCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN')
             ;
     }
 
@@ -80,13 +81,18 @@ class AssociateCrudController extends AbstractCrudController
             ->setFormTypeOptions(['input'  => 'datetime_immutable'])
             ->hideOnIndex()
             ;
+        yield TextField::new('details.gender', 'Geslacht')->hideOnForm();
+        yield EmailField::new('details.email', 'E-mailadres (persoonlijk)')->hideOnIndex();
+        yield TelephoneField::new('details.phone', 'Telefoon (persoonlijk)')->hideOnIndex();
 
-        yield AssociationField::new('categories', 'Categoriën')
+        yield TextField::new('address.address', 'Adres')->onlyOnDetail();
+
+        yield AssociationField::new('categories', 'Toegewezen Categoriën')
             ->setFormTypeOptions([
                 'by_reference' => false,
             ])
             ->autocomplete()
-            //->renderAsNativeWidget()
+            ->hideOnIndex()
             ;
 
         yield AssociationField::new('user')->autocomplete()->hideOnIndex();

@@ -7,8 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, BooleanField, SlugField, TextField, TextareaField, TextEditorField};
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, BooleanField, DateTimeField, SlugField, TextField, TextareaField, TextEditorField};
 
 class PageCrudController extends AbstractCrudController
 {
@@ -23,6 +22,8 @@ class PageCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->setPermission(Action::NEW, 'ROLE_SUPER_ADMIN')
+            ->disable(Action::DELETE)
             ;
     }
 
@@ -36,12 +37,16 @@ class PageCrudController extends AbstractCrudController
         yield TextField::new('title', 'Titel');
 
         yield SlugField::new('slug')->setTargetFieldName('title')->onlyWhenCreating();
-        yield TextField::new('slug')->hideWhenCreating();
+        yield TextField::new('slug')->hideWhenCreating()->hideOnForm();
 
         yield TextEditorField::new('body')->setNumOfRows(30)->hideOnIndex();
 
+        yield DateTimeField::new('createdAt')->onlyOnDetail();
+
         yield BooleanField::new('showCreatedAt')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('showCreatedAt')->renderAsSwitch(true)->onlyOnForms();
+
+        yield DateTimeField::new('updatedAt')->onlyOnDetail();
 
         yield BooleanField::new('showUpdatedAt')->renderAsSwitch(false)->onlyOnDetail();
         yield BooleanField::new('showUpdatedAt')->renderAsSwitch(true)->onlyOnForms();

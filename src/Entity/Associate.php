@@ -116,7 +116,7 @@ class Associate
 
     public function __toString(): string
     {
-        return $this->getName();
+        return $this->getFullName();
     }
 /*
     public function __serialize(): array
@@ -208,9 +208,9 @@ class Associate
         return $this;
     }
 
-    public function getName(bool $reverse=false, string $separator=' '): string
+    public function getFullName(bool $reverse=false, string $separator=' '): string
     {
-        return $reverse ? $this->lastname . $separator . $this->firstname : $this->firstname . $separator . $this->lastname;
+        return $reverse ? $this->lastname.$separator.$this->firstname : $this->firstname.$separator.$this->lastname;
     }
 
     public function isSinger(): ?bool

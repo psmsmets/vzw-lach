@@ -4,86 +4,14 @@
  *
  */
 
+html,
 body {
-//  padding-top: 105px;
+  height: 100%;
 }
 
-/* banner */
-.banner-bg {
-  /*background-image: url("/assets/img/bg/zwembad.jpg");*/
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center top;
-}
-
-$banners: 0,1,2,3,4,5,6,7,8,9;
-
-@each $banner in $banners {
-  .banner-bg#{$banner} {
-//    background-image: url("/assets/img/bg/bg#{$banner}.jpg");
-  }
-}
-
-.banner {
-  background-size: 100%;
-}
-
-.banner-lg, .banner-lg .carousel-item {
-    height: 405px;
-}
-
-.banner-md, .banner-md .carousel-item {
-    height: 275px;
-    /*background-position-y: 45%;*/
-}
-
-.banner-sm, .banner-sm .carousel-item {
-    height: 160px;
-    /*background-position-y: 25%;*/
-}
-
-.banner .carousel-item img {
-  width: 100%;
-  max-width: none;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-}
-
-.overlay:before{
-  position: absolute;
-  content:" ";
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  display: block;
-  z-index:0;
-  background-color: rgba(52, 58, 64, 0.4);
-}
-
-.carousel-caption h1, .carousel-caption h2, .carousel-caption h3, .carousel-caption h4, .carousel-caption h5, .carousel-caption h6 {
-  line-height: .85;
-}
-
-/* google map responsive */
-.map-responsive {
-    overflow:hidden;
-    padding-bottom:50%;
-    position:relative;
-    height:0;
-}
-
-.map-responsive iframe {
-    left:0;
-    top:0;
-    height:100%;
-    width:100%;
-    position:absolute;
+.bg {
+  background-image: url("/public_html/assets/img/bg.jpg");
+  background-repeat: repeat;
 }
 
 #toTop {
@@ -98,14 +26,6 @@ $banners: 0,1,2,3,4,5,6,7,8,9;
   height: 44px;
 }
 
-.badge-team {
-  min-width: 30px;
-}
-
-.carousel-item a.btn {
-  min-width: 40px;
-}
-
 th .btn-sm {
   padding: 0;
   text-align: left;
@@ -114,6 +34,7 @@ th .btn-sm {
   color: inherit;
   font-size: unset;
 }
+
 th .btn-link:hover {
   text-decoration: none;
   color: inherit;
@@ -182,7 +103,6 @@ $cals: (1: #ed1c24, 2: #d4af37, 3: #6c757d, 4: #343a40, 5: #ffc107);
   }
 }
 
-
 /* make keyframes that tell the start state and the end state of our object */
 @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -205,112 +125,4 @@ $cals: (1: #ed1c24, 2: #d4af37, 3: #6c757d, 4: #343a40, 5: #ffc107);
 
 .scroll-fade-in {
   opacity:0;
-}
-
-/*
-:target {
-  display: block;
-  position: relative;
-  top: -72px; 
-  visibility: hidden;
-}
-*/
-
-/* 
-    RESPONSIVE CSS
-*/
-@media (max-width: 991.98px) {
-
-  //body { padding-top: 87px; }
-  //.navbar { height: 60px; }
-  .nav-header { 
-    margin-top: 60px;
-    height: 100%;
-    padding-top: 1rem;
-  }
-  .offcanvas-collapse {
-    position: fixed;
-    top: 59px; /* Height of navbar */
-    bottom: 0;
-    left: 100%;
-    width: 100%;
-    height: 100%;
-    padding-top: 1rem;
-    padding-right: 1rem;
-    padding-left: 1rem;
-    overflow-y: auto;
-    visibility: hidden;
-    background-color: #343a40;
-    transition-timing-function: ease-in-out;
-    transition-duration: .3s;
-    transition-property: left, visibility;
-  }
-  .offcanvas-collapse.open {
-    left: 0;
-    visibility: visible;
-  }
-  .offcanvas-collapse .nav-item {
-    padding: .2rem 1rem;
-    font-size: 1.35rem;
-  }
-  .offcanvas-collapse .nav-item .btn {
-    font-size: 1.35rem;
-  }
-  .carousel-caption {
-    left:0;
-    right:0;
-  }
-  .banner-lg, .banner-lg .carousel-item { height: 365px; }
-  /* all 10% smaller */
-  h1,.h1 { font-size: 2.25rem; }
-  h2,.h2 { font-size: 1.8rem; }
-  h3,.h3 { font-size: 1.575rem; }
-  h4,.h4 { font-size: 1.35rem; }
-  h5,.h5 { font-size: 1.125rem; }
-
-  #navbarOffcanvas .nav-link i {
-     padding-right: .5rem;
-  }
-
-}
-
-@media (min-width: 992px) {
-  .sponsor img {
-    filter: gray; /* IE6-9 */
-    -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
-  }
-  .sponsor img:hover {
-    filter: none; /* IE6-9 */
-    -webkit-filter: grayscale(0); /* Google Chrome, Safari 6+ & Opera 15+ */ 
-  }
-  .banner-sm, .banner-sm .carousel-item {
-    background-position-y: -15%;
-  }
-}
-
-@media (min-width: 1600px) {
-  .banner-sm, .banner-sm .carousel-item {
-    height: 200px;
-    background-position-y: -25%;
-  }
-}
-
-/* Minimum aspect ratio */
-@media (max-aspect-ratio: 4/4) {
-  .banner .carousel-item img {
-    height: 100%;
-    width: auto;
-    max-width: none;
-  }
-
-  .banner-bg {
-    background-repeat: no-repeat;
-    background-size: auto;
-  }
-
-  .carousel-caption {
-    bottom: 1.0rem;
-    padding-left: 1.0rem;
-    padding-right: 1.0rem;
-  }
 }

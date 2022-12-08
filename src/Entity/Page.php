@@ -47,7 +47,7 @@ class Page
         $this->id = Uuid::v4();
         $this->enabled = true;
         $this->createdAt = new \DateTimeImmutable();
-        $this->showCreatedAt = true;
+        $this->showCreatedAt = false;
         $this->showUpdatedAt = true;
     }
 

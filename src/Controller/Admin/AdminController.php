@@ -132,17 +132,17 @@ class AdminController extends AbstractDashboardController
         // if you prefer to create the user menu from scratch, use: return UserMenu::new()->...
         return parent::configureUserMenu($user)
             // use the given $user object to get the user name
-            ->setName($user->getFullName())
+            ->setName($user->getUserIdentifier())
             // use this method if you don't want to display the name of the user
             ->displayUserName(false)
 
             // you can return an URL with the avatar image
-            ->setAvatarUrl('https://...')
-            ->setAvatarUrl($user->getProfileImageUrl())
+            //->setAvatarUrl('https://...')
+            //->setAvatarUrl($user->getProfileImageUrl())
             // use this method if you don't want to display the user image
             ->displayUserAvatar(false)
             // you can also pass an email address to use gravatar's service
-            ->setGravatarEmail($user->getMainEmailAddress())
+            ->setGravatarEmail($user->getUserIdentifier())
 
             // you can use any type of menu item, except submenus
             ->addMenuItems([
