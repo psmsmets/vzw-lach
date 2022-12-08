@@ -47,7 +47,7 @@ class UserCrudController extends AbstractCrudController
         yield EmailField::new('email');
         yield TelephoneField::new('phone')->hideOnIndex();
 
-        yield AssociationField::new('associates')->autocomplete();
+        yield AssociationField::new('associates')->hideOnForm();
 
         // password
         yield TextField::new('password')
