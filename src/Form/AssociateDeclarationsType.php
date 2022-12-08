@@ -24,7 +24,8 @@ class AssociateDeclarationsType extends AbstractType
                 'required' => true,
             ])
             ->add('declareTerms', CheckboxType::class, [
-                'label' => 'Ik verklaar kennis genomen te hebben van de verzekerde risico’s binnen de vrijwilligerswerking van vzw LA:CH',
+                'label' => 'Ik verklaar kennis genomen te hebben van de <a href="/voorwaarden" target=_Blank>algemene voorwaarden voor vrijwilligers</a> van vzw LA:CH',
+                'label_html' => true,
                 'required' => true,
             ])
 
