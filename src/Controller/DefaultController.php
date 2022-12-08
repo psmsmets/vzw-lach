@@ -13,9 +13,7 @@ class DefaultController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        return $this->render('default/index.html.twig', [
-            'controller_name' => 'Leden vzw LA:CH',
-        ]);
+        return $this->redirectToRoute('enrol_index');
     }
 
     #[Route('/{slug}', name: 'page')]

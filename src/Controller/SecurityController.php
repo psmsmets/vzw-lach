@@ -9,7 +9,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route('/login', name: 'app_security_signin')]
+    #[Route('/login', name: 'security_signin')]
     public function signin(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
@@ -25,7 +25,7 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/loguit', name: 'app_security_signout', methods: ['GET'])]
+    #[Route('/loguit', name: 'security_signout', methods: ['GET'])]
     public function signout(): Response
     {
         // controller can be blank: it will never be called!

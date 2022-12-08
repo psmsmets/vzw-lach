@@ -1,17 +1,37 @@
-# home
-index:
-    path: /
-    controller: App\Controller\DefaultController::index
+
 
 # security
-app_security_signout:
+security_signout:
     path: /loguit
     methods: GET
 
+security_signin:
+    path: /login
+
 # enrol
-app_enrol_index:
+enrol_index:
     path: /inschrijven
     controller: App\Controller\EnrolController::index
+
+enrol_user:
+    path: /inschrijven/stap-1
+    controller: App\Controller\EnrolController::newUser
+
+enrol_associate_base:
+    path: /inschrijven/stap-2
+    controller: App\Controller\EnrolController::newAssociate
+
+enrol_associate_details:
+    path: /inschrijven/stap-3
+    controller: App\Controller\EnrolController::setAssociateDetails
+
+enrol_associate_address:
+    path: /inschrijven/stap-4
+    controller: App\Controller\EnrolController::setAssociateAddress
+
+enrol_associate_declarations:
+    path: /inschrijven/stap-5
+    controller: App\Controller\EnrolController::setAssociateDeclarations
 
 # page
 page:

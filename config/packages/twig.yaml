@@ -15,7 +15,6 @@ twig:
 #        memberManager: '@App\Service\MemberManager'
     form_themes:
          - 'bootstrap_5_layout.html.twig'
-#        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
 
 when@test:
     twig:

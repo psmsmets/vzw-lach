@@ -14,12 +14,12 @@
         <div class="small text-muted pb-3">
           {% if page.showCreatedAt%}
           <span class="modified pr-2">
-            Aangemaakt op {{ page.createdAt|format_datetime('full','none', locale='nl') }}.
+            Aangemaakt op {{ page.createdAt|format_datetime('full','none') }}.
           </span>
           {% endif %}
           {% if page.showUpdatedAt%}
           <span class="modified pr-2">
-            Laatst aangepast op {{ page.updatedAt|format_datetime('full','none', locale='nl') }}.
+            Laatst aangepast op {{ page.updatedAt|format_datetime('full','none') }}.
           </span>
           {% endif %}
         </div>
