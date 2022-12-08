@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use App\Entity\Page;
+
 class DefaultController extends AbstractController
 {
     #[Route('/', name: 'home')]
@@ -16,9 +18,19 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    #[Route('/voorwaarden', name: 'voorwaarden')]
-    public function static_voorwaarden(): Response
+    #[Route('/{slug}', name: 'page')]
+    public function page($slug): Response
     {
-        return $this->render('default/voorwaarden.html.twig', []);
+        $page = $this->getDoctrine()
+            ->getRepository(Page::class)
+            ->findOneBySlug($slug)
+            ;
+
+        if (!$page) throw $this->createNotFoundException();
+        if (!$page->isEnabled()) $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        return $this->render('default/page.html.twig', [
+            'page' => $page,
+        ]);
     }
 }

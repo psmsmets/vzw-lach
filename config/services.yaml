@@ -6,7 +6,7 @@
 parameters:
     domain: 'localhost'
     app.timezone: 'Europe/Brussels'
-    app.locales: ['nl']
+    app.locales: ['nl', 'en']
     app.default_locale: 'nl'
     app.session_max_idle_time: 1500
     app.about.name: 'vzw LA:CH'

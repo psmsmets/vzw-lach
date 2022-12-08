@@ -1,3 +1,19 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+# home
+index:
+    path: /
+    controller: App\Controller\DefaultController::index
+
+# security
+app_security_signout:
+    path: /loguit
+    methods: GET
+
+# enrol
+app_enrol_index:
+    path: /inschrijven
+    controller: App\Controller\EnrolController::index
+
+# page
+page:
+    path: /{slug}
+    controller: App\Controller\DefaultController::page
