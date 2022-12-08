@@ -28,10 +28,10 @@
 
     <body class="bg">
  
-        {% block header %}{% endblock %}
-        {% block top %}{% endblock %}
+        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
-        <div class="container">
+            {% block header %}{% endblock %}
+
             <div class="row">
             {% block body %}
                 <div class="col col-12 {% if _side %}col-md-9 col-lg-8 col-xl-9{%endif%} col-print-12 mt-4">
@@ -50,10 +50,10 @@
             {% endblock %}
 
             </div><!-- /div row -->
-        </div><!-- /div container -->
 
-        {% block bottom %}{% endblock %}
-        {% block footer %}{% endblock %}
+            {% block footer %}{% endblock %}
+
+        </div><!-- /div container -->
 
         <a id="toTop" href="javascript:;" style="visibility:hidden;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="/assets/img/to-top@2x.png"></a>
 

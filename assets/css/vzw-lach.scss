@@ -14,6 +14,32 @@ body {
   background-repeat: repeat;
 }
 
+.cover-container {
+  max-width: 42em;
+}
+
+.nav-masthead .nav-link {
+  color: rgba(149, 20, 31, .5);
+  border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover {
+  cursor: default;
+}
+
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(149, 20, 31, .25);
+}
+
+.nav-masthead .nav-link + .nav-link {
+  margin-left: 1rem;
+}
+
+.nav-masthead .active {
+  color: rgba(149, 20, 31, 1);
+  border-bottom-color: rgba(149, 20, 31, 1);
+}
+
 #toTop {
   text-decoration: none;
   position: fixed;
