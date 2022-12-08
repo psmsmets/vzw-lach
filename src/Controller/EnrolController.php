@@ -47,7 +47,6 @@ class EnrolController extends AbstractController
     {
         $session = $this->requestStack->getSession();
         $enrolled = $session->get('enrolled', false);
-        $session->clear();
 
         return $this->render('enrol/index.html.twig', ['enrolled' => $enrolled]);
     }
@@ -211,6 +210,7 @@ class EnrolController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->flush();
 
+            $session->clear();
             $session->set('enrolled', true);
             $session->getFlashBag()->add('alert-success', $associate->getFullName() . ' is ingeschreven');
 

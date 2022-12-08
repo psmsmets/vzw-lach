@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
   {{ parent() }}
-  {{ encore_entry_link_tags('form-signin') }}
+  {{ encore_entry_link_tags('security') }}
 {% endblock %}
 
 {% block body %}
@@ -54,5 +54,5 @@
 
 {% block javascripts %}
   {{ parent() }}
-  {{ encore_entry_script_tags('form-signin') }}
+  {# encore_entry_script_tags('form-signin') #}
 {% endblock %}

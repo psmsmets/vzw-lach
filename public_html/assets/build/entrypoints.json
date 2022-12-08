@@ -10,12 +10,12 @@
         "/assets/build/vzw-lach.159433eb.css"
       ]
     },
-    "form-signin": {
+    "security": {
       "js": [
         "/assets/build/runtime.a213e7a1.js"
       ],
       "css": [
-        "/assets/build/form-signin.916b48d8.css"
+        "/assets/build/security.81561e01.css"
       ]
     },
     "bootstrap": {
