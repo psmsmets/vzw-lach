@@ -19,14 +19,17 @@ class ImageOptimizer
 
     public function resize(string $filename): void
     {
-        if (!file_exists($filename)) {
-            return;
-        }
+        if (!file_exists($filename)) return;
 
         list($iwidth, $iheight) = getimagesize($filename);
+
+        if ($iwidth < self::MAX_WIDTH) return;
+        if ($iheight < self::MAX_HEIGHT) return;
+
         $ratio = $iwidth / $iheight;
         $width = self::MAX_WIDTH;
         $height = self::MAX_HEIGHT;
+
         if ($width / $height > $ratio) {
             $width = $height * $ratio;
         } else {
