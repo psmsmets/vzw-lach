@@ -19,6 +19,7 @@ use App\ImageOptimizer;
 class ImageOptimization extends Command
 {
     private $doctrine;
+    private $entityManager;
     private $imageOptimizer;
     private $params;
 
@@ -68,13 +69,13 @@ class ImageOptimization extends Command
 
             if (($img = $associate->getImagePortrait())) {
                 $io->writeln(sprintf("%s, portrait, %s", $name, $img));
-                if ($exec) $this->imageOptimizer->resize($dirPortrait.$associate->getImagePortrait());
+                if ($exec) $this->imageOptimizer->resize($dirPortrait.$img);
                 $count++;
             }
 
             if (($img = $associate->getImageEntire())) {
                 $io->writeln(sprintf("%s, entire, %s", $name, $img));
-                if ($exec) $this->imageOptimizer->resize($dirEntire.$associate->getImageEntire());
+                if ($exec) $this->imageOptimizer->resize($dirEntire.$img);
                 $count++;
             }
 
