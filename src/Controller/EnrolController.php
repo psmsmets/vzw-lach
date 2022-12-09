@@ -26,23 +26,30 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
+use App\ImageOptimizer;
+
 #[Route('/inschrijven')]
 class EnrolController extends AbstractController
 {
     private $doctrine;
     private $entityManager;
-    private $params;
     private $requestStack;
+    private $imageOptimizer;
+    private $params;
 
     public function __construct(
         ManagerRegistry $doctrine,
         EntityManagerInterface $entityManager,
         RequestStack $requestStack,
+        ImageOptimizer $imageOptimizer,
+        ParameterBagInterface $parameterBag,
     )
     {
         $this->doctrine = $doctrine;
         $this->entityManager = $entityManager;
         $this->requestStack = $requestStack;
+        $this->imageOptimizer = $imageOptimizer;
+        $this->params = $parameterBag;
 
         // Accessing the session in the constructor is *NOT* recommended, since
         // it might not be accessible yet or lead to unwanted side-effects
@@ -119,6 +126,16 @@ class EnrolController extends AbstractController
             if (!$session->get('associate', false)) {
                 $this->entityManager->merge($associate);
             }
+
+            // resize images
+            $root = $this->params->get('kernel.project_dir').$this->params->get('app.path.public');
+            if (($img = $associate->getImagePortrait())) {
+                $this->imageOptimizer->resize($root.$this->params->get('app.path.associates.portrait').'/'.$img);
+            }
+            if (($img = $associate->getImageEntire())) {
+                $this->imageOptimizer->resize($root.$this->params->get('app.path.associates.entire').'/'.$img);
+            }
+
             $this->entityManager->flush();
 
             $session->set('associate', $associate->getId());
