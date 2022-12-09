@@ -59,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->id = Uuid::v4();
-        $this->createdAt = new \DateTimeImmutable("now");
+        $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = null;
         $this->enabled = true;
         $this->passwordUpdatedAt = null;
@@ -187,7 +187,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword(string $password): self
     {
-        $this->passwordUpdatedAt = new \DateTimeImmutable("now");
+        $this->passwordUpdatedAt = new \DateTimeImmutable();
         $this->password = $password;
 
         return $this;
@@ -225,7 +225,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setUpdatedAt(): self
     {
-        $this->updatedAt = new \DateTimeImmutable("now");
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }

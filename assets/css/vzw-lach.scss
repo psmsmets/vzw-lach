@@ -40,6 +40,10 @@ body {
   border-bottom-color: rgba(149, 20, 31, 1);
 }
 
+footer {
+  font-size: .75em;
+}
+
 #toTop {
   text-decoration: none;
   position: fixed;
@@ -64,6 +68,14 @@ th .btn-sm {
 th .btn-link:hover {
   text-decoration: none;
   color: inherit;
+}
+
+/*
+ * Vich Image
+*/
+.vich-image > a > img {
+  max-width: 100%;
+  height: auto;
 }
 
 /*

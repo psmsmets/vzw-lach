@@ -13,6 +13,7 @@ use App\Form\AssociateAddressType;
 use App\Entity\AssociateDetails;
 use App\Form\AssociateDetailsType;
 
+use App\ImageOptimizer;
 use App\Entity\User;
 use App\Form\UserType;
 
@@ -21,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -28,18 +30,29 @@ use Doctrine\Persistence\ManagerRegistry;
 #[Route('/inschrijven')]
 class EnrolController extends AbstractController
 {
+    private $doctrine;
+    private $entityManager;
+    private $imageOptimizer;
+    private $params;
     private $requestStack;
 
-    public function __construct(RequestStack $requestStack, ManagerRegistry $doctrine, EntityManagerInterface $entityManager)
+    public function __construct(
+        ManagerRegistry $doctrine,
+        EntityManagerInterface $entityManager,
+        ImageOptimizer $imageOptimizer,
+        ParameterBagInterface $parameterBag,
+        RequestStack $requestStack,
+    )
     {
+        $this->doctrine = $doctrine;
+        $this->entityManager = $entityManager;
+        $this->imageOptimizer = $imageOptimizer;
+        $this->params = $parameterBag;
         $this->requestStack = $requestStack;
 
         // Accessing the session in the constructor is *NOT* recommended, since
         // it might not be accessible yet or lead to unwanted side-effects
         // $this->session = $requestStack->getSession();
-
-        $this->doctrine = $doctrine;
-        $this->entityManager = $entityManager;
     }
 
     #[Route('/', name: 'enrol_index', methods: ['GET'])]
@@ -47,6 +60,7 @@ class EnrolController extends AbstractController
     {
         $session = $this->requestStack->getSession();
         $enrolled = $session->get('enrolled', false);
+        $session->set('enrolled', false);
         //$session->clear();
 
         return $this->render('enrol/index.html.twig', ['enrolled' => $enrolled]);
@@ -113,6 +127,17 @@ class EnrolController extends AbstractController
             }
             $this->entityManager->flush();
 
+
+            if ($associate->getImagePortrait()) {
+                $dir = $this->params->get('app.path.public').$this->params->get('app.path.associates.portrait');
+                $this->imageOptimizer->resize($dir.'/'.$associate->getImagePortrait());
+            }
+
+            if ($associate->getImageEntire()) {
+                $dir = $this->params->get('app.path.public').$this->params->get('app.path.associates.entire');
+                $this->imageOptimizer->resize($dir.'/'.$associate->getImageEntire());
+            }
+
             $session->set('associate', $associate->getId());
 
             return $this->redirectToRoute('enrol_associate_details', [], Response::HTTP_SEE_OTHER);
@@ -127,7 +152,6 @@ class EnrolController extends AbstractController
             'user' => $user,
             'associate' => $associate,
             'form' => $form,
-
         ]);
     }
 
