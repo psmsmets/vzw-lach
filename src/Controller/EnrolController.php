@@ -122,21 +122,26 @@ class EnrolController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // merge instead of persist because of linked entities
             if (!$session->get('associate', false)) {
                 $this->entityManager->merge($associate);
             }
-            $this->entityManager->flush();
 
+            // resize images
+            $root = $this->params->get('kernel.project_dir').$this->params->get('app.path.public');
 
             if ($associate->getImagePortrait()) {
-                $dir = $this->params->get('app.path.public').$this->params->get('app.path.associates.portrait');
+                $dir = $root.$this->params->get('app.path.associates.portrait');
                 $this->imageOptimizer->resize($dir.'/'.$associate->getImagePortrait());
             }
 
             if ($associate->getImageEntire()) {
-                $dir = $this->params->get('app.path.public').$this->params->get('app.path.associates.entire');
+                $dir = $root.$this->params->get('app.path.associates.entire');
                 $this->imageOptimizer->resize($dir.'/'.$associate->getImageEntire());
             }
+
+            // flush changes
+            $this->entityManager->flush();
 
             $session->set('associate', $associate->getId());
 
