@@ -13,6 +13,7 @@ parameters:
     app.about.abbr: 'vzw la:ch'
     app.mailer.from: 'leden@vzw-lach.be'
     app.mailer.name: '%app.about.name%'
+    app.path.project: '%kernel.project_dir%'
     app.path.public: /public_html
     app.path.associates.entire: /uploads/associates/entire
     app.path.associates.portrait: /uploads/associates/portrait
