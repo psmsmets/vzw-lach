@@ -71,6 +71,14 @@ th .btn-link:hover {
 }
 
 /*
+ * Vich Image
+*/
+.vich-image > a > img {
+  max-width: 100%;
+  height: auto;
+}
+
+/*
  * Calendar
 */
 .cal-cancelled {

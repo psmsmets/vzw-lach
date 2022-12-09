@@ -66,7 +66,7 @@ class UserType extends AbstractType
                 'label_attr' => [
                     'class' => 'me-2 pb-3',
                 ],
-                //'label' => 'Captcha  ',
+                //'label' => 'Captcha',
                 'help'    => 'Onleesbaar? Herlaad de pagina voor een andere captcha.',
             ])
         ;
