@@ -13,7 +13,6 @@ use App\Form\AssociateAddressType;
 use App\Entity\AssociateDetails;
 use App\Form\AssociateDetailsType;
 
-use App\ImageOptimizer;
 use App\Entity\User;
 use App\Form\UserType;
 
@@ -32,22 +31,17 @@ class EnrolController extends AbstractController
 {
     private $doctrine;
     private $entityManager;
-    private $imageOptimizer;
     private $params;
     private $requestStack;
 
     public function __construct(
         ManagerRegistry $doctrine,
         EntityManagerInterface $entityManager,
-        ImageOptimizer $imageOptimizer,
-        ParameterBagInterface $parameterBag,
         RequestStack $requestStack,
     )
     {
         $this->doctrine = $doctrine;
         $this->entityManager = $entityManager;
-        $this->imageOptimizer = $imageOptimizer;
-        $this->params = $parameterBag;
         $this->requestStack = $requestStack;
 
         // Accessing the session in the constructor is *NOT* recommended, since
@@ -122,25 +116,9 @@ class EnrolController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // merge instead of persist because of linked entities
             if (!$session->get('associate', false)) {
                 $this->entityManager->merge($associate);
             }
-
-            // resize images
-            $root = $this->params->get('kernel.project_dir').$this->params->get('app.path.public');
-
-            if ($associate->getImagePortrait()) {
-                $dir = $root.$this->params->get('app.path.associates.portrait');
-                $this->imageOptimizer->resize($dir.'/'.$associate->getImagePortrait());
-            }
-
-            if ($associate->getImageEntire()) {
-                $dir = $root.$this->params->get('app.path.associates.entire');
-                $this->imageOptimizer->resize($dir.'/'.$associate->getImageEntire());
-            }
-
-            // flush changes
             $this->entityManager->flush();
 
             $session->set('associate', $associate->getId());
