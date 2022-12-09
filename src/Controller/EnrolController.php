@@ -47,6 +47,7 @@ class EnrolController extends AbstractController
     {
         $session = $this->requestStack->getSession();
         $enrolled = $session->get('enrolled', false);
+        $session->set('enrolled', false);
         //$session->clear();
 
         return $this->render('enrol/index.html.twig', ['enrolled' => $enrolled]);

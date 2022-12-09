@@ -55,7 +55,7 @@ class UserType extends AbstractType
             ->add('phone', TelType::class, [
                 'required' => true,
                 'label' => 'Telefoonnummer',
-                'help'    => 'Enkel een Belgisch of Nederlands telefoonnummer beginnende met de landcode, zonder spaties of andere tekens.',
+                'help'    => 'Een Belgisch of Nederlands telefoonnummer beginnende met de landcode, zonder spaties of andere tekens.',
                 'attr' => [
                     'placeholder' => '+32...',
                     'pattern' => $this->params->get('app.regex.phone'),
@@ -67,6 +67,7 @@ class UserType extends AbstractType
                     'class' => 'me-2 pb-3',
                 ],
                 //'label' => 'Captcha  ',
+                'help'    => 'Onleesbaar? Herlaad de pagina voor een andere captcha.',
             ])
         ;
     }

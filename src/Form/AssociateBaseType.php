@@ -104,6 +104,8 @@ class AssociateBaseType extends AbstractType
                 'row_attr' => [
                     'class' => 'acteur-figurant mb-3',
                 ],
+                'help' => 'Max 8MB. Een te grote foto? Verklein deze dan eerst met <a href="https://imresizer.com/resize-image-to-2mb" target=_Blank>imresizer.com/resize-image-to-2mb</a>',
+                'help_html' => true,
             ])
             ->add('imageEntireFile', VichImageType::class, [
                 'required' => false,
@@ -113,6 +115,8 @@ class AssociateBaseType extends AbstractType
                 'row_attr' => [
                     'class' => 'acteur-figurant mb-3',
                 ],
+                'help' => 'Max 8MB. Een te grote foto? Verklein deze dan eerst met <a href="https://imresizer.com/resize-image-to-2mb" target=_Blank>imresizer.com/resize-image-to-2mb</a>',
+                'help_html' => true,
             ])
         ;
     }
