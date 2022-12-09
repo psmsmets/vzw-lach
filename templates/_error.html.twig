@@ -12,19 +12,19 @@
 
 {% block body %}
 
-  <div class="col-12 col-md-6 offset-md-3 text-center">
+  <div class="col-12 text-center">
 
-    <img class="mb-4 d-none d-md-inline" src="{{ asset('assets/img/logo/lach.png') }}" alt="" height="250">
+    <img class="mb-4 d-none d-md-inline" src="{{ asset('assets/img/logo/lach.png') }}" alt="" height="100">
 
-    <h1 class="text-primary pb-3">Oeps! Er gaat iets verkeerd</h1>
+    <h2 class="text-primary pb-3">Oeps! Er gaat iets verkeerd</h2>
 
-    <h2>Serverfout "<strong>{{status_code}}</strong> {% block error_message %}{% endblock %}"</h2>
+    <h1>Serverfout "<strong>{{status_code}}</strong> {% block error_message %}{% endblock %}"</h1>
 
     <p style="font-size:7.5rem;" class="mb-0">{% block error_unicode %}{% endblock %}</p>
 
     <p class="lead">{% block error_handling %}{% endblock %}</p>
     <p class="lead text-right">
-        <a href="{{ path('home') }}"><i class="fas fa-angle-double-right"></i> ga naar de startpagina <i class="bi bi-house"></i></i></a>
+        <a href="{{ path('home') }}"><i class="fas fa-angle-double-right"></i> ga naar de startpagina</i></a>
     </p>
 
   </div>
