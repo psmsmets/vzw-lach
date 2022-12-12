@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="nl" target-language="nl" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="GENlNJa" resname="nl">
+        <source>nl</source>
+        <target>Nederlands</target>
+      </trans-unit>
+      <trans-unit id="29OknQ2" resname="en">
+        <source>en</source>
+        <target>English</target>
+      </trans-unit>
+      <trans-unit id="CT59X9u" resname="contact">
+        <source>contact</source>
+        <target>contact</target>
+      </trans-unit>
+      <trans-unit id="6XFmtUU" resname="enable">
+        <source>enable</source>
+        <target>activeer</target>
+      </trans-unit>
+      <trans-unit id="6diZLzS" resname="disable">
+        <source>disable</source>
+        <target>deactiveer</target>
+      </trans-unit>
+      <trans-unit id="saNtJdl" resname="select">
+        <source>select</source>
+        <target>selecteer</target>
+      </trans-unit>
+      <trans-unit id="CPzcnCg" resname="deselect">
+        <source>deselect</source>
+        <target>deselecteer</target>
+      </trans-unit>
+      <trans-unit id="agDfwdy" resname="Monday">
+        <source>Monday</source>
+        <target>maandag</target>
+      </trans-unit>
+      <trans-unit id="fYrx3hJ" resname="Tuesday">
+        <source>Tuesday</source>
+        <target>dinsdag</target>
+      </trans-unit>
+      <trans-unit id="wKbMgpz" resname="Wednesday">
+        <source>Wednesday</source>
+        <target>woensdag</target>
+      </trans-unit>
+      <trans-unit id=".CZiBi." resname="Thursday">
+        <source>Thursday</source>
+        <target>donderdag</target>
+      </trans-unit>
+      <trans-unit id="4h8.Nyp" resname="Friday">
+        <source>Friday</source>
+        <target>vrijdag</target>
+      </trans-unit>
+      <trans-unit id="2_Ncc2P" resname="Saturday">
+        <source>Saturday</source>
+        <target>zaterdag</target>
+      </trans-unit>
+      <trans-unit id="hz.vdg5" resname="Sunday">
+        <source>Sunday</source>
+        <target>zondag</target>
+      </trans-unit>
+      <trans-unit id="ifaDJWD" resname="Year">
+        <source>Year</source>
+        <target>Jaar</target>
+      </trans-unit>
+      <trans-unit id="toyggR8" resname="Years">
+        <source>Years</source>
+        <target>Jaren</target>
+      </trans-unit>
+      <trans-unit id="MQylA_8" resname="Month">
+        <source>Month</source>
+        <target>Maand</target>
+      </trans-unit>
+      <trans-unit id="Ccp1UbP" resname="Months">
+        <source>Months</source>
+        <target>Maanden</target>
+      </trans-unit>
+      <trans-unit id="jyNk4Ru" resname="Day">
+        <source>Day</source>
+        <target>Dag</target>
+      </trans-unit>
+      <trans-unit id="4IwKqPV" resname="Days">
+        <source>Days</source>
+        <target>Dagen</target>
+      </trans-unit>
+      <trans-unit id="8AY7gIc" resname="Hour">
+        <source>Hour</source>
+        <target>Uur</target>
+      </trans-unit>
+      <trans-unit id="IehJKTi" resname="Hours">
+        <source>Hours</source>
+        <target>Uren</target>
+      </trans-unit>
+      <trans-unit id="S3hmW_x" resname="Minute">
+        <source>Minute</source>
+        <target>Minuut</target>
+      </trans-unit>
+      <trans-unit id="T4RqhOf" resname="Minutes">
+        <source>Minutes</source>
+        <target>Minuten</target>
+      </trans-unit>
+      <trans-unit id="wjsxoBe" resname="morning">
+        <source>morning</source>
+        <target>voormiddag</target>
+      </trans-unit>
+      <trans-unit id="yOB8GsJ" resname="afternoon">
+        <source>afternoon</source>
+        <target>namiddag</target>
+      </trans-unit>
+      <trans-unit id="5b0IAdE" resname="evening">
+        <source>evening</source>
+        <target>avond</target>
+      </trans-unit>
+      <trans-unit id="hMzfioS" resname="past">
+        <source>past</source>
+        <target>voorbij</target>
+      </trans-unit>
+      <trans-unit id="67Peij2" resname="future">
+        <source>future</source>
+        <target>toekomstig</target>
+      </trans-unit>
+      <trans-unit id="Lg2bcIb" resname="ongoing">
+        <source>ongoing</source>
+        <target>lopend</target>
+      </trans-unit>
+      <trans-unit id="DSSOgsY" resname="male">
+        <source>male</source>
+        <target>man</target>
+      </trans-unit>
+      <trans-unit id="nxZROaj" resname="female">
+        <source>female</source>
+        <target>vrouw</target>
+      </trans-unit>
+      <trans-unit id="JBkykGe" resname="search">
+        <source>search</source>
+        <target>zoeken</target>
+      </trans-unit>
+      <trans-unit id="gvvjD2M" resname="form.edit">
+        <source>form.edit</source>
+        <target>Bewerk</target>
+      </trans-unit>
+      <trans-unit id="Ci3qibM" resname="form.save">
+        <source>form.save</source>
+        <target>Bewaren</target>
+      </trans-unit>
+      <trans-unit id="ZUFsRe8" resname="form.close">
+        <source>form.close</source>
+        <target>Sluiten</target>
+      </trans-unit>
+      <trans-unit id="ZVwDSv." resname="session.timeout">
+        <source>session.timeout</source>
+        <target>Ben je er nog?!</target>
+      </trans-unit>
+      <trans-unit id="kZ8zEC2" resname="session.message">
+        <source>session.message</source>
+        <target>Je sessie gaat verlopen wegens inactiviteit.</target>
+      </trans-unit>
+      <trans-unit id="AUu.GoL" resname="session.remaining_before">
+        <source>session.remaining_before</source>
+        <target>Je hebt nog</target>
+      </trans-unit>
+      <trans-unit id="_mDM2db" resname="session.remaining_after">
+        <source>session.remaining_after</source>
+        <target>s voor je automatisch uitgelogd wordt.</target>
+      </trans-unit>
+      <trans-unit id="LLvkXec" resname="session.logout">
+        <source>session.logout</source>
+        <target>Uitloggen</target>
+      </trans-unit>
+      <trans-unit id="i6I5JOG" resname="session.continue">
+        <source>session.continue</source>
+        <target>Verder doen</target>
+      </trans-unit>
+      <trans-unit id="F4tuBho" resname="associate">
+        <source>associate</source>
+        <target>lid</target>
+      </trans-unit>
+      <trans-unit id="PZVNf3_" resname="associates">
+        <source>associates</source>
+        <target>leden</target>
+      </trans-unit>
+      <trans-unit id="UVJ5Die" resname="calendar">
+        <source>calendar</source>
+        <target>kalender</target>
+      </trans-unit>
+      <trans-unit id="5OQoQNX" resname="enrol">
+        <source>enrol</source>
+        <target>inschrijven</target>
+      </trans-unit>
+      <trans-unit id="rrZbA0J" resname="Enrol">
+        <source>Enrol</source>
+        <target>Inschrijven</target>
+      </trans-unit>
+      <trans-unit id="Gfug6ZW" resname="news">
+        <source>news</source>
+        <target>nieuws</target>
+      </trans-unit>
+      <trans-unit id="yosi0Nu" resname="team">
+        <source>team</source>
+        <target>team</target>
+      </trans-unit>
+      <trans-unit id="DrPja.s" resname="archive">
+        <source>archive</source>
+        <target>archief</target>
+      </trans-unit>
+      <trans-unit id="pvDY_Bp" resname="mariage">
+        <source>mariage</source>
+        <target>huwelijk</target>
+      </trans-unit>
+      <trans-unit id="YOBHBsQ" resname="funeral">
+        <source>funeral</source>
+        <target>begrafenis</target>
+      </trans-unit>
+      <trans-unit id="RtqQcn4" resname="baptise">
+        <source>baptise</source>
+        <target>dopen</target>
+      </trans-unit>
+      <trans-unit id="gn9Es56" resname="baptism">
+        <source>baptism</source>
+        <target>doop</target>
+      </trans-unit>
+      <trans-unit id="Q9ZL7Ql" resname="christening">
+        <source>christening</source>
+        <target>doop</target>
+      </trans-unit>
+      <trans-unit id="Jf42EIO" resname="prayer">
+        <source>prayer</source>
+        <target>gebed</target>
+      </trans-unit>
+      <trans-unit id="jTKzQqB" resname="prayer intent">
+        <source>prayer intent</source>
+        <target>gebedsintentie</target>
+      </trans-unit>
+      <trans-unit id="K6ZuKf4" resname="celebration intent">
+        <source>celebration intent</source>
+        <target>misintentie</target>
+      </trans-unit>
+      <trans-unit id="KhinD5p" resname="celebration.prayer">
+        <source>celebration.prayer</source>
+        <target>gebed</target>
+      </trans-unit>
+      <trans-unit id="RygLzlR" resname="celebration.word">
+        <source>celebration.word</source>
+        <target>woorddienst</target>
+      </trans-unit>
+      <trans-unit id="LSk1q_w" resname="celebration.communion">
+        <source>celebration.communion</source>
+        <target>woord- en communiedienst</target>
+      </trans-unit>
+      <trans-unit id="W3AALZ7" resname="celebration.eucharist">
+        <source>celebration.eucharist</source>
+        <target>eucharistieviering</target>
+      </trans-unit>
+      <trans-unit id="BEr.pUp" resname="community.pastoral_unit">
+        <source>community.pastoral_unit</source>
+        <target>pastorale eenheid</target>
+      </trans-unit>
+      <trans-unit id="qz1Bd9E" resname="community.parish">
+        <source>community.parish</source>
+        <target>parochie</target>
+      </trans-unit>
+      <trans-unit id="7Du8BSm" resname="community.chaplain">
+        <source>community.chaplain</source>
+        <target>kapelanij</target>
+      </trans-unit>
+      <trans-unit id="sO94Hg0" resname="community.fellowship">
+        <source>community.fellowship</source>
+        <target>gemeenschap</target>
+      </trans-unit>
+      <trans-unit id="ilRIGTc" resname="parish">
+        <source>parish</source>
+        <target>parochie</target>
+      </trans-unit>
+      <trans-unit id="rvFRBrE" resname="parishes">
+        <source>parishes</source>
+        <target>parochies</target>
+      </trans-unit>
+      <trans-unit id="HE_NxFz" resname="fellowship">
+        <source>fellowship</source>
+        <target>gemeenschap</target>
+      </trans-unit>
+      <trans-unit id="jXKlNhr" resname="fellowships">
+        <source>fellowships</source>
+        <target>gemeenschappen</target>
+      </trans-unit>
+      <trans-unit id="81TumeK" resname="community">
+        <source>community</source>
+        <target>gemeenschap</target>
+      </trans-unit>
+      <trans-unit id="by6KFHu" resname="communities">
+        <source>communities</source>
+        <target>gemeenschappen</target>
+      </trans-unit>
+      <trans-unit id="A7PGLBW" resname="chaplain">
+        <source>chaplain</source>
+        <target>kapelanij</target>
+      </trans-unit>
+      <trans-unit id="O2pUJWY" resname="chaplains">
+        <source>chaplains</source>
+        <target>kapelanijen</target>
+      </trans-unit>
+      <trans-unit id="XvXvA2S" resname="all">
+        <source>all</source>
+        <target>alle</target>
+      </trans-unit>
+      <trans-unit id="W5AHGuo" resname="discover">
+        <source>discover</source>
+        <target>ontdek</target>
+      </trans-unit>
+      <trans-unit id="EwPAaws" resname="type">
+        <source>type</source>
+        <target>type</target>
+      </trans-unit>
+      <trans-unit id="zQOGHw." resname="slug">
+        <source>slug</source>
+        <target>slug</target>
+      </trans-unit>
+      <trans-unit id="_5z3Vga" resname="enabled">
+        <source>enabled</source>
+        <target>actief</target>
+      </trans-unit>
+      <trans-unit id="gqNTf.D" resname="name">
+        <source>name</source>
+        <target>naam</target>
+      </trans-unit>
+      <trans-unit id="0VOH7Mb" resname="Slug">
+        <source>Slug</source>
+        <target>Slug</target>
+      </trans-unit>
+      <trans-unit id="OEOXHc." resname="ID">
+        <source>ID</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="uq3fcPt" resname="Type">
+        <source>Type</source>
+        <target>Type</target>
+      </trans-unit>
+      <trans-unit id="fozSBW2" resname="Title">
+        <source>Title</source>
+        <target>Titel</target>
+      </trans-unit>
+      <trans-unit id="3g3r9dv" resname="Title short">
+        <source>Title short</source>
+        <target>Verkorte titel</target>
+      </trans-unit>
+      <trans-unit id="3NHVIj9" resname="Name">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="Um4Ah8w" resname="Description">
+        <source>Description</source>
+        <target>Omschrijving</target>
+      </trans-unit>
+      <trans-unit id="R70pB1_" resname="Content">
+        <source>Content</source>
+        <target>Inhoud</target>
+      </trans-unit>
+      <trans-unit id="ur6d2oU" resname="Start time">
+        <source>Start time</source>
+        <target>Starttijd</target>
+      </trans-unit>
+      <trans-unit id="LkYAal7" resname="End time">
+        <source>End time</source>
+        <target>Eindtijd</target>
+      </trans-unit>
+      <trans-unit id="NCM_VCt" resname="All day">
+        <source>All day</source>
+        <target>Hele dag</target>
+      </trans-unit>
+      <trans-unit id="FbYZdLJ" resname="Location">
+        <source>Location</source>
+        <target>Locatie</target>
+      </trans-unit>
+      <trans-unit id="GXZu1sy" resname="Cancel">
+        <source>Cancel</source>
+        <target>Annuleren</target>
+      </trans-unit>
+      <trans-unit id="01OpnrR" resname="Cancelled">
+        <source>Cancelled</source>
+        <target>Geannuleerd</target>
+      </trans-unit>
+      <trans-unit id="9uhFK_v" resname="Calendar item">
+        <source>Calendar item</source>
+        <target>Kalender item</target>
+      </trans-unit>
+      <trans-unit id="9F8haK_" resname="Carousel slide">
+        <source>Carousel slide</source>
+        <target>Carousel slide</target>
+      </trans-unit>
+      <trans-unit id="TlgQOo5" resname="Publish from">
+        <source>Publish from</source>
+        <target>Publiceer vanaf</target>
+      </trans-unit>
+      <trans-unit id="oSe80Hu" resname="Publish until">
+        <source>Publish until</source>
+        <target>Publiceer tot</target>
+      </trans-unit>
+      <trans-unit id="d1tb_WR" resname="Created at">
+        <source>Created at</source>
+        <target>Aangemaakt op</target>
+      </trans-unit>
+      <trans-unit id="PCEFPeg" resname="Updated at">
+        <source>Updated at</source>
+        <target>Aangepast op</target>
+      </trans-unit>
+      <trans-unit id="mXxUTxv" resname="Special">
+        <source>Special</source>
+        <target>Speciaal</target>
+      </trans-unit>
+      <trans-unit id="8gyHlGV" resname="Pinned">
+        <source>Pinned</source>
+        <target>Pinned</target>
+      </trans-unit>
+      <trans-unit id="GqTLC8y" resname="Image">
+        <source>Image</source>
+        <target>Afbeelding</target>
+      </trans-unit>
+      <trans-unit id="G1mronO" resname="Image file">
+        <source>Image file</source>
+        <target>Afbeelding</target>
+      </trans-unit>
+      <trans-unit id="1r2MCu7" resname="Document">
+        <source>Document</source>
+        <target>Document</target>
+      </trans-unit>
+      <trans-unit id="3bgjgyf" resname="Document file">
+        <source>Document file</source>
+        <target>Document</target>
+      </trans-unit>
+      <trans-unit id="FXzpi5o" resname="Url">
+        <source>Url</source>
+        <target>Link</target>
+      </trans-unit>
+      <trans-unit id="DfbxytN" resname="Show">
+        <source>Show</source>
+        <target>Toon</target>
+      </trans-unit>
+      <trans-unit id="ogERwGp" resname="Show symbols">
+        <source>Show symbols</source>
+        <target>Toon symbolen</target>
+      </trans-unit>
+      <trans-unit id="8ZuUpWw" resname="Show title">
+        <source>Show title</source>
+        <target>Toon title</target>
+      </trans-unit>
+      <trans-unit id="ksHN.fT" resname="Enabled">
+        <source>Enabled</source>
+        <target>Actief</target>
+      </trans-unit>
+      <trans-unit id="dQgbWT0" resname="Disabled">
+        <source>Disabled</source>
+        <target>Inactief</target>
+      </trans-unit>
+      <trans-unit id="6.Eu9Hz" resname="Draft">
+        <source>Draft</source>
+        <target>Klad</target>
+      </trans-unit>
+      <trans-unit id="GP3VSbL" resname="New">
+        <source>New</source>
+        <target>Nieuw</target>
+      </trans-unit>
+      <trans-unit id="n9coxmy" resname="Add">
+        <source>Add</source>
+        <target>Toevoegen</target>
+      </trans-unit>
+      <trans-unit id="byAvVKe" resname="List">
+        <source>List</source>
+        <target>Lijst</target>
+      </trans-unit>
+      <trans-unit id="bqgzygj" resname="Front end">
+        <source>Front end</source>
+        <target>Voorpagina</target>
+      </trans-unit>
+      <trans-unit id="ZUq0URa" resname="Back end">
+        <source>Back end</source>
+        <target>Beheerspagina</target>
+      </trans-unit>
+      <trans-unit id="u1AdeHf" resname="Community">
+        <source>Community</source>
+        <target>Gemeenschap</target>
+      </trans-unit>
+      <trans-unit id="yGTzKfX" resname="Communities">
+        <source>Communities</source>
+        <target>Gemeenschappen</target>
+      </trans-unit>
+      <trans-unit id="1dCjC1F" resname="Calendar">
+        <source>Calendar</source>
+        <target>Kalender</target>
+      </trans-unit>
+      <trans-unit id="KdlJIlE" resname="Article">
+        <source>Article</source>
+        <target>Artikel</target>
+      </trans-unit>
+      <trans-unit id="sUrHikb" resname="Articles">
+        <source>Articles</source>
+        <target>Artikels</target>
+      </trans-unit>
+      <trans-unit id="e3kHCP8" resname="Collection">
+        <source>Collection</source>
+        <target>Verzameling</target>
+      </trans-unit>
+      <trans-unit id="aXUvIxO" resname="News">
+        <source>News</source>
+        <target>Nieuws</target>
+      </trans-unit>
+      <trans-unit id="oiEuc7N" resname="News items">
+        <source>News items</source>
+        <target>Nieuwsberichten</target>
+      </trans-unit>
+      <trans-unit id="C4G4_Zl" resname="News item">
+        <source>News item</source>
+        <target>Nieuwsbericht</target>
+      </trans-unit>
+      <trans-unit id="NyGfvGW" resname="Carousel">
+        <source>Carousel</source>
+        <target>Carousel</target>
+      </trans-unit>
+      <trans-unit id="vjcC4.G" resname="Card">
+        <source>Card</source>
+        <target>Card</target>
+      </trans-unit>
+      <trans-unit id="pS.LvDN" resname="Cards">
+        <source>Cards</source>
+        <target>Cards</target>
+      </trans-unit>
+      <trans-unit id="S8dLITV" resname="Task">
+        <source>Task</source>
+        <target>Taak</target>
+      </trans-unit>
+      <trans-unit id="s6YOYaU" resname="Tasks">
+        <source>Tasks</source>
+        <target>Taken</target>
+      </trans-unit>
+      <trans-unit id="FQORaiq" resname="Tag">
+        <source>Tag</source>
+        <target>Label</target>
+      </trans-unit>
+      <trans-unit id="EzEnW8U" resname="Tags">
+        <source>Tags</source>
+        <target>Labels</target>
+      </trans-unit>
+      <trans-unit id="awzJBNC" resname="Users">
+        <source>Users</source>
+        <target>Gebruikers</target>
+      </trans-unit>
+      <trans-unit id="TQB25rT" resname="Activities">
+        <source>Activities</source>
+        <target>Activiteiten</target>
+      </trans-unit>
+      <trans-unit id="7Fugq7c" resname="Access">
+        <source>Access</source>
+        <target>Toegang</target>
+      </trans-unit>
+      <trans-unit id="0NuLXjZ" resname="Options">
+        <source>Options</source>
+        <target>Opties</target>
+      </trans-unit>
+      <trans-unit id="BPiZbad" resname="user">
+        <source>user</source>
+        <target>gebruiker</target>
+      </trans-unit>
+      <trans-unit id="tRLZfny" resname="User">
+        <source>User</source>
+        <target>Gebruiker</target>
+      </trans-unit>
+      <trans-unit id="gWlpMQG" resname="Start date">
+        <source>Start date</source>
+        <target>Startdatum</target>
+      </trans-unit>
+      <trans-unit id="FDA6oMS" resname="End date">
+        <source>End date</source>
+        <target>Einddatum</target>
+      </trans-unit>
+      <trans-unit id="o7iHop4" resname="Affiliation">
+        <source>Affiliation</source>
+        <target>Connectie</target>
+      </trans-unit>
+      <trans-unit id="mIZ2vnT" resname="Affiliations">
+        <source>Affiliations</source>
+        <target>Connecties</target>
+      </trans-unit>
+      <trans-unit id="TP3eab3" resname="firstname">
+        <source>firstname</source>
+        <target>voornaam</target>
+      </trans-unit>
+      <trans-unit id="VbXFH4Z" resname="lastname">
+        <source>lastname</source>
+        <target>familienaam</target>
+      </trans-unit>
+      <trans-unit id="wn2G9ym" resname="Details.firstname">
+        <source>Details.firstname</source>
+        <target>Voornaam</target>
+      </trans-unit>
+      <trans-unit id="eMACCrH" resname="Details.lastname">
+        <source>Details.lastname</source>
+        <target>Familienaam</target>
+      </trans-unit>
+      <trans-unit id="6S3XAUJ" resname="Is active">
+        <source>Is active</source>
+        <target>Is actief</target>
+      </trans-unit>
+      <trans-unit id="hXbwbht" resname="Last active at">
+        <source>Last active at</source>
+        <target>Laast actief op</target>
+      </trans-unit>
+      <trans-unit id="3CjJWoI" resname="Is admin">
+        <source>Is admin</source>
+        <target>Is beheerder</target>
+      </trans-unit>
+      <trans-unit id="T3g4QC8" resname="Verified">
+        <source>Verified</source>
+        <target>Geverifieerd</target>
+      </trans-unit>
+      <trans-unit id="U0Lgnyc" resname="Enable">
+        <source>Enable</source>
+        <target>Activeer</target>
+      </trans-unit>
+      <trans-unit id="t_PkqkJ" resname="Disable">
+        <source>Disable</source>
+        <target>Deactiveer</target>
+      </trans-unit>
+      <trans-unit id="7qJ0Xih" resname="Verify">
+        <source>Verify</source>
+        <target>Verifieer</target>
+      </trans-unit>
+      <trans-unit id="eMND68i" resname="Reinvite">
+        <source>Reinvite</source>
+        <target>Opnieuw uitnodigen</target>
+      </trans-unit>
+      <trans-unit id="rvQHbxl" resname="Choose an option">
+        <source>Choose an option</source>
+        <target>Kies een optie</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
