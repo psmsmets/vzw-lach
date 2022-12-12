@@ -11,7 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\FilterDataDto;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\FilterTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\DateTimeFilterType;
 
-class AssociationDatetimeFilter implements FilterInterface
+class AssociationDateTimeFilter implements FilterInterface
 {
    use FilterTrait;
 
