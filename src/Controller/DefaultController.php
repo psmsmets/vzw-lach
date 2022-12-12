@@ -16,6 +16,12 @@ class DefaultController extends AbstractController
         return $this->redirectToRoute('enrol_index');
     }
 
+    #[Route('/admin', name: 'admin2')]
+    public function admin(): Response
+    {
+        return $this->redirectToRoute('admin');
+    }
+
     #[Route('/{slug}', name: 'page')]
     public function page($slug): Response
     {

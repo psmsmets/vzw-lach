@@ -233,6 +233,9 @@ class EnrolController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $associate->setEnabled(true);
+
             $this->entityManager->flush();
 
             $session->clear();

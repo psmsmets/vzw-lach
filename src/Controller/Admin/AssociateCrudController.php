@@ -3,12 +3,17 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Associate;
-use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore};
+use App\Controller\Admin\Filter\{AssociationDateTimeFilter, AssociationNumericFilter, AssociationTextFilter, GenderFilter};
+
+use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, Filters, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-//use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, CollectionField, DateField, ImageField, TextField, EmailField, TelephoneField};
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, CollectionField, DateField, ImageField, NumberField, TextField, EmailField, TelephoneField};
+use EasyCorp\Bundle\EasyAdminBundle\Filter\{ArrayFilter, ChoiceFilter, DatetimeFilter, EntityFilter, NumericFilter};
+
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AssociateCrudController extends AbstractCrudController
@@ -30,14 +35,14 @@ class AssociateCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield BooleanField::new('completedEnrolment', 'Volledige registratie')->renderAsSwitch(false)->hideOnForm();
+        yield BooleanField::new('completedEnrolment')->renderAsSwitch(false)->hideOnForm();
 
         yield BooleanField::new('enabled')->renderAsSwitch(false)->onlyOnDetail();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
 
         yield Field::new('createdAt')->onlyOnDetail();
 
-        yield ImageField::new('imagePortrait', 'Foto portrait')
+        yield ImageField::new('imagePortrait')
             ->setBasePath('/uploads/associates/portrait')
             ->hideOnForm()
             ;
@@ -49,7 +54,7 @@ class AssociateCrudController extends AbstractCrudController
             ;
 */
 
-        yield ImageField::new('imageEntire', 'Foto volledig')
+        yield ImageField::new('imageEntire')
             ->setBasePath('/uploads/associates/entire')
             ->hideOnForm()
             ;
@@ -61,35 +66,36 @@ class AssociateCrudController extends AbstractCrudController
             ;
 */
 
-        yield TextField::new('firstname', 'Voornaam');
-        yield TextField::new('lastname', 'Familienaam');
+        yield TextField::new('firstname');
+        yield TextField::new('lastname');
 
-        yield TextField::new('categoryPreferencesList', 'Voorkeur')->hideOnForm();
+        yield TextField::new('categoryPreferencesList')->hideOnForm();
 
-        yield BooleanField::new('singer', 'Zanger')->renderAsSwitch(false)->hideOnForm();
-        yield BooleanField::new('singer', 'Zanger')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('singer')->renderAsSwitch(false)->hideOnForm();
+        yield BooleanField::new('singer')->renderAsSwitch(true)->onlyOnForms();
 
-        yield BooleanField::new('singerSoloist', 'Zanger solist')->renderAsSwitch(false)->hideOnForm();
-        yield BooleanField::new('singerSoloist', 'Zanger solist')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('singerSoloist')->renderAsSwitch(false)->hideOnForm();
+        yield BooleanField::new('singerSoloist')->renderAsSwitch(true)->onlyOnForms();
 
-        yield TextField::new('companion', 'Samen met ...');
+        yield TextField::new('companion');
 
-        yield BooleanField::new('declarePresent', 'Akkoord aanwezig')->hideOnIndex();
-        yield BooleanField::new('declareSecrecy', 'Akkoord geheimhouding')->hideOnIndex();
-        yield BooleanField::new('declareTerms', 'Akkoord voorwaarden')->hideOnIndex();
+        //yield BooleanField::new('declarePresent', 'Akkoord aanwezig')->hideOnIndex();
+        //yield BooleanField::new('declareSecrecy', 'Akkoord geheimhouding')->hideOnIndex();
+        //yield BooleanField::new('declareTerms', 'Akkoord voorwaarden')->hideOnIndex();
 
-        yield DateField::new('details.birthdate', 'Geboortedatum')
+        yield DateField::new('details.birthdate')
             ->setFormType(DateType::class)
             ->setFormTypeOptions(['input'  => 'datetime_immutable'])
-            ->hideOnIndex()
+            //->hideOnIndex()
             ;
-        yield TextField::new('details.gender', 'Geslacht')->hideOnForm();
-        yield EmailField::new('details.email', 'E-mailadres (persoonlijk)')->hideOnIndex();
-        yield TelephoneField::new('details.phone', 'Telefoon (persoonlijk)')->hideOnIndex();
+        yield NumberField::new('details.age')->onlyOnDetail();
+        yield TextField::new('details.gender')->hideOnForm();
+        yield EmailField::new('details.email')->hideOnIndex();
+        yield TelephoneField::new('details.phone')->hideOnIndex();
 
-        yield TextField::new('address.address', 'Adres')->onlyOnDetail();
+        yield TextField::new('address.address')->onlyOnDetail();
 
-        yield AssociationField::new('categories', 'Toegewezen Categoriën')
+        yield AssociationField::new('categories')
             ->setFormTypeOptions([
                 'by_reference' => false,
             ])
@@ -98,5 +104,16 @@ class AssociateCrudController extends AbstractCrudController
             ;
 
         yield AssociationField::new('user')->autocomplete()->hideOnIndex();
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('enabled')
+            ->add('categories')
+            //->add(ChoiceFilter::new('categoryPreferencesList'))
+            ->add(AssociationDateTimeFilter::new('details.birthdate'))
+            ->add(GenderFilter::new('details.gender'))//->setFormTypeOption('mapped', false))
+        ;
     }
 }
