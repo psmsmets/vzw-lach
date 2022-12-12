@@ -1,0 +1,175 @@
+# translations/messages.nl.yaml
+nl: Nederlands
+en: English
+contact: contact
+enable: activeer
+disable: deactiveer
+select: selecteer
+deselect: deselecteer
+Monday: maandag
+Tuesday: dinsdag
+Wednesday: woensdag
+Thursday: donderdag
+Friday: vrijdag
+Saturday: zaterdag
+Sunday: zondag
+Year: Jaar
+Years: Jaren
+Month: Maand
+Months: Maanden
+Day: Dag
+Days: Dagen
+Hour: Uur
+Hours: Uren
+Minute: Minuut
+Minutes: Minuten
+morning: voormiddag
+afternoon: namiddag
+evening: avond
+past: voorbij
+future: toekomstig
+ongoing: lopend
+male: man
+female: vrouw
+search: zoeken
+form.edit: Bewerk
+form.save: Bewaren
+form.close: Sluiten
+session.timeout: Ben je er nog?!
+session.message: Je sessie gaat verlopen wegens inactiviteit.
+session.remaining_before: Je hebt nog 
+session.remaining_after: s voor je automatisch uitgelogd wordt.
+session.logout: Uitloggen
+session.continue: Verder doen
+calendar: kalender
+enrol: inschrijven
+Enrol: Inschrijven
+type: type
+slug: slug
+enabled: actief
+name: naam
+Slug: Slug
+ID: ID
+Type: Type
+Title: Titel
+Title short: Verkorte titel
+Name: Naam
+Description: Omschrijving
+Content: Inhoud
+Start time: Starttijd
+End time: Eindtijd
+All day: Hele dag
+Location: Locatie
+Cancel: Annuleren
+Cancelled: Geannuleerd
+Calendar item: Kalender item
+Carousel slide: Carousel slide
+Publish from: Publiceer vanaf
+Publish until: Publiceer tot
+Created at: Aangemaakt op
+Updated at: Aangepast op
+Special: Speciaal
+Pinned: Pinned
+Image: Afbeelding
+Image file: Afbeelding
+Document: Document
+Document file: Document
+Url: Link
+Show: Toon
+Show symbols: Toon symbolen
+Show title: Toon title
+Enabled: Actief
+Disabled: Inactief
+Draft: Klad
+New: Nieuw
+Add: Toevoegen
+List: Lijst
+Front end: Voorpagina
+Back end: Beheerspagina
+Community: Gemeenschap
+Communities: Gemeenschappen
+Calendar: Kalender
+Article: Artikel
+Articles: Artikels
+Collection: Verzameling
+News: Nieuws 
+News items: Nieuwsberichten
+News item: Nieuwsbericht
+Carousel: Carousel
+Card: Card
+Cards: Cards
+Task: Taak
+Tasks: Taken
+Tag: Label
+Tags: Labels
+Activities: Activiteiten
+Access: Toegang
+Options: Opties
+Start date: Startdatum
+End date: Einddatum
+Affiliation: Connectie
+Affiliations: Connecties
+firstname: voornaam
+lastname: familienaam
+Details.firstname: Voornaam
+Details.lastname: Familienaam
+Is active: Is actief
+Last active at: Laast actief op
+Is admin: Is beheerder
+Verified: Geverifieerd
+Enable: Activeer
+Disable: Deactiveer
+Verify: Verifieer
+Reinvite: Opnieuw uitnodigen
+Choose an option: Kies een optie
+# Entity
+Dashboard: Dashboard
+Associate: Deelnemer
+Associates: Deelnemers
+associate: deelnemer
+associates: deelnemers
+User: Gebruiker
+Users: Gebruikers
+Category: Groep
+Categories: Groepen
+category: groep
+categories: groepen
+Page: Pagina
+Pages: Paginas
+page: pagina
+pages: paginas
+# Entity items
+Show Created At: Toon aangemaakt op
+Created At: Aangemaakt op
+Show Updated At: Toon laatst aangepast
+Updated At: Laatst aangepast
+Is Actor: Is acteur
+Image Portrait: Foto portret
+Image Entire: Foto volledig
+Firstname: Voornaam
+Lastname: Familienaam
+Category Preferences List: Voorkeur groep
+Singer: Zanger
+Singer Soloist: Zanger solist
+Companion: Samen met ...
+Details.Birthdate: Geboortedatum
+Details.Gender: Geslacht
+Details.Age: Leeftijd
+Details.Email: E-mailadres (pers.)
+Details.Phone: Telefoonnummer (pers.)
+Address.Address: Adres
+Completed Enrolment: Inschrijving voltooid
+Is Admin: Is beheerder
+Admin: Beheerder
+admin: beheerder
+Role: Rol
+Roles: Rollen
+ROLE_USER: Gebruiker
+ROLE_ADMIN: Beheerder
+ROLE_SUPER_ADMIN: Superbeheerder
+Email: E-mail
+Phone: Telefoon
+Password: Wachtwoord
+(Repeat): (Herhaal)
+Is Hidden: Is verborgen
+Body: Body

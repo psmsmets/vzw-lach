@@ -34,7 +34,7 @@ class PageCrudController extends AbstractCrudController
         yield BooleanField::new('enabled')->renderAsSwitch(false)->hideOnForm();
         //yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
 
-        yield TextField::new('title', 'Titel');
+        yield TextField::new('title');
 
         yield SlugField::new('slug')->setTargetFieldName('title')->onlyWhenCreating();
         yield TextField::new('slug')->hideWhenCreating()->hideOnForm();
@@ -58,7 +58,7 @@ class PageCrudController extends AbstractCrudController
         yield BooleanField::new('showCreatedAt')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('showCreatedAt')->renderAsSwitch(true)->onlyOnForms();
 
-        yield DateTimeField::new('updatedAt')->onlyOnDetail();
+        yield DateTimeField::new('updatedAt')->hideOnForm();
 
         yield BooleanField::new('showUpdatedAt')->renderAsSwitch(false)->onlyOnDetail();
         yield BooleanField::new('showUpdatedAt')->renderAsSwitch(true)->onlyOnForms();

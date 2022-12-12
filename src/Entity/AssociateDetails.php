@@ -29,6 +29,9 @@ class AssociateDetails
     #[ORM\Column(length: 1, nullable: true)]
     private ?string $gender = null;
 
+    public const GENDERS  = ['m' => 'man', 'v' => 'vrouw', 'x' => 'genderneutraal'];
+    public const GENDERS_ = ['man' => 'm', 'vrouw' => 'v', 'genderneutraal' => 'x'];
+
     public function __construct(Associate $associate)
     {
       $this->associate = $associate;
@@ -82,17 +85,17 @@ class AssociateDetails
 
     public function getBirthyear(): ?int
     {
-        return (int) $this->birthdate->format('Y');
+        return $this->birthdate ? (int) $this->birthdate->format('Y') : null;
     }
 
-    public function getAge($ref = new \DateTimeImmutable("01-08-2023")): ?int
+    public function getAge($ref = new \DateTimeImmutable()): ?int
     {
-        return (int) $ref->diff($this->birthdate)->y;
+        return $this->birthdate ? (int) $ref->diff($this->birthdate)->y : null;
     }
 
     public function getGender(): ?string
     {
-        return $this->gender;
+        return $this->gender ? self::GENDERS[$this->gender] : null;
     }
 
     public function setGender(string $gender): self

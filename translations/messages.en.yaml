@@ -1,0 +1,61 @@
+# translations/messages.en.yaml
+nl: Nederlands
+fr: Français
+en: English
+ro: Română
+pt: Português
+po: Polszczyzna
+contact: contact
+Monday: Monday
+Tuesday: Tuesday
+Wednesday: Wednesday
+Thursday: Thursday
+Friday: Friday
+Saturday: Saturday
+Sunday: Sunday
+morning: morning
+afternoon: afternoon
+evening: evening
+search: search
+Male: Male
+Female: Female
+form.edit: Edit
+form.save: Save
+form.close: Close
+address.new: New address
+address.edit: Edit address
+address.remove: Remove address
+address.streetnumber: Street and number
+address.zip: Zip
+address.town: Town
+address.nation: Nation
+address.member: Member
+user.edit: Edit user details
+notifications.edit: Edit user notifications
+parishioner: parishioner
+parishioners: parishioners
+associate: associate
+associates: associates
+pastoral unit: pastoral unit
+core of faith: core of faith
+cores of faith: cores of faith
+being helpful: being helpful
+celebrate: celebrate
+celebrations: celebrations
+calendar: calendar
+enrol: enrol
+mariage: mariage
+baptism: baptism
+christening: christening
+prayer intent: prayer intent
+celebration intent: celebration intent
+parish: parish
+parishes: parishes
+fellowship: fellowship
+fellowships: fellowships
+chaplain: chaplain
+chaplains: chaplains
+all: all
+liturgy: liturgy
+catechesis: catechesis
+diaconia: diaconia

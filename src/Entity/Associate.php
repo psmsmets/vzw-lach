@@ -107,7 +107,7 @@ class Associate
     {
         $this->id = Uuid::v4();
         $this->createdAt = new \DateTimeImmutable();
-        $this->enabled = true;
+        $this->enabled = false;
         $this->address = new AssociateAddress($this);
         $this->details = new AssociateDetails($this);
         $this->measurements = new AssociateMeasurements($this);

@@ -23,7 +23,7 @@ use App\Controller\Admin\UserCrudController;
 
 class AdminController extends AbstractDashboardController
 {
-    #[Route('/admin', name: 'admin')]
+    #[Route('/beheer', name: 'admin')]
     public function index(): Response
     {
         //return parent::index();
@@ -107,21 +107,21 @@ class AdminController extends AbstractDashboardController
 
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
 
-            MenuItem::section('Gebruikers'),
-            MenuItem::linkToCrud('Gebruikers', 'fa fa-users-cog', User::class),
+            MenuItem::section('Users'),
+            MenuItem::linkToCrud('Users', 'fa fa-users-cog', User::class),
             //MenuItem::linkToCrud('Gebruiker toevoegen', 'fa fa-user-shield', User::class)
             //    ->setAction('new'),
 
-            MenuItem::section('Leden'),
-            MenuItem::linkToCrud('Leden', 'fa fa-users', Associate::class),
+            MenuItem::section('Associates'),
+            MenuItem::linkToCrud('Associates', 'fa fa-users', Associate::class),
             //MenuItem::linkToCrud('Lid toevoegen', 'fa fa-user-music', Associate::class)
             //    ->setAction('new'),
 
-            MenuItem::section('Groepen'),
-            MenuItem::linkToCrud('Groepen', 'fa fa-user-group', Category::class),
+            MenuItem::section('Categories'),
+            MenuItem::linkToCrud('Categories', 'fa fa-user-group', Category::class),
 
-            MenuItem::section('Static'),
-            MenuItem::linkToCrud('Pagina\'s', 'fa fa-file', Page::class),
+            MenuItem::section('Pages'),
+            MenuItem::linkToCrud('Pages', 'fa fa-file', Page::class),
         ];
     }
 
