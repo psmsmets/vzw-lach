@@ -10,7 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, CollectionField, DateField, ImageField, NumberField, TextField, EmailField, TelephoneField};
-use EasyCorp\Bundle\EasyAdminBundle\Filter\{ArrayFilter, ChoiceFilter, DatetimeFilter, EntityFilter, NumericFilter};
+use EasyCorp\Bundle\EasyAdminBundle\Filter\{ChoiceFilter};
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
@@ -112,8 +112,8 @@ class AssociateCrudController extends AbstractCrudController
             ->add('enabled')
             ->add('categories')
             //->add(ChoiceFilter::new('categoryPreferencesList'))
-            ->add(AssociationDateTimeFilter::new('details.birthdate'))
-            ->add(GenderFilter::new('details.gender'))//->setFormTypeOption('mapped', false))
+            ->add(AssociationDateTimeFilter::new('details.birthdate', 'Geboortedatum'))
+            ->add(GenderFilter::new('details.gender', 'Geslacht'))//->setFormTypeOption('mapped', false))
         ;
     }
 }
