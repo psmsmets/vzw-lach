@@ -27,6 +27,18 @@ class AssociateBaseType extends AbstractType
     const PREF_PRODUCTIE = 'productieteam';
     const PREF_ARTISTIEK = 'artistiek team';
 
+    public const PREF_CATEGORIES = array(
+        'Acteur' => self::PREF_ACTEUR,
+        'Figurant' => self::PREF_FIGURANT,
+        'Pitchoir' => self::PREF_PITCHOIR,
+        'Orkest' => self::PREF_ORKEST,
+        'Backstage-medewerker' => self::PREF_BACKSTAGE,
+        'Decormedewerker' => self::PREF_DECOR,
+        'Kostuummedewerker' => self::PREF_KOSTUUM,
+        // 'Productieteam' => self::PREF_PRODUCTIE, // protected
+        'Artistiek team' => self::PREF_ARTISTIEK,
+    );
+
     public function __construct(ParameterBagInterface $params)
     {
         $this->params = $params;
@@ -48,17 +60,7 @@ class AssociateBaseType extends AbstractType
             ->add('categoryPreferences', ChoiceType::class, [
                 'required' => true,
                 'label' => 'Wat wil je graag doen? Geef je voorkeur door.',
-                'choices' => [
-                    'Acteur' => self::PREF_ACTEUR,
-                    'Figurant' => self::PREF_FIGURANT,
-                    'Pitchoir' => self::PREF_PITCHOIR,
-                    'Orkest' => self::PREF_ORKEST,
-                    'Backstage-medewerker' => self::PREF_BACKSTAGE,
-                    'Decormedewerker' => self::PREF_DECOR,
-                    'Kostuummedewerker' => self::PREF_KOSTUUM,
-                    // 'Productieteam' => self::PREF_PRODUCTIE, // protected
-                    'Artistiek team' => self::PREF_ARTISTIEK,
-                ],
+                'choices' => self::PREF_CATEGORIES,
                 'help' => 'Je kan meerdere opties aanduiden.',
                 'label_attr' => [
                     'class' => 'checkbox-switch',

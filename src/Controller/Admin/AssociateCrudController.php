@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Associate;
+use App\Form\AssociateBaseType;
 use App\Controller\Admin\Filter\{AssociationDateTimeFilter, AssociationNumericFilter, AssociationTextFilter, GenderFilter};
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, Filters, KeyValueStore};
@@ -110,10 +111,12 @@ class AssociateCrudController extends AbstractCrudController
     {
         return $filters
             ->add('enabled')
-            ->add('categories')
-            //->add(ChoiceFilter::new('categoryPreferencesList'))
+            ->add('singer')
+            ->add('singerSoloist')
             ->add(AssociationDateTimeFilter::new('details.birthdate', 'Geboortedatum'))
             ->add(GenderFilter::new('details.gender', 'Geslacht'))//->setFormTypeOption('mapped', false))
+            ->add(ChoiceFilter::new('categoryPreferences')->setChoices(AssociateBaseType::PREF_CATEGORIES))
+            ->add('categories', 'Toegewezen groep')
         ;
     }
 }
