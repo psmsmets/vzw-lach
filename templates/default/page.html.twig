@@ -4,27 +4,30 @@
 
 {% block main %}
     <main>
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb small fw-lighter">
+          <li class="breadcrumb-item"><a href="{{ path('home') }}">{{org.url}}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{page.slug}}</li>
+        </ol>
+      </nav>
+
       <h1 class="text-primary d-flex justify-content-between">{{ page.title }}
       {% if not page.enabled %}
           <small><i class="fas fa-lock" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Niet gepubliceerd"></i></small>
       {% endif %}
       </h1>
 
-      {% if page.showUpdatedAt or page.showCreatedAt %}
-        <div class="small text-muted pb-3">
-          {% if page.showCreatedAt%}
-          <span class="modified pr-2">
-            Aangemaakt op {{ page.createdAt|format_datetime('full','none') }}.
-          </span>
-          {% endif %}
-          {% if page.showUpdatedAt%}
-          <span class="modified pr-2">
-            Laatst aangepast op {{ page.updatedAt|format_datetime('full','none') }}.
-          </span>
-          {% endif %}
-        </div>
-      {% endif %}
+      <ul class="list-inline small fw-lighter text-muted py-2">
+        {% if page.showCreatedAt%}
+          <li class="list-inline-item">Aangemaakt op {{ page.createdAt|format_datetime('full','none') }}.</li>
+        {% endif %}
+        {% if page.showUpdatedAt%}
+          <li class="list-inline-item">Laatst aangepast op {{ page.updatedAt|format_datetime('full','none') }}.</li>
+        {% endif %}
+      </ul>
 
-      {{page.body|raw}} 
+      {{page.body|raw}}
+
     </main>
 {% endblock %}

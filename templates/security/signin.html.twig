@@ -46,10 +46,12 @@
 
       </form>
 
-      {% include 'modules/footer.html.twig' %}
-
     </main>
 
+{% endblock %}
+
+{% block footer %}
+  {% include 'modules/footer.html.twig' %}
 {% endblock %}
 
 {% block javascripts %}

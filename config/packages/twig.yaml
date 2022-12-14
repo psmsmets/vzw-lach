@@ -9,7 +9,7 @@ twig:
         mailer_from: '%app.mailer.from%'
         mailer_name: '%app.mailer.name%'
         public: '%app.path.public%'
-        org : {'name': '%app.about.name%', 'abbr':'%app.about.abbr%'}
+        org : {'name': '%app.about.name%', 'abbr':'%app.about.abbr%', 'url':'%app.about.url%'}
 #        calendarManager: '@App\Service\CalendarManager'
 #        contactManager: '@App\Service\ContactManager'
 #        memberManager: '@App\Service\MemberManager'
