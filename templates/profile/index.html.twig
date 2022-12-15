@@ -1,31 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Associate index{% endblock %}
+{% block title %}Mijn profiel{% endblock %}
 
 {% block main %}
-    <h1>Associate index</h1>
+    <h1>Deelnemers</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Role</th>
-                <th>actions</th>
+                <th>Naam</th>
+                <th>Actie</th>
             </tr>
         </thead>
         <tbody>
         {% for associate in associates %}
             <tr>
                 <td>{{ associate.fullname }}</td>
-                <td>{{ associate.role }}</td>
                 <td>
-                    <a href="{{ path('profile_show', {'id': associate.id}) }}">show</a>
-                    <a href="{{ path('profile_edit', {'id': associate.id}) }}">edit</a>
+                    <a href="{{ path('profile_show', {'id': associate.id}) }}">bekijk</a>
+                    <a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="17">no records found</td>
+                <td colspan="2">geen gegevens gevonden</td>
             </tr>
         {% endfor %}
         </tbody>
