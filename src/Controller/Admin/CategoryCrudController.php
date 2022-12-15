@@ -30,16 +30,16 @@ class CategoryCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield IdField::new('id')->onlyOnDetail();
+        // yield IdField::new('id')->onlyOnDetail();
 
         yield BooleanField::new('enabled')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
 
         yield TextField::new('name');
 
-        yield TextareaField::new('description')->hideOnIndex();
-
         yield SlugField::new('slug')->setTargetFieldName('name')->hideOnIndex();
+
+        yield TextareaField::new('description')->hideOnIndex();
 
         yield BooleanField::new('isActor')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('isActor')->renderAsSwitch(true)->onlyOnForms();
@@ -55,6 +55,8 @@ class CategoryCrudController extends AbstractCrudController
             //->renderAsNativeWidget()
             ->hideOnForm()
             ;
+
+        yield TextField::new('associateNames')->onlyOnDetail();
 
     }
 }

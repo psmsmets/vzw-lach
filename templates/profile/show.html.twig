@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Associate{% endblock %}
+
+{% block main %}
+    <h1>Associate</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ associate.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ associate.createdAt ? associate.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ associate.updatedAt ? associate.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ associate.fullname }}</td>
+            </tr>
+            <tr>
+                <th>Categories</th>
+                <td>{{ associate.categoryNames }}</td>
+            </tr>
+            {% if associate.role %}
+            <tr>
+                <th>Role</th>
+                <td>{{ associate.role }}</td>
+            </tr>
+            {% endif %}
+            {% if associate.imagePortrait %}
+            <tr>
+                <th>ImagePortrait</th>
+                <td><img class="img-fluid" src="{{path.imagePortrait}}/{{ associate.imagePortrait }}"></img></td>
+            </tr>
+            {% endif %}
+            {% if associate.imageEntire %}
+            <tr>
+                <th>ImageEntire</th>
+                <td><img class="img-fluid" src="{{path.imageEntire}}/{{ associate.imageEntire }}"></img></td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('profile_index') }}">back to list</a>
+
+    <a href="{{ path('profile_edit', {'id': associate.id}) }}">edit</a>
+
+{% endblock %}

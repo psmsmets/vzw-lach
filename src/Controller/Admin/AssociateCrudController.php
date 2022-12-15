@@ -41,6 +41,7 @@ class AssociateCrudController extends AbstractCrudController
         yield BooleanField::new('enabled')->renderAsSwitch(false)->onlyOnDetail();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
 
+        yield Field::new('id')->onlyOnDetail();
         yield Field::new('createdAt')->onlyOnDetail();
 
         yield ImageField::new('imagePortrait')
@@ -90,7 +91,8 @@ class AssociateCrudController extends AbstractCrudController
             //->hideOnIndex()
             ;
         yield NumberField::new('details.age')->onlyOnDetail();
-        yield TextField::new('details.gender')->hideOnForm();
+        yield TextField::new('details.gender')->onlyOnIndex();
+        yield TextField::new('details.genderName')->onlyOnDetail();
         yield EmailField::new('details.email')->hideOnIndex();
         yield TelephoneField::new('details.phone')->hideOnIndex();
 
@@ -103,6 +105,7 @@ class AssociateCrudController extends AbstractCrudController
             ->autocomplete()
             ->hideOnIndex()
             ;
+        yield TextField::new('categoryNames')->onlyOnDetail();
 
         yield AssociationField::new('user')->autocomplete()->hideOnIndex();
     }

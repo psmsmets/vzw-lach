@@ -32,11 +32,7 @@ class AssociateDetailsType extends AbstractType
             ->add('gender', ChoiceType::class, [
                 'label' => 'Geslacht',
                 'placeholder' => 'Maak een keuze',
-                'choices'  => [
-                    'M' => 'm',
-                    'V' => 'v',
-                    'X' => 'x',
-                ],
+                'choices'  => AssociateDetails::GENDERS,
                 'required' => true,
             ])
             ->add('email', EmailType::class, [

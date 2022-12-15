@@ -29,8 +29,8 @@ class AssociateDetails
     #[ORM\Column(length: 1, nullable: true)]
     private ?string $gender = null;
 
-    public const GENDERS  = ['m' => 'man', 'v' => 'vrouw', 'x' => 'genderneutraal'];
-    public const GENDERS_ = ['man' => 'm', 'vrouw' => 'v', 'genderneutraal' => 'x'];
+    public const GENDERS_ = ['m' => 'man', 'v' => 'vrouw', 'x' => 'genderneutraal'];
+    public const GENDERS  = ['man' => 'm', 'vrouw' => 'v', 'genderneutraal' => 'x'];
 
     public function __construct(Associate $associate)
     {
@@ -95,7 +95,12 @@ class AssociateDetails
 
     public function getGender(): ?string
     {
-        return $this->gender ? self::GENDERS[$this->gender] : null;
+        return $this->gender;
+    }
+
+    public function getGenderName(): ?string
+    {
+        return $this->gender ? self::GENDERS_[$this->gender] : null;
     }
 
     public function setGender(string $gender): self

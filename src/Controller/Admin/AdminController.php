@@ -14,11 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Associate;
 use App\Entity\Category;
+use App\Entity\Event;
 use App\Entity\Page;
+use App\Entity\Post;
 use App\Entity\User;
 use App\Controller\Admin\AssociateCrudController;
 use App\Controller\Admin\CategoryCrudController;
+use App\Controller\Admin\EventCrudController;
 use App\Controller\Admin\PageCrudController;
+use App\Controller\Admin\PostCrudController;
 use App\Controller\Admin\UserCrudController;
 
 class AdminController extends AbstractDashboardController
@@ -105,23 +109,27 @@ class AdminController extends AbstractDashboardController
         return [
             //MenuItem::linkToLogout('Logout', 'fa fa-exit'),
 
-            MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
+            //MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
 
             MenuItem::section('Users'),
-            MenuItem::linkToCrud('Users', 'fa fa-users-cog', User::class),
-            //MenuItem::linkToCrud('Gebruiker toevoegen', 'fa fa-user-shield', User::class)
-            //    ->setAction('new'),
+            MenuItem::linkToCrud('Users', 'fa fa-user-lock', User::class),
 
             MenuItem::section('Associates'),
-            MenuItem::linkToCrud('Associates', 'fa fa-users', Associate::class),
-            //MenuItem::linkToCrud('Lid toevoegen', 'fa fa-user-music', Associate::class)
-            //    ->setAction('new'),
+            MenuItem::linkToCrud('Associates', 'fa fa-address-card', Associate::class),
 
             MenuItem::section('Categories'),
             MenuItem::linkToCrud('Categories', 'fa fa-user-group', Category::class),
 
+            MenuItem::section('Calendar'),
+            MenuItem::linkToCrud('Events', 'fa fa-list', Event::class),
+            //MenuItem::linkToCrud('New event', 'fa fa-calendar-plus', Event::class)
+            //    ->setAction('new'),
+
+            MenuItem::section('Posts'),
+            MenuItem::linkToCrud('Posts', 'fa fa-comment-alt', Post::class),
+
             MenuItem::section('Pages'),
-            MenuItem::linkToCrud('Pages', 'fa fa-file', Page::class),
+            MenuItem::linkToCrud('Pages', 'fa fa-book-reader', Page::class),
         ];
     }
 

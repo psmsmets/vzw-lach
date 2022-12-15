@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    <a href="{{ path('profile_show', {'id': associate.id}) }}" class="btn btn-secondary">Cancel</a>
+{{ form_end(form) }}

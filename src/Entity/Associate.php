@@ -437,6 +437,16 @@ class Associate
         return $this;
     }
 
+    public function getCategoryNames(): string
+    {
+        $names = [];
+        foreach ($this->categories as $category) {
+            $names[] = $category->getName();
+        }
+
+        return implode(' | ', $names);
+    }
+
     public function getUser(): ?User
     {
         return $this->user;

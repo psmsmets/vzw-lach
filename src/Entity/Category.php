@@ -40,10 +40,14 @@ class Category
     #[ORM\ManyToMany(targetEntity: Associate::class, mappedBy: 'categories', cascade: ['persist'])]
     private Collection $associates;
 
+    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'categories')]
+    private Collection $posts;
+
     public function __construct()
     {
         $this->enabled = true;
         $this->associates = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -162,6 +166,44 @@ class Category
     {
         if ($this->associates->removeElement($associate)) {
             $associate->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function getAssociateNames(): string
+    {
+        $names = [];
+        foreach ($this->associates as $associate) {
+            $names[] = $associate->getFullName($reverse=true);
+        }
+        asort($names);
+
+        return implode(', ', $names);
+    }
+
+    /**
+     * @return Collection<Uuid, Post>
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->removeElement($post)) {
+            $post->removeCategory($this);
         }
 
         return $this;
