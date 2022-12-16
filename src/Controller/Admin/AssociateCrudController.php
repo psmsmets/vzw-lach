@@ -36,17 +36,22 @@ class AssociateCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield BooleanField::new('completedEnrolment')->renderAsSwitch(false)->hideOnForm();
+        //yield BooleanField::new('completedEnrolment', )->renderAsSwitch(false)->hideOnForm();
 
-        yield BooleanField::new('enabled')->renderAsSwitch(false)->onlyOnDetail();
+        yield BooleanField::new('enabled')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
 
         yield Field::new('id')->onlyOnDetail();
         yield Field::new('createdAt')->onlyOnDetail();
 
+        yield ImageField::new('imagePortrait', 'Foto')
+            ->setBasePath('/uploads/associates/portrait/thumbs')
+            ->onlyOnIndex()
+            ;
+
         yield ImageField::new('imagePortrait')
             ->setBasePath('/uploads/associates/portrait')
-            ->hideOnForm()
+            ->onlyOnDetail()
             ;
 /*
         yield ImageField::new('imagePortraitFile', 'Foto portrait')
@@ -58,7 +63,7 @@ class AssociateCrudController extends AbstractCrudController
 
         yield ImageField::new('imageEntire')
             ->setBasePath('/uploads/associates/entire')
-            ->hideOnForm()
+            ->onlyOnDetail()
             ;
 /*
         yield ImageField::new('imageEntireFile', 'Foto volledig')
@@ -122,4 +127,19 @@ class AssociateCrudController extends AbstractCrudController
             ->add('categories', 'Toegewezen groep')
         ;
     }
+/*
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        $queryBuilder = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
+
+        // if user defined sort is not set
+        if (0 === count($searchDto->getSort())) {
+            $queryBuilder
+                ->addSelect('CONCAT(entity.first_name, \' \', entity.last_name) AS HIDDEN full_name')
+                ->addOrderBy('full_name', 'DESC');
+        }
+
+        return $queryBuilder;
+    }
+*/
 }
