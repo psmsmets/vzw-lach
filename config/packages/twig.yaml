@@ -10,7 +10,10 @@ twig:
         mailer_name: '%app.mailer.name%'
         public: '%app.path.public%'
         org : {'name': '%app.about.name%', 'abbr':'%app.about.abbr%', 'url':'%app.about.url%'}
-        path : {'imageEntire': '%app.path.associates.entire%', 'imagePortrait': '%app.path.associates.portrait%'}
+        path : {'imageEntire': '%app.path.associates.entire%',
+                'thumbEntire': '%app.path.associates.entire%/thumbs',
+                'imagePortrait': '%app.path.associates.portrait%',
+                'thumbPortrait': '%app.path.associates.portrait%/thumbs'}
 #        calendarManager: '@App\Service\CalendarManager'
 #        contactManager: '@App\Service\ContactManager'
 #        memberManager: '@App\Service\MemberManager'
