@@ -58,9 +58,9 @@ Encore
 
     // allow legacy applications to use $/jQuery as a global variable
     .autoProvideVariables({
-        //$: 'jquery',
-        //jQuery: 'jquery',
-        //'window.jQuery': 'jquery',
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery',
         Popper: ['popper.js', 'default'],
         //_: 'underscore',
     })
