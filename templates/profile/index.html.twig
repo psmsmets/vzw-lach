@@ -2,20 +2,33 @@
 
 {% block title %}Mijn profiel{% endblock %}
 
+{% block header %}
+    <h6 class="text-primary mt-3">Het Groot Circus van het Klein Verdriet</h6>
+{% endblock %}
+
 {% block main %}
-    <h1>Deelnemers</h1>
+    <h1 class="text-secondary">Deelnemers</h1>
+    <p>{{app.user.email}}</p>
 
     <table class="table">
         <thead>
             <tr>
+                <th class="text-center"></th>
                 <th>Naam</th>
+                <th>Groep(en)</th>
                 <th>Actie</th>
             </tr>
         </thead>
         <tbody>
-        {% for associate in associates %}
-            <tr>
+        {% for associate in app.user.enabledAssociates %}
+            <tr style="height:60px; vertical-align: middle;">
+                <td class="text-center">
+                  {% if associate.imagePortrait %}
+                    <img src="{{path.thumbPortrait}}/{{ associate.imagePortrait }}" height="45"></img>
+                  {% endif %}
+                </td>
                 <td>{{ associate.fullname }}</td>
+                <td>{{ associate.categoryNames }}</td>
                 <td>
                     <a href="{{ path('profile_show', {'id': associate.id}) }}">bekijk</a>
                     <a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a>
@@ -29,4 +42,13 @@
         </tbody>
     </table>
 
+    <h2 class="text-secondary mt-5">Laatste info</h2>
+    <div>Pinned items</div>
+    <div>Laatste ...</div>
+{% endblock %}
+
+{% block side %}
+<div>berichten</div>
+<div>kalender</div>
+<div>documenten</div>
 {% endblock %}
