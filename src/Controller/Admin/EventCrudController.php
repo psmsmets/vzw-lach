@@ -7,7 +7,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, BooleanField, DateTimeField, SlugField, TextField, TextareaField, TextEditorField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, IdField, BooleanField, DateTimeField, SlugField, TextField, TextareaField, TextEditorField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 
 class EventCrudController extends AbstractCrudController
 {
@@ -22,24 +23,19 @@ class EventCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
-            ->setPermission(Action::NEW, 'ROLE_SUPER_ADMIN')
+            ->setPermission(Action::NEW, 'ROLE_ADMIN')
             ->disable(Action::DELETE)
             ;
     }
 
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('What');
+        yield FormField::addPanel('What');
+
         yield IdField::new('id')->onlyOnDetail();
 
-        yield DateTimeField::new('publishedAt');
-        yield BooleanField::new('published')->renderAsSwitch(true)->onlyOnForms();
-        yield BooleanField::new('published')->renderAsSwitch(false)->hideOnForm();
-
-        yield BooleanField::new('cancelled')->renderAsSwitch(true)->onlyOnForms();
-        yield BooleanField::new('cancelled')->renderAsSwitch(false)->hideOnForm();
-
         yield TextField::new('title');
-
         yield SlugField::new('slug')->setTargetFieldName('title')->onlyWhenCreating();
         yield TextField::new('slug')->hideWhenCreating()->hideOnForm();
 
@@ -56,11 +52,36 @@ class EventCrudController extends AbstractCrudController
             ->setNumOfRows(20)
             ->onlyOnForms()
             ;
+        //yield TextField::new('description')->hideOnIndex();
+        yield TextField::new('location')->hideOnIndex();
+        yield TextField::new('url')->hideOnIndex();
+
+        yield FormField::addTab('When');
+        yield FormField::addPanel('When');
+
+        yield DateTimeField::new('startTime');
+        yield DateTimeField::new('endTime');
+        yield BooleanField::new('allDay')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('allDay')->renderAsSwitch(false)->hideOnForm();
+
+        yield FormField::addTab('Who');
+        yield FormField::addPanel('Who');
+
+        yield AssociationField::new('categories')->autocomplete()->hideOnIndex();
+        
+        yield FormField::addTab('Options');
+        yield FormField::addPanel('Options');
+
+        yield DateTimeField::new('publishedAt')->setRequired(false);
+        yield BooleanField::new('published')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('published')->renderAsSwitch(false)->hideOnForm();
+
+        yield BooleanField::new('cancelled')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('cancelled')->renderAsSwitch(false)->hideOnForm();
 
         yield DateTimeField::new('createdAt')->onlyOnDetail();
 
         yield DateTimeField::new('updatedAt')->hideOnForm();
-
         yield BooleanField::new('showUpdatedAt')->renderAsSwitch(false)->onlyOnDetail();
         yield BooleanField::new('showUpdatedAt')->renderAsSwitch(true)->onlyOnForms();
     }

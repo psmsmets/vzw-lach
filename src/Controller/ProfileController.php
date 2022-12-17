@@ -24,10 +24,10 @@ class ProfileController extends AbstractController
         // returns your User object, or null if the user is not authenticated
         // use inline documentation to tell your editor your exact User class
         /** @var \App\Entity\User $user */
-        $user = $this->getUser();
+        // $user = $this->getUser();
 
         return $this->render('profile/index.html.twig', [
-            'associates' => $user->getEnabledAssociates(),
+            //'associates' => $user->getEnabledAssociates(),
         ]);
     }
 

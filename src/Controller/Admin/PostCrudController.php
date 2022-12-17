@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, IdField, BooleanField, DateTimeField, SlugField, TextField, TextareaField, TextEditorField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 
 class PostCrudController extends AbstractCrudController
 {
@@ -22,23 +23,20 @@ class PostCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
-            ->setPermission(Action::NEW, 'ROLE_SUPER_ADMIN')
+            ->setPermission(Action::NEW, 'ROLE_ADMIN')
             ->disable(Action::DELETE)
             ;
     }
 
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('What');
+        yield FormField::addPanel('What');
+
         yield IdField::new('id')->onlyOnDetail();
 
-        yield DateTimeField::new('publishedAt');
-        yield BooleanField::new('published')->renderAsSwitch(true)->onlyOnForms();
-        yield BooleanField::new('published')->renderAsSwitch(false)->hideOnForm();
-
         yield TextField::new('title');
-
-        yield SlugField::new('slug')->setTargetFieldName('title')->onlyWhenCreating();
-        yield TextField::new('slug')->hideWhenCreating()->hideOnForm();
+        yield SlugField::new('slug')->setTargetFieldName('title')->hideOnIndex();
 
         yield TextEditorField::new('body')
             ->setTrixEditorConfig([
@@ -54,15 +52,26 @@ class PostCrudController extends AbstractCrudController
             ->onlyOnForms()
             ;
 
+        yield FormField::addTab('Who');
+        yield FormField::addPanel('Who');
+
+        yield AssociationField::new('categories')->autocomplete()->hideOnIndex();
+
+        yield FormField::addTab('Options');
+        yield FormField::addPanel('Options');
+
+        yield DateTimeField::new('publishedAt')->setRequired(false);
+        yield BooleanField::new('published')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('published')->renderAsSwitch(false)->hideOnForm();
+
         yield DateTimeField::new('createdAt')->onlyOnDetail();
 
-        yield DateTimeField::new('publishedAt')->onlyOnDetail();
-
         yield DateTimeField::new('updatedAt')->hideOnForm();
+        yield BooleanField::new('showUpdatedAt')->renderAsSwitch(true)->hideOnIndex();
 
-        yield BooleanField::new('showUpdatedAt')->renderAsSwitch(false)->onlyOnDetail();
-        yield BooleanField::new('showUpdatedAt')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('special')->renderAsSwitch(true)->hideOnIndex();
+        yield BooleanField::new('pinned')->renderAsSwitch(true)->hideOnIndex();
+        yield BooleanField::new('archived')->renderAsSwitch(true)->hideOnIndex();
 
-        yield AssociationField::new('categories')->autocomplete();
     }
 }

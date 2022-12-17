@@ -23,6 +23,9 @@ class Event
     private ?bool $cancelled = null;
 
     #[ORM\Column]
+    private ?bool $archived = null;
+
+    #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -43,17 +46,32 @@ class Event
     #[ORM\Column]
     private ?bool $showCancelledAt = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $startTime = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $endTime = null;
+
+    #[ORM\Column]
+    private ?bool $allDay = null;
+
     #[ORM\Column(length: 255)]
     private ?string $title = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $shortTitle = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $body = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private $description = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private $location = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private $url = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'events')]
     private Collection $categories;
@@ -62,17 +80,19 @@ class Event
     {
         $this->id = Uuid::v6();
         $this->createdAt = new \DateTimeImmutable();
-        $this->publishedAt = $this->createdAt;
+        $this->publishedAt = new \DateTimeImmutable();
         $this->published = false;
         $this->cancelled = false;
-        $this->showPublishedAt = true;
+        $this->archived = false;
         $this->showUpdatedAt = true;
+        $this->showPublishedAt = true;
+        $this->showCancelledAt = false;
         $this->categories = new ArrayCollection();
     }
 
     public function __toString(): string
     {
-        return $this->getShortTitle();
+        return $this->startTime->format('Y-m-d') . " (" . $this->getTitle() . ")";
     }
 
     #[ORM\PreUpdate]
@@ -115,6 +135,18 @@ class Event
         return $this;
     }
 
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -132,19 +164,19 @@ class Event
         return $this;
     }
 
-    public function getPublishedAt(): ?\DateTimeImmutable
+    public function getPublishedAt(): \DateTimeImmutable
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTimeImmutable $publishedAt): self
+    public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
     {
         if (!$this->published) $this->publishedAt = $publishedAt;
 
         return $this;
     }
 
-    public function isShowUpdatedAt(): bool
+    public function getShowUpdatedAt(): bool
     {
         return $this->showUpdatedAt;
     }
@@ -156,7 +188,7 @@ class Event
         return $this;
     }
 
-    public function isShowPublishedAt(): bool
+    public function getShowPublishedAt(): bool
     {
         return $this->showPublishedAt;
     }
@@ -168,6 +200,154 @@ class Event
         return $this;
     }
 
+    public function getStartTime(): ?\DateTimeImmutable
+    {
+        return $this->startTime;
+    }
+
+    public function setStartTime(\DateTimeImmutable $startTime): self
+    {
+        $this->startTime = $startTime;
+
+        return $this;
+    }
+
+    public function trueStartTime(): \DateTimeImmutable
+    {
+        return $this->allDay ? $this->startTime->setTime(0, 0, 0) : $this->startTime;
+    }
+
+    public function getEndTime(): ?\DateTimeImmutable
+    {
+        return $this->endTime;
+    }
+
+    public function setEndTime(?\DateTimeImmutable $endTime): self
+    {
+        $this->endTime = $endTime;
+
+        return $this;
+    }
+
+    public function trueEndTime(): \DateTimeImmutable
+    {
+        if ( !is_null($this->endTime) and !$this->allDay ) {
+
+            return $this->endTime;
+
+        } else {
+
+            if (is_null($this->endTime)) {
+
+                $end = $this->startTime;
+
+            } else {
+
+                $end = $this->endTime;
+
+            }
+
+            return $end->setTime(23, 59, 59);
+
+        }
+    }
+
+    public function calcEndTime(): \DateTimeImmutable
+    {
+        return $this->trueEndTime();
+    }
+
+    public function isFuture(): ?bool
+    {
+        return new \DateTimeImmutable() < $this->startTime;
+    }
+
+    public function isPast(): ?bool
+    {
+        return new \DateTimeImmutable() > $this->trueEndTime();
+    }
+
+    public function isOngoing(): ?bool
+    {
+        return !$this->isFuture() && !$this->isPast();
+    }
+
+    public function getStatus(): ?string
+    {
+        if ($this->isFuture()) return 'future';
+        if ($this->isPast()) return 'past';
+        return 'ongoing';
+    }
+
+    public function isSameDay(): ?bool
+    {
+        return is_null($this->endTime)? true : $this->startTime->format('Y-m-d') == $this->endTime->format('Y-m-d');
+    }
+
+    public function getFormattedPeriod(): ?string
+    {
+        $fmt = "%A %e %B %Y";
+
+        if (is_null($this->endTime)) {
+
+            return strftime($this->allDay ? $fmt : $fmt.' vanaf %H:%M', $this->startTime->getTimestamp());
+
+        } else {
+
+            if ($this->isSameDay()) {
+
+                return strftime($fmt.' van %H:%M', $this->startTime->getTimestamp()).strftime(' tot %H:%M', $this->endTime->getTimestamp());
+
+            } else {
+
+                $fmt = $this->allDay ? $fmt : $fmt . ' %H:%M';
+                return strftime($fmt, $this->startTime->getTimestamp()).strftime(' tot '.$fmt, $this->endTime->getTimestamp());
+
+            }
+        }
+    }
+
+    public function getFormattedMonth(): ?string
+    {
+        return strftime('%B', $this->trueEndTime()->getTimestamp());
+    }
+
+    public function getAllDay(): ?bool
+    {
+        return $this->allDay;
+    }
+
+    public function setAllDay(bool $allDay): self
+    {
+        $this->allDay = $allDay;
+
+        return $this;
+    }
+
+    public function getNumberOfDays(): int
+    {
+        $start = $this->startTime->modify('midnight');
+        $end = $this->calcEndTime()->modify('midnight');
+
+        return (int) $start->diff($end)->format('%d') + 1;
+    }
+
+    public function getListOfDays(): ?array
+    {
+        $daylist = array();
+        $day = $this->startTime->modify('midnight');
+
+        $numberOfDays = $this->getNumberOfDays();
+        if ($numberOfDays > 30) $numberOfDays = 30;
+
+        for ($d=0; $d<$numberOfDays; $d++)
+        {
+            $daylist[] = $day->modify("+$d days");
+        }
+
+        return $daylist;
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -176,18 +356,6 @@ class Event
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getShortTitle(): string
-    {
-        return $this->shortTitle ? $this->shortTitle : $this->title;
-    }
-
-    public function setShortTitle(?string $shortTitle): self
-    {
-        $this->shortTitle = $shortTitle;
 
         return $this;
     }
@@ -212,6 +380,42 @@ class Event
     public function setBody(string $body): self
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }

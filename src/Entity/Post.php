@@ -20,6 +20,15 @@ class Post
     private ?bool $published = null;
 
     #[ORM\Column]
+    private ?bool $special = null;
+
+    #[ORM\Column]
+    private ?bool $pinned = null;
+
+    #[ORM\Column]
+    private ?bool $archived = null;
+
+    #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -37,9 +46,6 @@ class Post
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $shortTitle = null;
-
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
@@ -53,16 +59,16 @@ class Post
     {
         $this->id = Uuid::v6();
         $this->createdAt = new \DateTimeImmutable();
-        $this->publishedAt = $this->createdAt;
+        $this->publishedAt = new \DateTimeImmutable();
         $this->published = false;
-        $this->showPublishedAt = true;
         $this->showUpdatedAt = true;
+        $this->showPublishedAt = true;
         $this->categories = new ArrayCollection();
     }
 
     public function __toString(): string
     {
-        return $this->getShortTitle();
+        return $this->getTitle();
     }
 
     #[ORM\PreUpdate]
@@ -84,6 +90,42 @@ class Post
     public function setPublished(bool $published): self
     {
         $this->published = $this->published ? true : $published;
+
+        return $this;
+    }
+
+    public function isSpecial(): ?bool
+    {
+        return $this->special;
+    }
+
+    public function setSpecial(bool $special): self
+    {
+        $this->special = $special;
+
+        return $this;
+    }
+
+    public function isPinned(): ?bool
+    {
+        return $this->pinned;
+    }
+
+    public function setPinned(bool $pinned): self
+    {
+        $this->pinned = $pinned;
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
 
         return $this;
     }
@@ -149,18 +191,6 @@ class Post
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getShortTitle(): string
-    {
-        return $this->shortTitle ? $this->shortTitle : $this->title;
-    }
-
-    public function setShortTitle(?string $shortTitle): self
-    {
-        $this->shortTitle = $shortTitle;
 
         return $this;
     }
