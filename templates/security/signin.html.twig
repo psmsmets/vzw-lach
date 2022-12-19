@@ -1,4 +1,4 @@
-{% extends '_main.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Login{% endblock %}
 
@@ -50,13 +50,4 @@
 
   </main>
 
-{% endblock %}
-
-{% block footer %}
-  {% include 'modules/footer.html.twig' %}
-{% endblock %}
-
-{% block javascripts %}
-  {{ parent() }}
-  {# encore_entry_script_tags('form-signin') #}
 {% endblock %}

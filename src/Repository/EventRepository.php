@@ -2,9 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Associate;
+use App\Entity\Category;
 use App\Entity\Event;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Event>
@@ -39,28 +43,77 @@ class EventRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Event[] Returns an array of Event objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Event[] Returns an array of Event objects
+     */
+    public function findEvents(
+        $obj = null, ?\DateTimeInterface $periodStart = null, ?\DateTimeInterface $periodEnd = null, ?int $limit = null
+    ): array
+    {
+        $t0 = is_null($periodStart) ? new \DateTime('today midnight') : $periodStart;
+        $t1 = $periodEnd;
 
-//    public function findOneBySomeField($value): ?Event
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $qb = $this->createQueryBuilder('event');
+
+        $qb->leftJoin('event.categories','categories');
+        $qb->addSelect('categories');
+
+        if ($obj instanceof Associate) {
+            $qb->setParameter('associate', $obj->getId(), 'uuid');
+            $qb->where($qb->expr()->isMemberOf(':associate', 'categories.associates'));
+        }
+
+        if ($obj instanceof Category) {
+            $qb->setParameter(':category', $obj);
+            $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
+        }
+
+        if ($obj instanceof User)
+        {
+            $count = 0;
+            foreach ($obj->getEnabledAssociates() as $associate)
+            {
+                $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
+                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
+                $count++;
+            }
+        }
+
+        $qb->orWhere('categories is null');
+
+        $qb->setParameter('published', true);
+        $qb->andWhere('event.published = :published');
+
+        $qb->setParameter('now', new \DateTime());
+        $qb->andWhere('event.publishedAt <= :now');
+
+        if (is_null($t1)) {
+            $qb->setParameter('t0', $t0);
+            $qb->andWhere('( event.endTime >= :t0 or (event.startTime >= :t0 and event.endTime is null) )');
+        } else {
+            $qb->setParameter('t0', $t0);
+            $qb->setParameter('t1', $t1);
+            $qb->andWhere('event.startTime >= :t0');
+            $qb->andWhere('(event.endTime < :t1 or (event.endTime is null and event.startTime < :t1))');
+        }
+
+        $qb->orderBy('event.startTime', 'ASC');
+        $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findEvent(Uuid $uuid)
+    {
+        return $this->createQueryBuilder('event')
+            ->leftJoin('event.categories','categories')
+            ->addSelect('categories')
+            ->andWhere('event.published = :published')
+            ->andWhere('event.id = :uuid')
+            ->setParameter('published', true)
+            ->setParameter('uuid', $uuid, 'uuid')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Page;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-
-use App\Entity\Page;
 
 class DefaultController extends AbstractController
 {
@@ -21,7 +20,7 @@ class DefaultController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        // return $this->redirectToRoute('enrol_index');
+        return $this->redirectToRoute('enrol_index');
         if ($this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('profile_index');
         }

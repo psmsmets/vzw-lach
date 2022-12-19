@@ -3,13 +3,11 @@
 {% block title %}Mijn profiel{% endblock %}
 
 {% block header %}
-    <h6 class="text-primary mt-3"><i class="bi bi-file-lock2-fill" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Alle info die hier staat is vertrouwelijk. Mondje dicht dus."></i> Het Groot Circus van het Klein Verdriet</h6>
+  {% include 'modules/header.html.twig' %}
 {% endblock %}
 
 {% block main %}
-    <h1 class="text-secondary">Deelnemers</h1>
-    <p>{{app.user.email}}</p>
-
+    <h1 class="text-secondary">Deelnemers</h1> 
     <table class="table">
         <thead>
             <tr>
@@ -43,12 +41,27 @@
     </table>
 
     <h2 class="text-secondary mt-5">Laatste info</h2>
-    <div>Pinned items</div>
-    <div>Laatste ...</div>
+
+    {% for post in pinned %}
+      <h4 class="mt-4">{{post.title}}</h4>
+      {{post.body|raw}}
+    {% endfor %}
+
+    {% for post in posts %}
+      <h4 class="mt-4">{{post.title}}</h4>
+      {{post.body|raw}}
+    {% else %}
+      geen berichten gevonden ...
+    {% endfor %}
+
 {% endblock %}
 
 {% block side %}
-<div>berichten</div>
-<div>kalender</div>
-<div>documenten</div>
+<h5>kalender</h5>
+  {% for event in events %}
+    <p class="small">{{event}}</p>
+  {% else %}
+    geen events gevonden ...
+  {% endfor %}
+<h5>documenten</h5>
 {% endblock %}

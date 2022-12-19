@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Category
 {
     #[ORM\Id]
@@ -145,7 +146,7 @@ class Category
     }
 
     /**
-     * @return Collection<Uuid, Associate>
+     * @return Collection<int, Associate>
      */
     public function getAssociates(): Collection
     {
@@ -183,7 +184,7 @@ class Category
     }
 
     /**
-     * @return Collection<Uuid, Post>
+     * @return Collection<int, Post>
      */
     public function getPosts(): Collection
     {

@@ -4,15 +4,41 @@ namespace App\Controller;
 
 use App\Entity\Associate;
 use App\Form\AssociateType;
-use App\Repository\AssociateRepository;
+use App\Service\ProfileManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/mijn-profiel', name: 'profile')]
 class ProfileController extends AbstractController
 {
+    private $manager;
+    private $parameterBag;
+    private $requestStack;
+    private $security;
+
+    public function __construct(
+        ProfileManager $profileManager,
+        ParameterBagInterface $parameterBag,
+        RequestStack $requestStack,
+        Security $security,
+    )
+    {
+        $this->manager = $profileManager;
+        $this->parameterBag = $parameterBag;
+        $this->requestStack = $requestStack;
+        $this->security = $security;
+
+        // Accessing the session in the constructor is *NOT* recommended, since
+        // it might not be accessible yet or lead to unwanted side-effects
+        // $this->session = $requestStack->getSession();
+    }
+
     #[Route('/', name: '_index', methods: ['GET'])]
     public function index(): Response
     {
@@ -24,10 +50,14 @@ class ProfileController extends AbstractController
         // returns your User object, or null if the user is not authenticated
         // use inline documentation to tell your editor your exact User class
         /** @var \App\Entity\User $user */
-        // $user = $this->getUser();
+        $user = $this->getUser();
 
         return $this->render('profile/index.html.twig', [
             //'associates' => $user->getEnabledAssociates(),
+            'special' => $this->manager->getSpecialPosts($user),
+            'pinned' => $this->manager->getPinnedPosts($user),
+            'posts' => $this->manager->getPosts($user),
+            'events' => $this->manager->userEvents($user),
         ]);
     }
 
@@ -43,7 +73,7 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: '_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Associate $associate, AssociateRepository $associateRepository): Response
+    public function edit(Request $request, Associate $associate): Response
     {
         if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
 
@@ -51,7 +81,7 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $associateRepository->save($associate, true);
+            $this->manager->associateRepository->save($associate, true);
 
             return $this->redirectToRoute('profile_show', ['id' => $associate->getId()], Response::HTTP_SEE_OTHER);
         }

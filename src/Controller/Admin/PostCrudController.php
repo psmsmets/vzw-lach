@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, IdField, BooleanField, DateTimeField, SlugField, TextField, TextareaField, TextEditorField};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class PostCrudController extends AbstractCrudController
 {
@@ -26,6 +27,17 @@ class PostCrudController extends AbstractCrudController
             ->setPermission(Action::NEW, 'ROLE_ADMIN')
             ->disable(Action::DELETE)
             ;
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setDateFormat('medium')
+            ->setTimeFormat('short')
+            ->setDateTimeFormat('medium', 'short')
+            ->setTimezone('Europe/Brussels')
+            ->setNumberFormat('%.2d');
+        ;
     }
 
     public function configureFields(string $pageName): iterable
@@ -69,8 +81,8 @@ class PostCrudController extends AbstractCrudController
         yield DateTimeField::new('updatedAt')->hideOnForm();
         yield BooleanField::new('showUpdatedAt')->renderAsSwitch(true)->hideOnIndex();
 
-        yield BooleanField::new('special')->renderAsSwitch(true)->hideOnIndex();
-        yield BooleanField::new('pinned')->renderAsSwitch(true)->hideOnIndex();
+        yield BooleanField::new('special')->renderAsSwitch(true);
+        yield BooleanField::new('pinned')->renderAsSwitch(true);
         yield BooleanField::new('archived')->renderAsSwitch(true)->hideOnIndex();
 
     }

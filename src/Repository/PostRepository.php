@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Associate;
+use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,28 +42,61 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Post[] Returns an array of Post objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Post[] Returns an array of Post objects
+     */
+    public function findPosts($obj = null, ?bool $special = null, ?bool $pinned = null, ?int $limit = null, int $page = 1)
+    {
+        $limit = is_null($limit) ? Post::NUMBER_OF_ITEMS : $limit;
+        $offset = ( $page < 1 ? 0 : $page - 1 ) * Post::NUMBER_OF_ITEMS;
 
-//    public function findOneBySomeField($value): ?Post
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $qb = $this->createQueryBuilder('post');
+
+        $qb->leftJoin('post.categories','categories');
+        $qb->addSelect('categories');
+
+        if ($obj instanceof Associate) {
+            $qb->setParameter('associate', $obj->getId(), 'uuid');
+            $qb->where($qb->expr()->isMemberOf(':associate', 'categories.associates'));
+        }
+
+        if ($obj instanceof Category) {
+            $qb->setParameter(':category', $obj);
+            $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
+        }
+
+        if ($obj instanceof User) {
+            $count = 0;
+            foreach ($obj->getEnabledAssociates() as $associate)
+            {
+                $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
+                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
+                $count++;
+            }
+        }
+
+        $qb->orWhere('categories is null');
+
+        $qb->setParameter('published', true);
+        $qb->andWhere('post.published = :published');
+
+        $qb->setParameter('now', new \DateTime());
+        $qb->andWhere('post.publishedAt <= :now');
+
+        if (!is_null($special)) {
+            $qb->setParameter('special', $special);
+            $qb->andWhere('post.special = :special');
+        }
+
+        if (!is_null($pinned)) {
+            $qb->setParameter('pinned', $pinned);
+            $qb->andWhere('post.pinned = :pinned');
+        }
+
+        $qb->orderBy('post.publishedAt', 'DESC');
+        $qb->setFirstResult($offset);
+        $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
 }

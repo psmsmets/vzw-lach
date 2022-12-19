@@ -10,8 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Post
 {
+    public const NUMBER_OF_ITEMS_HOMEPAGE = 5;
+    public const NUMBER_OF_ITEMS = 10;
+
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     private ?Uuid $id = null;
@@ -59,7 +63,7 @@ class Post
     {
         $this->id = Uuid::v6();
         $this->createdAt = new \DateTimeImmutable();
-        $this->publishedAt = new \DateTimeImmutable();
+        $this->publishedAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', date('Y-m-d H:i'));
         $this->published = false;
         $this->showUpdatedAt = true;
         $this->showPublishedAt = true;
@@ -89,7 +93,7 @@ class Post
 
     public function setPublished(bool $published): self
     {
-        $this->published = $this->published ? true : $published;
+        $this->published = $published;
 
         return $this;
     }

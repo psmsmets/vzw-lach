@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Event
 {
     #[ORM\Id]
@@ -80,7 +81,7 @@ class Event
     {
         $this->id = Uuid::v6();
         $this->createdAt = new \DateTimeImmutable();
-        $this->publishedAt = new \DateTimeImmutable();
+        $this->publishedAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', date('Y-m-d H:i'));
         $this->published = false;
         $this->cancelled = false;
         $this->archived = false;
@@ -113,7 +114,7 @@ class Event
 
     public function setPublished(bool $published): self
     {
-        $this->published = $this->published ? true : $published;
+        $this->published = $published;
 
         return $this;
     }

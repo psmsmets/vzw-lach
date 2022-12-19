@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Associate;
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -39,20 +40,20 @@ class CategoryRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Category[] Returns an array of Category objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Category[] Returns an array of Category objects
+     */
+    public function findByAssociate(Associate $associate): array
+    {
+        $qb = $this->createQueryBuilder('category');
+
+        $qb->where($qb->expr()->isMemberOf(':associate', 'category.associates'));
+
+        $qb->setParameter('associate', $associate->getId(), 'uuid');
+
+        return $qb->getQuery()->getResult();
+
+    }
 
 //    public function findOneBySomeField($value): ?Category
 //    {

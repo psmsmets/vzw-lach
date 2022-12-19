@@ -158,6 +158,8 @@ Details.Gender: Geslacht
 Details.Age: Leeftijd
 Details.Email: E-mailadres (pers.)
 Details.Phone: Telefoonnummer (pers.)
+User.Email: E-mailadres
+User.Phone: Telefoonnummer
 Address.Address: Adres
 Completed Enrolment: Inschrijving voltooid
 Is Admin: Is beheerder
