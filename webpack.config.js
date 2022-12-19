@@ -23,6 +23,7 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
+    .addStyleEntry('cover', './assets/css/cover.scss')
     .addStyleEntry('security', './assets/css/security.scss')
     .addStyleEntry('bootstrap', './assets/css/bootstrap.scss')
     .addStyleEntry('safari_select_fix', './assets/css/safari_select_fix.scss')
@@ -57,9 +58,9 @@ Encore
 
     // allow legacy applications to use $/jQuery as a global variable
     .autoProvideVariables({
-        //$: 'jquery',
-        //jQuery: 'jquery',
-        //'window.jQuery': 'jquery',
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery',
         Popper: ['popper.js', 'default'],
         //_: 'underscore',
     })

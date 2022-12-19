@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{associate.fullname}}{% endblock %}
+
+{% block main %}
+    <h1>{{associate.fullname}}</h1>
+
+    {% if associate.categories %}
+      <ul class="list-inline">
+        {% for category in associate.categories %}
+          <li class="list-inline-item"><span class="badge text-bg-secondary fw-light">{{category.slug}}</span></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ associate.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ associate.createdAt ? associate.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ associate.updatedAt ? associate.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Categories</th>
+                <td>{{ associate.categoryNames }}</td>
+            </tr>
+            {% if associate.role %}
+            <tr>
+                <th>Role</th>
+                <td>{{ associate.role }}</td>
+            </tr>
+            {% endif %}
+            {% if associate.imagePortrait %}
+            <tr>
+                <th>ImagePortrait</th>
+                <td><img class="img-fluid" src="{{path.imagePortrait}}/{{ associate.imagePortrait }}"></img></td>
+            </tr>
+            {% endif %}
+            {% if associate.imageEntire %}
+            <tr>
+                <th>ImageEntire</th>
+                <td><img class="img-fluid" src="{{path.imageEntire}}/{{ associate.imageEntire }}"></img></td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('profile_index') }}">terug naar het overzicht</a>
+
+    <a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a>
+
+{% endblock %}

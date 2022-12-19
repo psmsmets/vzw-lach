@@ -103,6 +103,9 @@ class AssociateBaseType extends AbstractType
                 'label' => 'Een portretfoto van jezelf.',
                 'allow_delete' => true,
                 'asset_helper' => false,
+                'attr' => [
+                    'accept' => 'image/jpeg',
+                ],
                 'row_attr' => [
                     'class' => 'acteur-figurant mb-3',
                 ],
@@ -114,6 +117,9 @@ class AssociateBaseType extends AbstractType
                 'label' => 'Een volledige foto van kop tot teen.',
                 'allow_delete' => true,
                 'asset_helper' => true,
+                'attr' => [
+                    'accept' => 'image/jpeg',
+                ],
                 'row_attr' => [
                     'class' => 'acteur-figurant mb-3',
                 ],

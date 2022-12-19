@@ -2,23 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\AssociateRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Uuid;
-use Symfony\Component\HttpFoundation\File\File;
-//use Symfony\Component\HttpFoundation\File\UploadedFile;
-//use Vich\UploaderBundle\Entity\File as EmbeddedFile;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
-
 use App\Entity\AssociateAddress;
 use App\Entity\AssociateDetails;
 use App\Entity\AssociateMeasurements;
+use App\Repository\AssociateRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: AssociateRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -55,6 +52,11 @@ class Associate
 
     // NOTE: This is not a mapped field of entity metadata, just a simple property.
     #[Vich\UploadableField(mapping: 'associates_portrait', fileNameProperty: 'imagePortrait')]
+    #[Assert\File(
+        maxSize: '10M',
+        mimeTypes: ['image/jpeg'],
+        mimeTypesMessage: 'Please upload a valid image',
+    )]
     #[Ignore]
     private ?File $imagePortraitFile = null;
 
@@ -63,6 +65,11 @@ class Associate
 
     // NOTE: This is not a mapped field of entity metadata, just a simple property.
     #[Vich\UploadableField(mapping: 'associates_entire', fileNameProperty: 'imageEntire')]
+    #[Assert\File(
+        maxSize: '10M',
+        mimeTypes: ['image/jpeg'],
+        mimeTypesMessage: 'Please upload a valid image',
+    )]
     #[Ignore]
     private ?File $imageEntireFile = null;
 
@@ -435,6 +442,16 @@ class Associate
         }
 
         return $this;
+    }
+
+    public function getCategoryNames(): string
+    {
+        $names = [];
+        foreach ($this->categories as $category) {
+            $names[] = $category->getName();
+        }
+
+        return implode(' | ', $names);
     }
 
     public function getUser(): ?User

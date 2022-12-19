@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{associate.fullname}}{% endblock %}
+
+{% block main %}
+    <h1>Bewerk deelnemer {{associate.fullname}}</h1>
+
+    {{ include('profile/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('profile_index') }}">terug naar het overzicht</a>
+{% endblock %}

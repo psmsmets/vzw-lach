@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mijn profiel{% endblock %}
+
+{% block header %}
+  {% include 'modules/header.html.twig' %}
+{% endblock %}
+
+{% block main %}
+    <h1 class="text-secondary">Deelnemers</h1> 
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="text-center"></th>
+                <th>Naam</th>
+                <th>Groep(en)</th>
+                <th>Actie</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for associate in app.user.enabledAssociates %}
+            <tr style="height:60px; vertical-align: middle;">
+                <td class="text-center">
+                  {% if associate.imagePortrait %}
+                    <img src="{{path.thumbPortrait}}/{{ associate.imagePortrait }}" height="45"></img>
+                  {% endif %}
+                </td>
+                <td>{{ associate.fullname }}</td>
+                <td>{{ associate.categoryNames }}</td>
+                <td>
+                    <a href="{{ path('profile_show', {'id': associate.id}) }}">bekijk</a>
+                    <a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">geen gegevens gevonden</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="text-secondary mt-5">Laatste info</h2>
+
+    {% for post in pinned %}
+      <h4 class="mt-4">{{post.title}}</h4>
+      {{post.body|raw}}
+    {% endfor %}
+
+    {% for post in posts %}
+      <h4 class="mt-4">{{post.title}}</h4>
+      {{post.body|raw}}
+    {% else %}
+      geen berichten gevonden ...
+    {% endfor %}
+
+{% endblock %}
+
+{% block side %}
+<h5>kalender</h5>
+  {% for event in events %}
+    <p class="small">{{event}}</p>
+  {% else %}
+    geen events gevonden ...
+  {% endfor %}
+<h5>documenten</h5>
+{% endblock %}

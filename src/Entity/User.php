@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Associate;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -119,7 +120,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setEmail(string $email): self
     {
-        $this->email = $email;
+        $this->email = strtolower($email);
 
         return $this;
     }
@@ -265,6 +266,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getAssociates(): Collection
     {
         return $this->associates;
+    }
+
+    public function getEnabledAssociates(): Collection
+    {
+        return $this->associates->filter(function(Associate $associate) {
+            return $associate->isEnabled();
+        });
     }
 
     public function addAssociate(Associate $associate): self

@@ -28,7 +28,7 @@ class UserType extends AbstractType
             ->add('email', RepeatedType::class, array(
                 'type' => EmailType::class,
                 'first_options' => array(
-                    'label'    => 'E-mail adres',
+                    'label'    => 'E-mailadres',
                     'attr' => [
                         'placeholder' => 'e-mailadres',
                         'pattern' => $this->params->get('app.regex.email'),
@@ -46,7 +46,7 @@ class UserType extends AbstractType
 */
             ->add('email', EmailType::class, [
                 'required' => true,
-                'label'    => 'E-mail adres',
+                'label'    => 'E-mailadres',
                 'attr' => [
                     'placeholder' => 'e-mailadres',
                     'pattern' => $this->params->get('app.regex.email'),

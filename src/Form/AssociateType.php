@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Associate;
+use App\Entity\AssociateAddress;
 use App\Entity\AssociateDetails;
 use App\Form\AssociateDetailsType;
 use Symfony\Component\Form\AbstractType;
@@ -11,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AssociateType extends AbstractType
 {
@@ -25,38 +27,36 @@ class AssociateType extends AbstractType
                 'required' => true,
                 'label' => 'Familienaam',
             ])
-            ->add('singer', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Ik heb ervaring met zingen',
-                'label_attr' => [
-                    'class' => 'checkbox-switch',
-                ],
-            ])
-            ->add('singerSoloist', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Ik heb ervaring met alleen zingen, ik zou wel een solistenrol aankunnen',
-                'label_attr' => [
-                    'class' => 'checkbox-switch',
-                ],
-            ])
-            ->add('companion', TextType::class, [
-                'required' => false,
-                'label' => 'Ik zou graag in dezelfde scènes zitten als',
-            ])
             ->add('details', AssociateDetailsType::class)
-            ->add('declarePresent', CheckboxType::class, [
-                'required' => true,
-                'label' => 'Ik verklaar dat ik in principe 100% aanwezig zal zijn op de momenten dat ik verwacht word (repetities en show)',
+            ->add('address', AssociateAddressType::class)
+            ->add('imagePortraitFile', VichImageType::class, [
+                'required' => false,
+                'label' => 'Een portretfoto van jezelf.',
+                'allow_delete' => true,
+                'asset_helper' => false,
+                'attr' => [
+                    'accept' => 'image/jpeg',
+                ],
+                'row_attr' => [
+                    'class' => 'acteur-figurant mb-3',
+                ],
+                'help' => 'Enkel JPG en maximaal 10MB. Een te grote foto? Verklein deze dan eerst met <a href="https://imresizer.com/resize-image-to-2mb" target=_Blank>imresizer.com/resize-image-to-2mb</a>',
+                'help_html' => true,
             ])
-            ->add('declareSecrecy', CheckboxType::class, [
-                'required' => true,
-                'label' => 'Ik verklaar geheimhouding over de inhoud van de voorstelling',
+            ->add('imageEntireFile', VichImageType::class, [
+                'required' => false,
+                'label' => 'Een volledige foto van kop tot teen.',
+                'allow_delete' => true,
+                'asset_helper' => true,
+                'attr' => [
+                    'accept' => 'image/jpeg',
+                ],
+                'row_attr' => [
+                    'class' => 'acteur-figurant mb-3',
+                ],
+                'help' => 'Enkel JPG en maximaal 10MB. Een te grote foto? Verklein deze dan eerst met <a href="https://imresizer.com/resize-image-to-2mb" target=_Blank>imresizer.com/resize-image-to-2mb</a>',
+                'help_html' => true,
             ])
-            ->add('declareTerms', CheckboxType::class, [
-                'required' => true,
-                'label' => 'Ik verklaar kennis genomen te hebben van de verzekerde risico’s binnen de vrijwilligerswerking van vzw LA:CH',
-            ])
-
         ;
     }
 

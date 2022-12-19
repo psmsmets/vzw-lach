@@ -2,21 +2,32 @@
 
 namespace App\Controller;
 
+use App\Entity\Page;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-use App\Entity\Page;
+use Symfony\Component\Security\Core\Security;
 
 class DefaultController extends AbstractController
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     #[Route('/', name: 'home')]
     public function index(): Response
     {
         return $this->redirectToRoute('enrol_index');
+        if ($this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('profile_index');
+        }
+        return $this->render('default/index.html.twig', []);
     }
 
-    #[Route('/admin', name: 'admin2')]
+    #[Route('/admin', name: 'admin_')]
     public function admin(): Response
     {
         return $this->redirectToRoute('admin');
