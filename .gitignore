@@ -5,8 +5,14 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+/.htpasswd/
 /config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
+/logs/
+/private_html
+/public_html/bundles/
+/public_html/uploads/
+/public_ftp/
+/stats/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
@@ -24,7 +30,6 @@
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public_html/build/
-/public_html/uploads/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
