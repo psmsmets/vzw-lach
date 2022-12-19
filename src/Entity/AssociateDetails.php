@@ -54,7 +54,7 @@ class AssociateDetails
 
     public function setEmail(?string $email): self
     {
-        $this->Email = $email;
+        $this->email = strtolower($email);
 
         return $this;
     }
@@ -66,7 +66,7 @@ class AssociateDetails
 
     public function setPhone(?string $phone): self
     {
-        $this->Phone = $phone;
+        $this->phone = $phone;
 
         return $this;
     }
