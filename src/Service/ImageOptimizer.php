@@ -11,6 +11,7 @@ class ImageOptimizer
     private const MAX_HEIGHT = 1800;
     private const MAX_THUMB = 250;
     private const DIR_THUMB = '/thumbs/';
+    private const MIME_CONTENT_TYPES = array("image/jpeg", "image/png");
 
     private $imagine;
 
@@ -30,6 +31,7 @@ class ImageOptimizer
     public function resize_image(string $imageFile, int $width = self::MAX_WIDTH, int $height = self::MAX_HEIGHT): void
     {
         if (!file_exists($imageFile)) return;
+        if (!in_array(mime_content_type($imageFile), self::MIME_CONTENT_TYPES)) return;
 
         list($iwidth, $iheight) = getimagesize($imageFile);
 
@@ -51,9 +53,9 @@ class ImageOptimizer
     public function create_thumb(string $imageFile): void
     {
         if (!file_exists($imageFile)) return;
+        if (!in_array(mime_content_type($imageFile), self::MIME_CONTENT_TYPES)) return;
 
         $thumbFile = dirname($imageFile).self::DIR_THUMB.basename($imageFile);
-
         if (file_exists($thumbFile)) return;
 
         list($iwidth, $iheight) = getimagesize($imageFile);
