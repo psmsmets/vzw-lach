@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Service;
 
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
@@ -10,6 +10,7 @@ class ImageOptimizer
     private const MAX_WIDTH = 1200;
     private const MAX_HEIGHT = 1800;
     private const MAX_THUMB = 250;
+    private const DIR_THUMB = '/thumbs/';
 
     private $imagine;
 
@@ -20,6 +21,8 @@ class ImageOptimizer
 
     public function resize(string $imageFile): void
     {
+        $imageDir = dirname($imageFile).self::DIR_THUMB;
+        if (!file_exists($imageDir)) mkdir($imageDir, 0777, true);
         $this->resize_image($imageFile, self::MAX_WIDTH, self::MAX_HEIGHT);
         $this->create_thumb($imageFile);
     }
@@ -49,7 +52,7 @@ class ImageOptimizer
     {
         if (!file_exists($imageFile)) return;
 
-        $thumbFile = dirname($imageFile).'/thumbs/'.basename($imageFile);
+        $thumbFile = dirname($imageFile).self::DIR_THUMB.basename($imageFile);
 
         if (file_exists($thumbFile)) return;
 

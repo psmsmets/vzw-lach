@@ -56,3 +56,7 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\EventListener\ImageUploadListener:
+        tags:
+            - { name: kernel.event_listener, event: vich_uploader.post_upload }
