@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Associate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Associate>
@@ -39,28 +40,33 @@ class AssociateRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Associate[] Returns an array of Associate objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Associate[] Returns an array of Associate objects
+     */
+    public function findEnabled(): array
+    {
+        return $this->createQueryBuilder('associate')
+            ->andWhere('associate.enabled = :enabled')
+            ->setParameter('enabled', true)
+            ->orderBy('associate.lastname', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
-//    public function findOneBySomeField($value): ?Associate
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        if (isset($criteria['id']) && is_array($criteria['id'])) {
+            $ids = [];
+            foreach ($criteria['id'] as $id) {
+                if (Uuid::isValid($id)) {
+                    $ids[] = Uuid::fromString($id)->toBinary();
+                } else {
+                    $ids[] = $id;
+                }
+            }
+            $criteria['id'] = $ids;
+        }
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
+    }
 }

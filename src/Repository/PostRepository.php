@@ -8,6 +8,7 @@ use App\Entity\Post;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Post>
@@ -98,5 +99,21 @@ class PostRepository extends ServiceEntityRepository
         $qb->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        if (isset($criteria['id']) && is_array($criteria['id'])) {
+            $ids = [];
+            foreach ($criteria['id'] as $id) {
+                if (Uuid::isValid($id)) {
+                    $ids[] = Uuid::fromString($id)->toBinary();
+                } else {
+                    $ids[] = $id;
+                }
+            }
+            $criteria['id'] = $ids;
+        }
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

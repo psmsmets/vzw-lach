@@ -2,16 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
-use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
-use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use Symfony\Component\Security\Core\User\UserInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\LocaleDto;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-
 use App\Entity\Associate;
 use App\Entity\Category;
 use App\Entity\Event;
@@ -24,6 +14,16 @@ use App\Controller\Admin\EventCrudController;
 use App\Controller\Admin\PageCrudController;
 use App\Controller\Admin\PostCrudController;
 use App\Controller\Admin\UserCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\LocaleDto;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AdminController extends AbstractDashboardController
 {
@@ -47,6 +47,13 @@ class AdminController extends AbstractDashboardController
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
         // return $this->render('some/path/my-dashboard.html.twig');
+    }
+
+    public function configureAssets(): Assets
+    {
+        return Assets::new()
+            ->addCssFile('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css')
+        ;
     }
 
     public function configureDashboard(): Dashboard
@@ -108,28 +115,27 @@ class AdminController extends AbstractDashboardController
 
         return [
             //MenuItem::linkToLogout('Logout', 'fa fa-exit'),
-
-            //MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
+           // MenuItem::linkToDashboard('Dashboard', 'bi bi-house-door-fill'),
 
             MenuItem::section('Users'),
-            MenuItem::linkToCrud('Users', 'fa fa-user-lock', User::class),
+            MenuItem::linkToCrud('Users', 'bi bi-person-fill-gear', User::class),
 
             MenuItem::section('Associates'),
-            MenuItem::linkToCrud('Associates', 'fa fa-address-card', Associate::class),
+            MenuItem::linkToCrud('Associates', 'bi bi-person-vcard', Associate::class),
 
             MenuItem::section('Categories'),
-            MenuItem::linkToCrud('Categories', 'fa fa-user-group', Category::class),
+            MenuItem::linkToCrud('Categories', 'bi bi-people-fill', Category::class),
 
             MenuItem::section('Calendar'),
-            MenuItem::linkToCrud('Events', 'fa fa-list', Event::class),
+            MenuItem::linkToCrud('Events', 'bi bi-calendar-week', Event::class)->setPermission('ROLE_SUPER_ADMIN'),
             //MenuItem::linkToCrud('New event', 'fa fa-calendar-plus', Event::class)
             //    ->setAction('new'),
 
             MenuItem::section('Posts'),
-            MenuItem::linkToCrud('Posts', 'fa fa-comment-alt', Post::class),
+            MenuItem::linkToCrud('Posts', 'bi bi-card-text', Post::class)->setPermission('ROLE_SUPER_ADMIN'),
 
             MenuItem::section('Pages'),
-            MenuItem::linkToCrud('Pages', 'fa fa-book-reader', Page::class),
+            MenuItem::linkToCrud('Pages', 'bi bi-file-earmark-text', Page::class),
         ];
     }
 

@@ -2,20 +2,20 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\CategoryCrudController;
+use App\Controller\Admin\UserCrudController;
 use App\Entity\Associate;
+use App\Entity\AssociateDetails;
 use App\Form\AssociateBaseType;
 use App\Controller\Admin\Filter\{AssociationDateTimeFilter, AssociationNumericFilter, AssociationTextFilter, GenderFilter};
-
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, Filters, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, CollectionField, DateField, ImageField, NumberField, TextField, EmailField, TelephoneField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, ChoiceField, DateField, ImageField, NumberField, TextField, EmailField, TelephoneField};
 use EasyCorp\Bundle\EasyAdminBundle\Filter\{ChoiceFilter};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
-
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AssociateCrudController extends AbstractCrudController
@@ -50,7 +50,10 @@ class AssociateCrudController extends AbstractCrudController
             ->setFormTypeOptions(['input'  => 'datetime_immutable'])
             ->hideOnIndex()
             ;
-        yield TextField::new('details.gender')->onlyOnForms();
+        yield ChoiceField::new('details.gender')
+            ->setChoices(AssociateDetails::GENDERS)
+            ->onlyOnForms()
+            ;
         yield NumberField::new('details.age')->onlyOnDetail();
         yield TextField::new('details.genderName', 'Geslacht')->onlyOnDetail();
 
@@ -106,14 +109,19 @@ class AssociateCrudController extends AbstractCrudController
         yield TextField::new('categoryPreferencesList', 'Voorkeur')->onlyOnDetail();
         yield TextField::new('companion')->onlyOnDetail();
 
-        yield AssociationField::new('categories', 'Toegewezen groep(en)')
+        yield AssociationField::new('categories', 'Groep(en)')
+            ->setQueryBuilder(function ($queryBuilder) {
+                return $queryBuilder->andWhere('entity.enabled = true'); 
+
+            })
+            ->setCrudController(CategoryCrudController::class)
             ->setFormTypeOptions([
                 'by_reference' => false,
             ])
             ->autocomplete()
-            ->hideOnIndex()
             ;
         yield TextField::new('categoryNames', 'Toegewezen groep(en)')->onlyOnDetail();
+        yield TextField::new('role')->hideOnIndex();
 
         yield FormField::addTab('Options');
 
@@ -125,7 +133,15 @@ class AssociateCrudController extends AbstractCrudController
         yield BooleanField::new('declareSecrecy', 'Akkoord geheimhouding')->hideOnIndex();
         yield BooleanField::new('declareTerms', 'Akkoord voorwaarden')->hideOnIndex();
         yield Field::new('updatedAt')->onlyOnDetail();
-        yield AssociationField::new('user')->autocomplete()->hideOnIndex();
+        yield AssociationField::new('user')
+            ->autocomplete()
+            ->setCrudController(UserCrudController::class)
+            ->setQueryBuilder(function ($queryBuilder) {
+                return $queryBuilder->andWhere('entity.enabled = true'); // your query
+
+            })
+            ->hideOnIndex()
+            ;
     }
 
     public function configureFilters(Filters $filters): Filters
