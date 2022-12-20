@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Page;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Page>
@@ -63,4 +64,21 @@ class PageRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        if (isset($criteria['id']) && is_array($criteria['id'])) {
+            $ids = [];
+            foreach ($criteria['id'] as $id) {
+                if (Uuid::isValid($id)) {
+                    $ids[] = Uuid::fromString($id)->toBinary();
+                } else {
+                    $ids[] = $id;
+                }
+            }
+            $criteria['id'] = $ids;
+        }
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
+    }
+
 }

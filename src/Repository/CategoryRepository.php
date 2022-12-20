@@ -6,6 +6,7 @@ use App\Entity\Associate;
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Category>
@@ -55,13 +56,19 @@ class CategoryRepository extends ServiceEntityRepository
 
     }
 
-//    public function findOneBySomeField($value): ?Category
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        if (isset($criteria['id']) && is_array($criteria['id'])) {
+            $ids = [];
+            foreach ($criteria['id'] as $id) {
+                if (Uuid::isValid($id)) {
+                    $ids[] = Uuid::fromString($id)->toBinary();
+                } else {
+                    $ids[] = $id;
+                }
+            }
+            $criteria['id'] = $ids;
+        }
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
+    }
 }

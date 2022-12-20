@@ -2,12 +2,15 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\AssociateCrudController;
+use App\Entity\Associate;
 use App\Entity\Category;
+use Doctrine\Common\Collections\Criteria;
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, AssociationField, BooleanField, SlugField, TextField, TextareaField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, SlugField, TextField, TextareaField};
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class CategoryCrudController extends AbstractCrudController
@@ -48,15 +51,20 @@ class CategoryCrudController extends AbstractCrudController
         yield BooleanField::new('isHidden')->renderAsSwitch(true)->onlyOnForms();
 
         yield AssociationField::new('associates')
+            ->autocomplete()
+            ->setCrudController(AssociateCrudController::class)
             ->setFormTypeOptions([
                 'by_reference' => false,
             ])
-            ->autocomplete()
-            //->renderAsNativeWidget()
-            ->hideOnForm()
+            ->setQueryBuilder(function ($queryBuilder) {
+                return $queryBuilder->andWhere('entity.enabled = true'); // your query
+
+            })
             ;
 
         yield TextField::new('associateNames')->onlyOnDetail();
+
+        yield Field::new('updatedAt')->hideOnForm();
 
     }
 }

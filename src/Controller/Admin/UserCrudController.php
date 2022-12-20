@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 
+use App\Controller\Admin\AssociateCrudController;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -37,7 +38,7 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield IdField::new('id')->hideOnForm();
+        yield IdField::new('id')->onlyOnDetail();
 
         yield BooleanField::new('enabled')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
@@ -45,9 +46,19 @@ class UserCrudController extends AbstractCrudController
         yield Field::new('createdAt')->onlyOnDetail();
 
         yield EmailField::new('email');
-        yield TelephoneField::new('phone')->hideOnIndex();
+        yield TelephoneField::new('phone');
 
-        yield AssociationField::new('associates')->hideOnForm();
+        yield AssociationField::new('associates')
+            ->autocomplete()
+            ->setCrudController(AssociateCrudController::class)
+            ->setFormTypeOptions([
+                'by_reference' => false,
+            ])
+            ->setQueryBuilder(function ($queryBuilder) {
+                return $queryBuilder->andWhere('entity.enabled = true'); // your query
+
+            })
+            ;
 
         // password
         yield TextField::new('password')

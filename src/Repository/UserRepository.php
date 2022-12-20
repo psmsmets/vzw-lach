@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -93,5 +94,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        if (isset($criteria['id']) && is_array($criteria['id'])) {
+            $ids = [];
+            foreach ($criteria['id'] as $id) {
+                if (Uuid::isValid($id)) {
+                    $ids[] = Uuid::fromString($id)->toBinary();
+                } else {
+                    $ids[] = $id;
+                }
+            }
+            $criteria['id'] = $ids;
+        }
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

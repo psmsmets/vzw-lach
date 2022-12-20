@@ -20,6 +20,9 @@ class Category
     #[ORM\Column]
     private ?bool $enabled = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
@@ -56,6 +59,12 @@ class Category
         return $this->name;
     }
 
+    #[ORM\PreUpdate]
+    public function preUpdate()
+    {
+        $this->setUpdatedAt();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +78,18 @@ class Category
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(): self
+    {
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
