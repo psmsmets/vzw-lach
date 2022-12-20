@@ -21,7 +21,9 @@ class ImageUploadListener
         $object = $event->getObject();
         $mapping = $event->getMapping();
 
-        // resize image and make thumbs 
-        $this->imageOptimizer->resize($object->getImagePortraitFile()->getRealPath());
+        // resize image and make thumbs
+        if (!is_null($object->getImagePortraitFile())) { 
+            $this->imageOptimizer->resize($object->getImagePortraitFile()->getRealPath());
+        }
     }
 }
