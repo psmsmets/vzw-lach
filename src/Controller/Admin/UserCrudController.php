@@ -38,7 +38,7 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield IdField::new('id')->hideOnForm();
+        yield IdField::new('id')->onlyOnDetail();
 
         yield BooleanField::new('enabled')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
