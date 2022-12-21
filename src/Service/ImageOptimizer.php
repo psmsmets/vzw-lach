@@ -7,8 +7,7 @@ use Imagine\Image\Box;
 
 class ImageOptimizer
 {
-    private const MAX_WIDTH = 1200;
-    private const MAX_HEIGHT = 1800;
+    private const MAX_SIDE = 1920;
     private const MAX_THUMB = 250;
     private const DIR_THUMB = '/thumbs/';
     private const MIME_CONTENT_TYPES = array("image/jpeg", "image/png");
@@ -18,62 +17,62 @@ class ImageOptimizer
     public function __construct()
     {
         $this->imagine = new Imagine();
+
+        // Use the Exif metadata reader to be able of accessing the orientation
+        $this->imagine->setMetadataReader(new \Imagine\Image\Metadata\ExifMetadataReader());
     }
 
     public function resize(string $imageFile): void
     {
-        $imageDir = dirname($imageFile).self::DIR_THUMB;
-        if (!file_exists($imageDir)) mkdir($imageDir, 0777, true);
-        $this->resize_image($imageFile, self::MAX_WIDTH, self::MAX_HEIGHT);
-        $this->create_thumb($imageFile);
+        // File exists?
+        if (!file_exists($imageFile)) return;
+
+        // Correct filetype?
+        if (!in_array(mime_content_type($imageFile), self::MIME_CONTENT_TYPES)) return;
+
+        // Does the thumb directory exist?
+        $thumbDir = dirname($imageFile).self::DIR_THUMB;
+        $thumbFile = $thumbDir.basename($imageFile);
+        if (!file_exists($thumbDir)) mkdir($thumbDir, 0777, true);
+
+        // Load the image into memory
+        $image = $this->imagine->open($imageFile);
+
+        // Use the autorotate filter to rotate the image if needed
+        $filter = new \Imagine\Filter\Basic\Autorotate();
+        $filter->apply($image);
+
+        // Resize down while keeping aspect ratio
+        $image = $image->thumbnail(
+            new \Imagine\Image\Box(self::MAX_SIDE, self::MAX_SIDE),
+            \Imagine\Image\ManipulatorInterface::THUMBNAIL_INSET
+        );
+        $image->strip()->save($imageFile);
+
+        // Create thumbnail down while keeping aspect ratio
+        $image = $image->thumbnail(
+            new \Imagine\Image\Box(self::MAX_THUMB, self::MAX_THUMB),
+            \Imagine\Image\ManipulatorInterface::THUMBNAIL_INSET
+        );
+        $image->strip()->save($thumbFile);
     }
 
-    public function resize_image(string $imageFile, int $width = self::MAX_WIDTH, int $height = self::MAX_HEIGHT): void
+    public function autorotate(string $imageFile): void
     {
         if (!file_exists($imageFile)) return;
         if (!in_array(mime_content_type($imageFile), self::MIME_CONTENT_TYPES)) return;
 
-        list($iwidth, $iheight) = getimagesize($imageFile);
+        // Load the image into memory
+        $image = $this->imagine->open($imageFile);
 
-        if ($iwidth < $width) return;
-        if ($iheight < $height) return;
+        // Use the autorotate filter to rotate the image if needed
+        $filter = new \Imagine\Filter\Basic\Autorotate();
+        $filter->apply($image);
 
-        $ratio = $iwidth / $iheight;
+        // Strip off any metadata embedded in the image to save space and privacy
+        $image->strip();
 
-        if ($width / $height > $ratio) {
-            $width = $height * $ratio;
-        } else {
-            $height = $width / $ratio;
-        }
-
-        $photo = $this->imagine->open($imageFile);
-        $photo->resize(new Box($width, $height))->save($imageFile);
-    }
-
-    public function create_thumb(string $imageFile): void
-    {
-        if (!file_exists($imageFile)) return;
-        if (!in_array(mime_content_type($imageFile), self::MIME_CONTENT_TYPES)) return;
-
-        $thumbFile = dirname($imageFile).self::DIR_THUMB.basename($imageFile);
-        if (file_exists($thumbFile)) return;
-
-        list($iwidth, $iheight) = getimagesize($imageFile);
-
-        if ($iwidth < self::MAX_THUMB) return;
-        if ($iheight < self::MAX_THUMB) return;
-
-        $ratio = $iwidth / $iheight;
-        $width = self::MAX_THUMB;
-        $height = self::MAX_THUMB;
-
-        if ($width / $height > $ratio) {
-            $width = $height * $ratio;
-        } else {
-            $height = $width / $ratio;
-        }
-
-        $photo = $this->imagine->open($imageFile);
-        $photo->resize(new Box($width, $height))->save($thumbFile);
+        // Save image to disk
+        $image->save($imageFile);
     }
 }
