@@ -13,14 +13,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class ImageResize extends Command
+class ImageOptimization extends Command
 {
     private $doctrine;
     private $entityManager;
     private $imageOptimizer;
     private $params;
 
-    protected static $defaultName = 'app:img:resize';
+    protected static $defaultName = 'app:img:optimize';
 
     public function __construct(
         ManagerRegistry $doctrine,

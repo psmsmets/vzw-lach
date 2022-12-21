@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class ImageOptimization extends Command
+class ImageAutorotate extends Command
 {
     private $doctrine;
     private $entityManager;
