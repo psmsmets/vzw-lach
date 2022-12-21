@@ -20,7 +20,7 @@ class ImageOptimization extends Command
     private $imageOptimizer;
     private $params;
 
-    protected static $defaultName = 'app:img:optimize';
+    protected static $defaultName = 'app:img:autorotate';
 
     public function __construct(
         ManagerRegistry $doctrine,
@@ -40,7 +40,7 @@ class ImageOptimization extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Optimizes all associate images')
+            ->setDescription('Rotate all associate images')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
         ;
     }
@@ -66,13 +66,15 @@ class ImageOptimization extends Command
 
             if (($img = $associate->getImagePortrait())) {
                 $io->writeln(sprintf("%s, portrait, %s", $name, $img));
-                if ($exec) $this->imageOptimizer->resize($dirPortrait.$img);
+                if ($exec) $this->imageOptimizer->autorotate($dirPortrait.$img);
+                if ($exec) $this->imageOptimizer->autorotate($dirPortrait.'thumbs/'.$img);
                 $count++;
             }
 
             if (($img = $associate->getImageEntire())) {
                 $io->writeln(sprintf("%s, entire, %s", $name, $img));
-                if ($exec) $this->imageOptimizer->resize($dirEntire.$img);
+                if ($exec) $this->imageOptimizer->autorotate($dirEntire.$img);
+                if ($exec) $this->imageOptimizer->autorotate($dirEntire.'thumbs/'.$img);
                 $count++;
             }
 
@@ -82,7 +84,7 @@ class ImageOptimization extends Command
 
         if ($exec) $this->entityManager->flush();
 
-        $io->success(sprintf('Optimized "%d" images.', $count));
+        $io->success(sprintf('Autorotated "%d" images.', $count));
 
         return 0;
     }
