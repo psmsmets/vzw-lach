@@ -62,7 +62,7 @@ class ImageOptimizer
             new \Imagine\Image\Box(self::MAX_THUMB, self::MAX_THUMB),
             \Imagine\Image\ManipulatorInterface::THUMBNAIL_INSET
         );
-//        $image->strip()->save($thumbFile);
+        $image->strip()->save($thumbFile);
     }
 
     public function autorotate(string $imageFile): void
