@@ -53,7 +53,6 @@ class Associate
     // NOTE: This is not a mapped field of entity metadata, just a simple property.
     #[Vich\UploadableField(mapping: 'associates_portrait', fileNameProperty: 'imagePortrait')]
     #[Assert\File(
-        maxSize: '10M',
         mimeTypes: ['image/jpeg'],
         mimeTypesMessage: 'Please upload a valid image',
     )]
@@ -66,7 +65,6 @@ class Associate
     // NOTE: This is not a mapped field of entity metadata, just a simple property.
     #[Vich\UploadableField(mapping: 'associates_entire', fileNameProperty: 'imageEntire')]
     #[Assert\File(
-        maxSize: '10M',
         mimeTypes: ['image/jpeg'],
         mimeTypesMessage: 'Please upload a valid image',
     )]

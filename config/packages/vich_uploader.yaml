@@ -11,14 +11,16 @@ vich_uploader:
         associates_entire:
             uri_prefix:         '%app.path.associates.entire%'
             upload_destination: '%kernel.project_dir%/public_html%app.path.associates.entire%'
-            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+#            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
             inject_on_load: false
             delete_on_remove: true
             delete_on_update: true
         associates_portrait:
             uri_prefix:         '%app.path.associates.portrait%'
             upload_destination: '%kernel.project_dir%/public_html%app.path.associates.portrait%'
-            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+#            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
             inject_on_load: false
             delete_on_remove: true
             delete_on_update: true
