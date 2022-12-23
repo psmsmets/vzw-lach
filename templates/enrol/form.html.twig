@@ -68,7 +68,6 @@ function DisableSubmit() {
     var submit = document.getElementById("submit");
     submit.disabled = true;
     submit.classList.add('disabled');
-    submit.classList.add('placeholder-wave');
     var loader = document.getElementById("loader");
     loader.classList.remove("d-none")
 }
@@ -77,7 +76,6 @@ function EnableSubmit() {
     var submit = document.getElementById("submit");
     submit.disabled = false;
     submit.classList.remove('disabled');
-    submit.classList.remove('placeholder-wave');
     var loader = document.getElementById("loader");
     loader.classList.add("d-none")
 }
