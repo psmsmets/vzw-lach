@@ -47,6 +47,6 @@ class LogoutSubscriber implements EventSubscriberInterface
         // provide feedback
         $session = $this->requestStack->getSession();
         $session->clear();
-        $session->getFlashBag()->add('alert-success', 'Je bent uitgelogd.');
+        $session->getFlashBag()->add('alert-success', 'Uitloggen succesvol. Je bent nu uitgelogd.');
     }
 }

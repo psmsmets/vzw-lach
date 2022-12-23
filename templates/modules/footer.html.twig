@@ -1,8 +1,8 @@
 <footer class="text-primary fw-lighter d-print-none mt-auto mb-0 text-center">
   <ul class="list-inline pt-3 mt-3 pt-md-4 mt-md-4 mb-3 pb-0">
     <li class="list-inline-item"><i class="bi bi-c-circle"></i> <a href="https://vzw-lach.be">{{ "now"|date("Y") }} vzw LA:CH</a></li>
-    <li class="list-inline-item"><i class="bi bi-file-earmark-check"></i> <a href="/voorwaarden">Voorwaarden</a></li>
-    <li class="list-inline-item"><i class="bi bi-file-earmark-lock"></i> <a href="/privacy">Privacy</a></li>
+    <li class="list-inline-item"><i class="bi bi-file-earmark-check"></i> <a href="{{path('page', {slug: 'voorwaarden'})}}">Voorwaarden</a></li>
+    <li class="list-inline-item"><i class="bi bi-file-earmark-lock"></i> <a href="{{path('page', {slug: 'privacy'})}}">Privacy</a></li>
     <li class="list-inline-item d-none d-md-inline text-muted"><i class="bi bi-code-slash"></i> <a href="https://steps4it.be" class="text-decoration-none text-muted">STEPS4it</a></li>
   </ul>
 </footer>

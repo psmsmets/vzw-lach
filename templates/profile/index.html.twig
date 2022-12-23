@@ -1,10 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Mijn profiel{% endblock %}
-
-{% block header %}
-  {% include 'modules/header.html.twig' %}
-{% endblock %}
+{% extends 'profile.html.twig' %}
 
 {% block main %}
     <h1 class="text-secondary">Deelnemers</h1> 
@@ -54,14 +48,4 @@
       geen berichten gevonden ...
     {% endfor %}
 
-{% endblock %}
-
-{% block side %}
-<h5>kalender</h5>
-  {% for event in events %}
-    <p class="small">{{event}}</p>
-  {% else %}
-    geen events gevonden ...
-  {% endfor %}
-<h5>documenten</h5>
 {% endblock %}
