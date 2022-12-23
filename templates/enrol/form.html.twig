@@ -20,10 +20,10 @@
 
     {{enrol_info|raw}}
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
         {{ form_widget(form) }}
         {% if enrol_prev %}<a href="{{ path(enrol_prev) }}" class="btn btn-secondary">Vorige</a>{% endif %}
-        <button class="btn btn-primary">{{ button_label|default(enrol_btn) }}</button>
+        <button class="btn btn-primary" type="submit" id="submit">{{ button_label|default(enrol_btn) }}</button>
     {{ form_end(form) }}
 
 {% endblock %}
@@ -63,5 +63,35 @@ if(typeof(acteurCheckbox) != 'undefined' && acteurCheckbox != null && typeof(fig
     figurantCheckbox.addEventListener( "change", ActeurFigurantIsChecked);
     ActeurFigurantIsChecked();
 }
+
+
+// Disabling form submissions if there are invalid fields
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        // Set submit button
+        let submit = document.getElementById("submit");
+        submit.disabled = false;
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+console.log(form);
+            form.addEventListener('submit', function(event) {
+                submit.disabled = true;
+                submit.classList.add('disabled');
+                submit.classList.add('placeholder-wave');
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    submit.disabled = false;
+                    submit.classList.remove('disabled');
+                    submit.classList.remove('placeholder-wave');
+                }
+                //form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
 </script>
 {% endblock %}
