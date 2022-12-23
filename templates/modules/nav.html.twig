@@ -1,0 +1,38 @@
+<nav class="navbar navbar-dark bg-primary navbar-expand-lg fixed-top">
+  <div class="container-xl">
+    <a class="navbar-brand d-md-none" href="/">HGCVHKV</a>
+    <a class="navbar-brand d-none d-md-block" href="/">Het Groot Circus van het Klein Verdriet</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end text-bg-dark bg-secondary" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Het Groot Circus van het Klein Verdriet</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{path('profile_index')}}">Start</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('page', {slug: 'contact'})}}">Contact</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{app.user.email}}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a href="{{path('security_signout')}}" class="dropdown-item"><i class="bi bi-power"></i> afmelden</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mijn profiel{% endblock %}
+
+{% block header %}
+  {% include 'modules/nav.html.twig' %}
+{% endblock %}
+
+{% block side %}
+
+<h5 class="mt-4">Kalender</h5>
+...
+
+<h5 class="mt-4">Zoekertjes</h5>
+...
+
+<h5 class="mt-4">Bestanden</h5>
+...
+
+<h5 class="mt-4">Berichten</h5>
+...
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style>
+    body {padding-top: 56px;}
+  </style>
+{% endblock %}
