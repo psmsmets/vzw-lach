@@ -28,7 +28,7 @@ class ImageOptimizer
         if (!file_exists($imageFile)) return;
 
         // Correct extension?
-        if (pathinfo($imageFile, PATHINFO_EXTENSION) === "") return;
+        if (pathinfo($imageFile, PATHINFO_EXTENSION) == "") return;
 
         // Correct filetype?
         if (!in_array(mime_content_type($imageFile), self::MIME_CONTENT_TYPES)) return;
@@ -68,6 +68,7 @@ class ImageOptimizer
     public function autorotate(string $imageFile): void
     {
         if (!file_exists($imageFile)) return;
+        if (pathinfo($imageFile, PATHINFO_EXTENSION) == "") return;
         if (!in_array(mime_content_type($imageFile), self::MIME_CONTENT_TYPES)) return;
 
         // Load the image into memory
