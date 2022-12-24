@@ -35,6 +35,19 @@ class AssociateCrudController extends AbstractCrudController
             ;
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setDateFormat('medium')
+            ->setTimeFormat('short')
+            ->setDateTimeFormat('medium', 'short')
+            ->setTimezone('Europe/Brussels')
+            ->setNumberFormat('%.2d')
+            ->setDefaultSort(['createdAt' => 'ASC', 'lastname' => 'ASC', 'firstname' => 'ASC'])
+             ->setPaginatorPageSize(200)
+        ;
+    }
+
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Gegevens');
@@ -57,17 +70,20 @@ class AssociateCrudController extends AbstractCrudController
         yield NumberField::new('details.age')->onlyOnDetail();
         yield TextField::new('details.genderName', 'Geslacht')->onlyOnDetail();
 
-        yield ImageField::new('imagePortrait', 'Foto')
-            ->setBasePath('/uploads/associates/portrait/thumbs')
+        yield ImageField::new('imagePortrait', 'Foto 1')
+            ->setBasePath('/uploads/associates/portrait')
             ->onlyOnIndex()
             ;
-
         yield ImageField::new('imagePortrait')
             ->setBasePath('/uploads/associates/portrait')
             ->setColumns(6)
             ->onlyOnDetail()
             ;
 
+        yield ImageField::new('imageEntire', 'Foto 2')
+            ->setBasePath('/uploads/associates/entire')
+            ->onlyOnIndex()
+            ;
         yield ImageField::new('imageEntire')
             ->setBasePath('/uploads/associates/entire')
             ->setColumns(6)
@@ -93,6 +109,18 @@ class AssociateCrudController extends AbstractCrudController
         yield BooleanField::new('singerSoloist')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('singerSoloist')->renderAsSwitch(true)->onlyOnForms();
 
+        yield TextField::new('imagePortraitFile')
+            ->setFormType(VichImageType::class)
+            //->setColumns(6)
+            ->onlyOnForms()
+            ;
+
+        yield TextField::new('imageEntireFile')
+            ->setFormType(VichImageType::class)
+            //->setColumns(6)
+            ->onlyOnForms()
+            ;
+
         yield FormField::addTab('Contact');
         yield FormField::addPanel('Contact');
 
@@ -107,7 +135,7 @@ class AssociateCrudController extends AbstractCrudController
         yield FormField::addPanel('Categories');
 
         yield TextField::new('categoryPreferencesList', 'Voorkeur')->onlyOnDetail();
-        yield TextField::new('companion')->onlyOnDetail();
+        yield TextField::new('companion')->hideOnForm();
 
         yield AssociationField::new('categories', 'Groep(en)')
             ->setQueryBuilder(function ($queryBuilder) {
@@ -128,7 +156,7 @@ class AssociateCrudController extends AbstractCrudController
         yield BooleanField::new('enabled')->renderAsSwitch(false)->onlyOnDetail();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
         yield Field::new('id')->onlyOnDetail();
-        yield Field::new('createdAt')->onlyOnDetail();
+        yield Field::new('createdAt')->hideOnForm();
         yield BooleanField::new('declarePresent', 'Akkoord aanwezig')->hideOnIndex();
         yield BooleanField::new('declareSecrecy', 'Akkoord geheimhouding')->hideOnIndex();
         yield BooleanField::new('declareTerms', 'Akkoord voorwaarden')->hideOnIndex();
@@ -147,6 +175,7 @@ class AssociateCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
+            ->add('createdAt')
             ->add('enabled')
             ->add('singer')
             ->add('singerSoloist')
