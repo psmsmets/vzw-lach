@@ -43,7 +43,7 @@ class AssociateCrudController extends AbstractCrudController
             ->setDateTimeFormat('medium', 'short')
             ->setTimezone('Europe/Brussels')
             ->setNumberFormat('%.2d')
-            ->setDefaultSort(['createdAt' => 'ASC', 'lastname' => 'ASC', 'firstname' => 'ASC'])
+            ->setDefaultSort(['createdAt' => 'DESC', 'lastname' => 'ASC', 'firstname' => 'ASC'])
             ->setPaginatorPageSize(200)
         ;
     }
