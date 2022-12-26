@@ -10,6 +10,18 @@
         "/assets/build/vzw-lach.c340a5b6.css"
       ]
     },
+    "vzw-lach-enroll-form": {
+      "js": [
+        "/assets/build/runtime.56686b13.js",
+        "/assets/build/vzw-lach-enroll-form.e87c3f88.js"
+      ]
+    },
+    "ea-lightbox-prevent-scroll": {
+      "js": [
+        "/assets/build/runtime.56686b13.js",
+        "/assets/build/ea-lightbox-prevent-scroll.76fffd21.js"
+      ]
+    },
     "cover": {
       "js": [
         "/assets/build/runtime.56686b13.js"

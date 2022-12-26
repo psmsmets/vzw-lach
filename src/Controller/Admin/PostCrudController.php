@@ -32,12 +32,12 @@ class PostCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setDateFormat('medium')
+            ->setDateFormat('d MMM yy')
             ->setTimeFormat('short')
             ->setDateTimeFormat('medium', 'short')
             ->setTimezone('Europe/Brussels')
-            ->setNumberFormat('%.2d');
-        ;
+            ->setNumberFormat('%.2d')
+            ;
     }
 
     public function configureFields(string $pageName): iterable
