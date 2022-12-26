@@ -16,3 +16,9 @@ import * as bootstrap from 'bootstrap'
 
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+const toastElList = document.querySelectorAll('.toast')
+const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
+Array.prototype.filter.call(toastList, function(toast, {delay = 10000}) {
+   toast.show();
+});
