@@ -28,6 +28,8 @@ Encore
     .addStyleEntry('bootstrap', './assets/css/bootstrap.scss')
     .addStyleEntry('safari_select_fix', './assets/css/safari_select_fix.scss')
     .addEntry('vzw-lach', './assets/js/vzw-lach.js')
+    .addEntry('vzw-lach-enroll-form', './assets/js/vzw-lach-enroll-form.js')
+    .addEntry('ea-lightbox-prevent-scroll', './assets/js/ea-lightbox-prevent-scroll.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
