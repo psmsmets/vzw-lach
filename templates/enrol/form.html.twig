@@ -5,27 +5,23 @@
 {% block header %}
 <div>
     <nav class="nav nav-masthead justify-content-center float-md-end fw-light">
-        <a class="nav-link fw-bold py-1 px-0 {%if enrol_step == 1 %}active{%endif%}" href="#" onclick="return false;">stap 1</a>
-        <a class="nav-link fw-bold py-1 px-0 {%if enrol_step == 2 %}active{%endif%}" href="#" onclick="return false;">stap 2</a>
-        <a class="nav-link fw-bold py-1 px-0 {%if enrol_step == 3 %}active{%endif%}" href="#" onclick="return false;">stap 3</a>
-        <a class="nav-link fw-bold py-1 px-0 {%if enrol_step == 4 %}active{%endif%}" href="#" onclick="return false;">stap 4</a>
-        <a class="nav-link fw-bold py-1 px-0 {%if enrol_step == 5 %}active{%endif%}" href="#" onclick="return false;">stap 5</a>
+        <a class="nav-link fw-bold py-1 px-0 {%if enrol_step == 1 %}active{%endif%}" href="javascript:void(0)">stap 1</a>
+        <a class="nav-link fw-bold py-1 px-0 {%if enrol_step == 2 %}active{%endif%}" href="javascript:void(0)">stap 2</a>
+        <a class="nav-link fw-bold py-1 px-0 {%if enrol_step == 3 %}active{%endif%}" href="javascript:void(0)">stap 3</a>
+        <a class="nav-link fw-bold py-1 px-0 {%if enrol_step == 4 %}active{%endif%}" href="javascript:void(0)">stap 4</a>
+        <a class="nav-link fw-bold py-1 px-0 {%if enrol_step == 5 %}active{%endif%}" href="javascript:void(0)">stap 5</a>
     </nav>
 </div>
 {% endblock %}
 
 {% block main %}
-    {#<h1>STAP <i class="bi bi-{{enrol_step}}-square"></i> - {{enrol_title}}</h1>#}
     <h1>{{enrol_title}}</h1>
-
     {{enrol_info|raw}}
-
     {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
         {{ form_widget(form) }}
         {% if enrol_prev %}<a href="{{ path(enrol_prev) }}" class="btn btn-secondary">Vorige</a>{% endif %}
         <button class="btn btn-primary" type="submit" id="submit">{{ button_label|default(enrol_btn) }}</button>
     {{ form_end(form) }}
-
 {% endblock %}
 
 {% block javascripts %}

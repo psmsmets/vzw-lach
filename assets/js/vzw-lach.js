@@ -19,6 +19,6 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 
 const toastElList = document.querySelectorAll('.toast')
 const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
-Array.prototype.filter.call(toastList, function(toast, {delay = 10000}) {
+Array.prototype.filter.call(toastList, function(toast, {delay = 7500}) {
    toast.show();
 });
