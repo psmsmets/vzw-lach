@@ -271,7 +271,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getEnabledAssociates(): Collection
     {
         return $this->associates->filter(function(Associate $associate) {
-            return $associate->isEnabled();
+            return $associate->isEnabled() == true;
+        });
+    }
+
+    public function getDisabledAssociates(): Collection
+    {
+        return $this->associates->filter(function(Associate $associate) {
+            return $associate->isEnabled() == false;
         });
     }
 
@@ -297,9 +304,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function countAssociates(): int
+    public function countAssociates(bool $enabled = null): int
     {
-        return count($this->associates);
+        if (is_null($enabled)) return count($this->associates);
+        return count($enabled ? $this->getEnabledAssociates() : $this->getDisabledAssociates());
     }
 
     public function getAssociateNames(int $length = 0, string $separator = ', '): string

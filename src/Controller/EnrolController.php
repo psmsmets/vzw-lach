@@ -74,6 +74,15 @@ class EnrolController extends AbstractController
                     'Je hebt al ' . $user->countAssociates() .
                     ' eerdere inschrijving(en) op dit e-mailadres: ' . $user->getAssociateNames(0)
                 );
+
+                $associateRepository = $this->doctrine->getRepository(Associate::class);
+                foreach ($associateRepository->findBy(['enabled' => false, 'user' => $user]) as $associate) {
+                    $session->getFlashBag()->add('alert-warning',
+                        'Je hebt een onvolledige inschrijving voor '.$associate->getFullName().'. '.
+                        '<a href="?associate='.$associate->getId().'">Deze inschrijving voltooien.</a>'
+                    );
+                }
+
             }
             $session->set('user', $user);
 
@@ -99,7 +108,8 @@ class EnrolController extends AbstractController
         $user = $session->get('user', false);
         if (!$user) return $this->redirectToRoute('enrol_user', [], Response::HTTP_SEE_OTHER);
 
-        if (!($associate = $this->doctrine->getRepository(Associate::class)->findOneById($session->get('associate')))) {
+        $associateRepo = $this->doctrine->getRepository(Associate::class);
+        if (!( $associate = $associateRepo->findOneById( $session->get('associate', $request->query->get('associate')) ) )) {
             $associate = new Associate();
             $associate->setUser($user);
         }
