@@ -13,7 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, ChoiceField, DateField, ImageField, NumberField, TextField, EmailField, TelephoneField};
-use EasyCorp\Bundle\EasyAdminBundle\Filter\{ChoiceFilter};
+use EasyCorp\Bundle\EasyAdminBundle\Filter\{ArrayFilter};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -100,7 +100,7 @@ class AssociateCrudController extends AbstractCrudController
             ->onlyOnIndex()
             ;
 
-        yield TextField::new('categoryPreferencesList', 'Voorkeur')->hideOnForm();
+        yield Field::new('categoryPreferences', 'Voorkeur')->hideOnForm();
         yield TextField::new('companion')->hideOnIndex();
 
         yield BooleanField::new('singer')->renderAsSwitch(false)->hideOnForm();
@@ -134,7 +134,7 @@ class AssociateCrudController extends AbstractCrudController
         yield FormField::addTab('Categories');
         yield FormField::addPanel('Categories');
 
-        yield TextField::new('categoryPreferencesList', 'Voorkeur')->onlyOnDetail();
+        yield Field::new('categoryPreferences', 'Voorkeur')->onlyOnDetail();
         yield TextField::new('companion')->hideOnForm();
 
         yield AssociationField::new('categories', 'Groep(en)')
@@ -181,23 +181,8 @@ class AssociateCrudController extends AbstractCrudController
             ->add('singerSoloist')
             ->add(AssociationDateTimeFilter::new('details.birthdate', 'Geboortedatum'))
             ->add(GenderFilter::new('details.gender', 'Geslacht'))//->setFormTypeOption('mapped', false))
-            ->add(ChoiceFilter::new('categoryPreferences')->setChoices(AssociateBaseType::PREF_CATEGORIES))
+            ->add(ArrayFilter::new('categoryPreferences')->setChoices(AssociateBaseType::PREF_CATEGORIES)->setFormTypeOption('mapped', false))
             ->add('categories', 'Toegewezen groep')
         ;
     }
-/*
-    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
-    {
-        $queryBuilder = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
-
-        // if user defined sort is not set
-        if (0 === count($searchDto->getSort())) {
-            $queryBuilder
-                ->addSelect('CONCAT(entity.first_name, \' \', entity.last_name) AS HIDDEN full_name')
-                ->addOrderBy('full_name', 'DESC');
-        }
-
-        return $queryBuilder;
-    }
-*/
 }

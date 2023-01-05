@@ -75,14 +75,21 @@ class ProfileManager
         return $this->postRepository->findPosts($user, null, null, $limit);
     }
 
-    public function getEvents($obj, ?int $limit = null): array
+    public function getUpcomingEvents($obj, ?int $limit = null): array
     {
         return $this->eventRepository->findEvents($obj, null, null, $limit);
     }
 
-    public function getPosts($obj): array
+    public function getPeriodEvents($obj, $from = null, $until = null): array
     {
-        return $this->postRepository->findPosts($obj, null, false, Post::NUMBER_OF_ITEMS);
+        $from = $from instanceof DateTimeInterface ? $from : new \DateTimeImmutable('2023-01-01');
+        $until = $until instanceof DateTimeInterface ? $untill : $from->modify('+1 year');
+        return $this->eventRepository->findEvents($obj, $from, $until, null);
+    }
+
+    public function getPosts($obj, int $page = 1): array
+    {
+        return $this->postRepository->findPosts($obj, null, false, Post::NUMBER_OF_ITEMS, $page);
     }
 
     public function getSpecialPosts($obj): array

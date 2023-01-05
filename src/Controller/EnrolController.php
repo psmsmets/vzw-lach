@@ -48,7 +48,6 @@ class EnrolController extends AbstractController
         $session = $this->requestStack->getSession();
         $enrolled = $session->get('enrolled', false);
         $session->set('enrolled', false);
-        $session->clear();
 
         return $this->render('enrol/index.html.twig', ['enrolled' => $enrolled]);
     }
@@ -57,8 +56,9 @@ class EnrolController extends AbstractController
     public function newUser(Request $request): Response
     {
         $session = $this->requestStack->getSession();
-        $user = $session->get('user', new User());
+        $session->set('user', false);
 
+        $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -77,14 +77,26 @@ class EnrolController extends AbstractController
 
                 $associateRepository = $this->doctrine->getRepository(Associate::class);
                 foreach ($associateRepository->findBy(['enabled' => false, 'user' => $user]) as $associate) {
-                    $session->getFlashBag()->add('alert-warning',
-                        'Je hebt een onvolledige inschrijving voor '.$associate->getFullName().'. '.
-                        '<a href="?associate='.$associate->getId().'">Deze inschrijving voltooien.</a>'
+                    $session->getFlashBag()->add(
+                        'alert-warning',
+                        sprintf(
+                            "Je hebt een onvolledige inschrijving voor %s aangemaakt op %s. ".
+                            "<a href=\"?associate=%s\">Klik hier om deze inschrijving te voltooien.</a>",
+                            $associate->getFullName(),
+                            $associate->getCreatedAt()->format('d/m/Y'),
+                            $associate->getId()
+                        )
                     );
                 }
 
             }
             $session->set('user', $user);
+
+            // associate in session and not related to the user? Reset!
+            $associateRepo = $this->doctrine->getRepository(Associate::class);
+            if (( $associate = $associateRepo->findOneById($session->get('associate')) )) {
+                if ($associate->getUser() !== $user) $session->set('associate', null);
+            }
 
             return $this->redirectToRoute('enrol_associate_base', [], Response::HTTP_SEE_OTHER);
         }
@@ -95,7 +107,6 @@ class EnrolController extends AbstractController
             'enrol_info' => '<p>Wens je meerdere personen in te schrijven op één e-mailadres, dan kan je hier steeds dezelfde gegevens invullen.<br/>In de volgende stappen vragen we de specifieke gegevens voor elke deelnemer.</p>',
             'enrol_prev' => false,
             'enrol_btn' => 'Volgende',
-            'user' => $user,
             'form' => $form,
         ]);
     }
@@ -109,7 +120,7 @@ class EnrolController extends AbstractController
         if (!$user) return $this->redirectToRoute('enrol_user', [], Response::HTTP_SEE_OTHER);
 
         $associateRepo = $this->doctrine->getRepository(Associate::class);
-        if (!( $associate = $associateRepo->findOneById( $session->get('associate', $request->query->get('associate')) ) )) {
+        if (!( $associate = $associateRepo->findOneById( $request->query->get('associate', $session->get('associate')) ) )) {
             $associate = new Associate();
             $associate->setUser($user);
         }
@@ -135,8 +146,6 @@ class EnrolController extends AbstractController
             'enrol_info' => '',
             'enrol_prev' => 'enrol_user',
             'enrol_btn' => 'Volgende',
-            'user' => $user,
-            'associate' => $associate,
             'form' => $form,
         ]);
     }
@@ -166,8 +175,6 @@ class EnrolController extends AbstractController
             'enrol_info' => '',
             'enrol_prev' => 'enrol_associate_base',
             'enrol_btn' => 'Volgende',
-            'user' => $user,
-            'associate' => $associate,
             'form' => $form,
         ]);
     }
@@ -197,8 +204,6 @@ class EnrolController extends AbstractController
             'enrol_info' => '',
             'enrol_prev' => 'enrol_associate_details',
             'enrol_btn' => 'Volgende',
-            'user' => $user,
-            'associate' => $associate,
             'form' => $form,
         ]);
     }
@@ -237,8 +242,6 @@ class EnrolController extends AbstractController
             'enrol_info' => '',
             'enrol_prev' => 'enrol_associate_address',
             'enrol_btn' => 'Verzenden',
-            'user' => $user,
-            'associate' => $associate,
             'form' => $form,
         ]);
     }

@@ -1,0 +1,11 @@
+{% extends 'profile.html.twig' %}
+
+{% block main %}
+    <h1 class="text-secondary">Kalender</h1> 
+
+    {% for event in events %}
+      <h4 class="mt-4">{{event.title}}</h4>
+      {{event.body|raw}}
+    {% endfor %}
+
+{% endblock %}

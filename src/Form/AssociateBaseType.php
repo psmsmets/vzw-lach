@@ -132,7 +132,8 @@ class AssociateBaseType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-//            'data_class' => Associate::class,
+            'data_class' => Associate::class,
+            'csrf_protection' => false,
         ]);
     }
 }

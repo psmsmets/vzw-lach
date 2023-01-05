@@ -6,11 +6,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 
 use App\Controller\Admin\AssociateCrudController;
 use App\Entity\User;
-use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore};
+use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, Filters, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\{IdField, AssociationField, BooleanField, ChoiceField, EmailField, TextField, TelephoneField};
+use EasyCorp\Bundle\EasyAdminBundle\Filter\{BooleanFilter};
 use Symfony\Component\Form\Extension\Core\Type\{PasswordType, RepeatedType};
 use Symfony\Component\Form\{FormBuilderInterface, FormEvent, FormEvents};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -136,5 +137,13 @@ class UserCrudController extends AbstractCrudController
             $hash = $this->userPasswordHasher->hashPassword($user, $password);
             $form->getData()->setPassword($hash);
         };
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('createdAt')
+            ->add('enabled')
+        ;
     }
 }
