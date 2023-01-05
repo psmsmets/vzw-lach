@@ -61,7 +61,7 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: '_show', methods: ['GET'])]
+    #[Route('/deelnemer/{id}', name: '_show', methods: ['GET'])]
     public function show(Associate $associate): Response
     {
 
@@ -72,7 +72,7 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: '_edit', methods: ['GET', 'POST'])]
+    #[Route('/deelnemer/{id}/bewerk', name: '_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Associate $associate): Response
     {
         if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
@@ -89,6 +89,42 @@ class ProfileController extends AbstractController
         return $this->renderForm('profile/edit.html.twig', [
             'associate' => $associate,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/berichten', name: '_posts', methods: ['GET'])]
+    public function posts(): Response
+    {
+
+        // usually you'll want to make sure the user is authenticated first,
+        // see "Authorization" below
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // returns your User object, or null if the user is not authenticated
+        // use inline documentation to tell your editor your exact User class
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        return $this->render('profile/posts.html.twig', [
+            'posts' => $this->manager->getPosts($user),
+        ]);
+    }
+
+    #[Route('/kalender', name: '_events', methods: ['GET'])]
+    public function events(): Response
+    {
+
+        // usually you'll want to make sure the user is authenticated first,
+        // see "Authorization" below
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // returns your User object, or null if the user is not authenticated
+        // use inline documentation to tell your editor your exact User class
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        return $this->render('profile/events.html.twig', [
+            'events' => $this->manager->getPeriodEvents($user),
         ]);
     }
 }

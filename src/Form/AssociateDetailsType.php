@@ -53,6 +53,7 @@ class AssociateDetailsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => AssociateDetails::class,
+            'csrf_protection' => false,
         ]);
     }
 }
