@@ -20,7 +20,7 @@ class DefaultController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        return $this->redirectToRoute('enrol_index');
+        //return $this->redirectToRoute('enrol_index');
         if ($this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('profile_index');
         }

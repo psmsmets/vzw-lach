@@ -1,0 +1,15 @@
+{% extends 'profile.html.twig' %}
+
+{% block main %}
+
+  <h1 class="text-secondary">Zoekertjes</h1> 
+
+  {% for advert in adverts %}
+    {% include 'advert/template.html.twig' with {'item': advert } %}
+  {% endfor %}
+
+  {% if pages > 1 %}
+    {% include 'modules/pagination.html.twig' %}
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'profile.html.twig' %}
+
+{% block main %}
+
+  <h1 class="text-secondary">Berichten</h1> 
+
+  {% for post in posts %}
+    {% include 'post/template.html.twig' with {'item': post } %}
+  {% endfor %}
+
+  {% if pages > 1 %}
+    {% include 'modules/pagination.html.twig' %}
+  {% endif %}
+
+{% endblock %}

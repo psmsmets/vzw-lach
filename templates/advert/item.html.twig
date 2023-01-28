@@ -1,0 +1,9 @@
+{% extends 'profile.html.twig' %}
+
+{% block main %}
+
+    <h1 class="text-secondary">Zoekertje</h1> 
+
+    {% include 'advert/template.html.twig' with {'item': advert } %}
+
+{% endblock %}

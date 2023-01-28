@@ -1,0 +1,47 @@
+<div class="p-3 mb-4 bg-white shadow-sm">
+
+  <h4 class="text-primary d-flex justify-content-between mb-3">{{ post.title|capitalize }} 
+    {% if pinned is defined %}<i class="fas fa-thumbtack"></i>{% endif %}
+    {% if post.publishedAt > date()%}
+      <small>
+        <i class="fas fa-lock" data-toggle="tooltip" data-placement="bottom" title=""
+           data-original-title="Nog niet publiek"></i>
+      </small>
+    {% elseif not post.published %}
+        <small>
+          <i class="fas fa-lock" data-toggle="tooltip" data-placement="bottom" title=""
+            data-original-title="Niet gepubliceerd"></i>
+        </small>
+    {% endif %}
+  </h4>
+
+  {{post.body|raw}}
+
+  <div class="small text-secondary d-flex justify-content-between mt-3">
+    <ul class="list-inline mb-0">
+      {% if post.showPublishedAt %}
+        <li class="list-inline-item small"><i class="bi bi-clock"></i> gepubliceerd
+          {{ post.publishedAt|format_datetime('medium', 'none') }}
+        </li>
+      {% endif %}
+      {% if post.showUpdatedAt and post.updatedAt %}
+        <li class="list-inline-item small"><i class="bi bi-clock-history"></i> aangepast
+          {{ post.updatedAt|format_datetime('medium', 'none') }}
+        </li>
+      {% endif %}
+      <li class="list-inline-item small"><i class="bi bi-people-fill"></i>
+        {% for category in post.categories %}
+          {{ category|lower }}{% if not loop.last%} | {% endif %}
+        {% else %}
+          iedereen
+        {% endfor %}
+      </li>
+    </ul>
+    <ul class="list-inline mb-0">
+      <li class="list-inline-item">
+        <a href="{{ path('profile_post', {'uuid': post.id}) }}"><i class="bi bi-link-45deg"></i></a>
+      </li>
+    </ul>
+  </div>
+
+</div>

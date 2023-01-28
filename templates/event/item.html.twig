@@ -1,0 +1,78 @@
+{% extends 'profile.html.twig' %}
+
+{% block main %}
+
+  <h1 class="text-secondary">Kalender</h1> 
+
+  <div class="p-3 mb-4 bg-white shadow-sm">
+
+
+    {% set past  = date(event.trueEndTime) < date() %}
+    {% set year  = date(event.trueEndTime)|date_modify('last day of december this year noon') %}
+    {% set month = date(event.trueEndTime)|date_modify('last day of this month noon') %}
+      
+    <div class="media align-top mt-3 event {% if past %} past{% endif %}{% if event.cancelled %} alert-danger{% endif %}">
+
+     <span class="badge rounded-1 mr-3 event text-bg-{% if past %}secondary{% else %}primary{% endif %}">{% if past %}<s>{% endif %}{{event.startTime|date('d')}}{% if past %}</s>{% endif %}</span>
+
+     <div class="media-body ms-3 pb-0 mb-0 lh-125 w-100">
+
+       <h5 class="pb-0 mb-1 d-flex justify-content-between text-primary">{{event.title|capitalize}}
+         <small>
+           {% if event.cancelled %}
+             <span class="badge rounded-1 text-bg-danger ml-1">Geannuleerd</span>
+           {% endif %}
+         </small>
+       </h5>
+
+       <h6 class="mb-2">{{event.getFormattedPeriod|lower}}</h6>
+
+       <div class="small text-secondary d-flex justify-content-between mt-2 mb-0">
+         <ul class="list-inline mb-0">
+           {% if event.location %}
+           <li class="list-inline-item small"><i class="bi bi-pin-map"></i>
+             {{ event.location|capitalize }}
+           </li>
+           {% endif %}
+           <li class="list-inline-item small"><i class="bi bi-people-fill"></i>
+             {% for category in event.categories %}
+               {{ category|lower }}{% if not loop.last%} | {% endif %}
+             {% else %}
+               iedereen
+             {% endfor %}
+           </li>
+         </ul>
+         <ul class="list-inline mb-0"></ul>
+       </div>
+
+       <div class="my-4">{{event.body|raw}}</div>
+
+       {% if event.url %}
+       <div class="my-4">
+         <a href="{{ event.url }}" class="btn btn-outline-secondary fw-light"><i class="bi bi-info-lg"></i> klik voor meer informatie</a>
+       </div>
+       {% endif %}
+
+       <div class="small text-muted d-flex justify-content-between mt-2 mb-0">
+         <ul class="list-inline mb-0">
+           {% if event.showPublishedAt %}
+           <li class="list-inline-item small"><i class="bi bi-clock-history"></i> gepubliceerd
+             {{ event.publishedAt|format_datetime('medium', 'none') }}
+           </li>
+           {% endif %}
+           {% if event.showUpdatedAt and event.updatedAt %}
+           <li class="list-inline-item small"><i class="bi bi-clock-history"></i> aangepast
+             {{ event.updatedAt|format_datetime('medium', 'none') }}
+           </li>
+           {% endif %}
+         </ul>
+       </div>
+
+     </div>
+
+   </div>
+
+  </div>
+
+{% endblock %}
+

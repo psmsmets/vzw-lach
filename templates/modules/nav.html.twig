@@ -1,3 +1,5 @@
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+
 <nav class="navbar navbar-dark bg-primary navbar-expand-lg fixed-top">
   <div class="container-xl">
     <a class="navbar-brand d-md-none" href="/">HGCVHKV</a>
@@ -13,19 +15,19 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{path('profile_index')}}">Start</a>
+            <a class="nav-link" href="{{path('profile_index')}}">Start</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{path('profile_posts')}}">Berichten</a>
+            <a class="nav-link" href="{{path('profile_posts')}}">Berichten</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{path('profile_events')}}">Kalender</a>
+            <a class="nav-link" href="{{path('profile_events')}}">Kalender</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{path('profile_index')}}">Documenten</a>
+            <a class="nav-link" href="{{path('profile_index')}}">Documenten</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{path('profile_index')}}">Zoekertjes</a>
+            <a class="nav-link active" aria-current="page" aria-current="page" href="{{path('profile_adverts')}}">Zoekertjes</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{path('page', {slug: 'contact'})}}">Contact</a>
