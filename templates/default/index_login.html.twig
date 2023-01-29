@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('cover') }}
+{% endblock %}
+
+{% block body %}
+    <main class="w-100 m-auto text-center">
+      <img class="img-fluid mb-md-3" src="{{ asset('assets/img/logo/hgcvhkv_klein.jpg') }}" alt="" style="max-height: 300px;">
+      {#<h1 class="display-2"></h1>#}
+      <div class="h4 fw-lighter">Een muziektheaterproductie van <a href="https://vzw-lach.be">vzw LA:CH</a></div>
+      <div class="h5 mt-4">Meld je aan en blijf op de hoogte.</div>
+      <a href="{{ path('security_signin') }}" class="btn btn-lg btn-primary mt-3"><i class="bi bi-check-lg"></i> aanmelden</a>
+    </main>
+{% endblock %}
+
+{% block footer %}
+  {% include 'modules/footer.html.twig' %}
+{% endblock %}

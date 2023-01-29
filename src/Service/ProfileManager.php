@@ -2,18 +2,23 @@
 
 namespace App\Service;
 
+use App\Entity\Advert;
 use App\Entity\Associate;
 use App\Entity\AssociateAddress;
 use App\Entity\Category;
 use App\Entity\Event;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Repository\AdvertRepository;
 use App\Repository\AssociateRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Constraints\Uuid as UuidConstraint;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Uid\Uuid;
 
 class ProfileManager 
 {
@@ -25,6 +30,7 @@ class ProfileManager
 
     public function __construct(
         EntityManagerInterface $em,
+        AdvertRepository $advertRepository,
         AssociateRepository $associateRepository,
         CategoryRepository $categoryRepository,
         EventRepository $eventRepository,
@@ -33,11 +39,13 @@ class ProfileManager
     )
     {
         $this->em = $em;
+        $this->advertRepository = $advertRepository;
         $this->associateRepository = $associateRepository;
         $this->categoryRepository = $categoryRepository;
         $this->eventRepository = $eventRepository;
         $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
+        setlocale(LC_ALL, 'nl_BE');
     }
 
     public function associateCategories(Associate $associate): array
@@ -87,9 +95,32 @@ class ProfileManager
         return $this->eventRepository->findEvents($obj, $from, $until, null);
     }
 
+    public function getEvent($obj, string $uuid): ?Event
+    {
+        $validator = Validation::createValidator();
+        $uuidContraint = new UuidConstraint();
+
+        $errors = $validator->validate($uuid, $uuidContraint);
+        return count($errors) == 0 ? $this->eventRepository->findEvent(Uuid::fromString($uuid), $obj) : null;
+    }
+
+    public function getPost($obj, string $uuid): ?Post
+    {
+        $validator = Validation::createValidator();
+        $uuidContraint = new UuidConstraint();
+
+        $errors = $validator->validate($uuid, $uuidContraint);
+        return count($errors) == 0 ? $this->postRepository->findPost(Uuid::fromString($uuid), $obj) : null;
+    }
+
     public function getPosts($obj, int $page = 1): array
     {
         return $this->postRepository->findPosts($obj, null, false, Post::NUMBER_OF_ITEMS, $page);
+    }
+
+    public function getPostPages($obj): int 
+    {
+        return (int) ceil($this->postRepository->countPosts($obj, null, false) / Post::NUMBER_OF_ITEMS);
     }
 
     public function getSpecialPosts($obj): array
@@ -100,5 +131,24 @@ class ProfileManager
     public function getPinnedPosts($obj): array
     {
         return $this->postRepository->findPosts($obj, null, true, Post::NUMBER_OF_ITEMS_HOMEPAGE);
+    }
+
+    public function getAdvert(string $uuid): ?Advert
+    {
+        $validator = Validation::createValidator();
+        $uuidContraint = new UuidConstraint();
+
+        $errors = $validator->validate($uuid, $uuidContraint);
+        return count($errors) == 0 ? $this->advertRepository->findAdvert(Uuid::fromString($uuid)) : null;
+    }
+
+    public function getAdverts(int $page = 1): array
+    {
+        return $this->advertRepository->findAdverts(Advert::NUMBER_OF_ITEMS, $page);
+    }
+
+    public function getAdvertPages(): int 
+    {
+        return (int) ceil($this->advertRepository->countAdverts() / Advert::NUMBER_OF_ITEMS);
     }
 }

@@ -29,6 +29,8 @@ Encore
     .addStyleEntry('safari_select_fix', './assets/css/safari_select_fix.scss')
     .addEntry('vzw-lach', './assets/js/vzw-lach.js')
     .addEntry('vzw-lach-enroll-form', './assets/js/vzw-lach-enroll-form.js')
+    .addEntry('vzw-lach-advert', './assets/js/vzw-lach-advert.js')
+    .addEntry('vzw-lach-event', './assets/js/vzw-lach-event.js')
     .addEntry('ea-lightbox-prevent-scroll', './assets/js/ea-lightbox-prevent-scroll.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.

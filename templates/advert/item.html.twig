@@ -1,0 +1,13 @@
+{% extends 'profile.html.twig' %}
+
+{% block main %}
+
+    <h1 class="text-secondary">Zoekertje</h1> 
+
+    {% include 'advert/template.html.twig' with {'item': advert, 'extend': true } %}
+
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="{{ path('profile_adverts') }}">terug naar het overzicht</a></li>
+    </ul>
+
+{% endblock %}

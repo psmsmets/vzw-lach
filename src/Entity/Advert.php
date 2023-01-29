@@ -2,19 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\PostRepository;
+use App\Repository\AdvertRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: PostRepository::class)]
+#[ORM\Entity(repositoryClass: AdvertRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Post
+class Advert 
 {
-    public const NUMBER_OF_ITEMS_HOMEPAGE = 5;
-    public const NUMBER_OF_ITEMS = 10;
+    public const NUMBER_OF_ITEMS = 25;
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -23,14 +23,20 @@ class Post
     #[ORM\Column]
     private ?bool $published = null;
 
-    #[ORM\Column]
-    private ?bool $special = null;
+    #[ORM\Column(nullable: true)]
+    private ?bool $completed = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Assert\PositiveOrZero]
+    private ?int $required = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Assert\PositiveOrZero]
+    private ?int $acquired = null;
 
     #[ORM\Column]
-    private ?bool $pinned = null;
-
-    #[ORM\Column]
-    private ?bool $archived = null;
+    #[Assert\PositiveOrZero]
+    private ?int $progress = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -41,36 +47,36 @@ class Post
     #[ORM\Column]
     private ?\DateTimeImmutable $publishedAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $completedAt = null;
+
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
-
     #[ORM\Column(type: Types::TEXT)]
     private ?string $body = null;
-
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'posts')]
-    private Collection $categories;
 
     public function __construct()
     {
         $this->id = Uuid::v6();
         $this->createdAt = new \DateTimeImmutable();
         $this->publishedAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', date('Y-m-d H:i'));
-        $this->published = false;
-        $this->categories = new ArrayCollection();
+        $this->published = true;
+        $this->completed = false;
+        $this->progress = 0;
     }
 
     public function __toString(): string
     {
-        return $this->getTitle();
+        return sprintf('%s (%d%%)', $this->getTitle(), $this->getProgress());
     }
 
     #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->setUpdatedAt();
+        $this->setProgress();
+        if (!is_null($this->required)) $this->setCompleted($this->acquired >= $this-> required);
     }
 
     public function getId(): ?Uuid
@@ -90,40 +96,58 @@ class Post
         return $this;
     }
 
-    public function isSpecial(): ?bool
+    public function isCompleted(): ?bool
     {
-        return $this->special;
+        return is_null($this->completed) ? $this->getProgress() == 100 : $this->completed;
     }
 
-    public function setSpecial(bool $special): self
+    public function setCompleted(bool $completed): self
     {
-        $this->special = $special;
+        $this->completed = $completed;
+        if ($completed) $this->completedAt = new \DateTimeImmutable();
 
         return $this;
     }
 
-    public function isPinned(): ?bool
+    public function setRequired(int $required): self
     {
-        return $this->pinned;
-    }
-
-    public function setPinned(bool $pinned): self
-    {
-        $this->pinned = $pinned;
+        $this->required = $required;
 
         return $this;
     }
 
-    public function isArchived(): ?bool
+    public function getRequired(): ?int
     {
-        return $this->archived;
+        return $this->required;
     }
 
-    public function setArchived(bool $archived): self
+    public function setAcquired(int $acquired): self
     {
-        $this->archived = $archived;
+        $this->acquired = $acquired;
 
         return $this;
+    }
+
+    public function getAcquired(): ?int
+    {
+        return $this->acquired;
+    }
+
+    public function setProgress(): self
+    {
+        if (is_null($this->required) || $this->required == 0)
+        {
+            $this->progess = $this->completed ? 100 : 0;
+        } else {
+            $this->progress = (int) round($this->acquired/$this->required*100);
+        }
+
+        return $this;
+    } 
+
+    public function getProgress(): int
+    {
+        return $this->progress;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
@@ -155,6 +179,11 @@ class Post
         return $this;
     }
 
+    public function getCompletedAt(): \DateTimeImmutable
+    {
+        return $this->completedAt;
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -167,18 +196,6 @@ class Post
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     public function getBody(): ?string
     {
         return $this->body;
@@ -187,30 +204,6 @@ class Post
     public function setBody(string $body): self
     {
         $this->body = $body;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<string, Category>
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Category $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        $this->categories->removeElement($category);
 
         return $this;
     }

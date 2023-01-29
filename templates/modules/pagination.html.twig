@@ -1,0 +1,21 @@
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+
+<nav class="mt-5">
+  <ul class="pagination pagination-sm justify-content-center">
+    <li class="page-item {% if page<2 %}disabled{% endif %}">
+      <a class="page-link" href="{{currentPath}}?pagina={{page-1}}">Vorige</a>
+    </li>
+    {% for p in 1..pages %}
+      {% if p==page %}
+      <li class="page-item active" aria-current="page">
+        <span class="page-link">{{p}}</span>
+      </li>
+      {% else %}
+      <li class="page-item"><a class="page-link" href="{{currentPath}}?pagina={{p}}">{{p}}</a></li>
+      {% endif %}
+    {% endfor %}
+    <li class="page-item {% if page==pages %}disabled{% endif %}">
+      <a class="page-link" href="{{currentPath}}?pagina={{page+1}}">Volgende</a>
+    </li>
+  </ul>
+</nav>

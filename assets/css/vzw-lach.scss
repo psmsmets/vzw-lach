@@ -96,21 +96,27 @@ th .btn-link:hover {
 }
 
 /*
- * Calendar
+ * Events
 */
-.cal-cancelled {
+.event.media {
+  display: flex;
+  width: 100%;
+}
+
+.event-cancelled {
   text-decoration: line-through;
 }
 
-.cal-link {
+.event-link, .advert-link {
   cursor: pointer;
+  background-color: #fff;
   &:hover {
     background-color: #f8f9fa;
   }
 
 }
  
-.badge.cal {
+.badge.event {
   width: 48px;
   height: 48px;
   font-weight: 300;
@@ -119,7 +125,7 @@ th .btn-link:hover {
   text-align: center;
   padding: .5rem;
 
-  &.cal-md {
+  &.event-md {
     width: 48px;
     height: 48px;
     font-weight: 300;
@@ -129,7 +135,7 @@ th .btn-link:hover {
     padding: .3rem;
   }
 
-  &.cal-sm {
+  &.event-sm {
     width: 28px;
     height: 28px;
     font-size: .85rem;
@@ -139,21 +145,21 @@ th .btn-link:hover {
   }
 }
 
-ul.cal-small i {
+ul.event-small i {
   width: 1.25rem;
 }
 
-ul.cal-smaller i {
+ul.event-smaller i {
   width: 1.5rem;
 }
 
-$cals: (1: #ed1c24, 2: #d4af37, 3: #6c757d, 4: #343a40, 5: #ffc107);
+$events: (1: #ed1c24, 2: #d4af37, 3: #6c757d, 4: #343a40, 5: #ffc107);
 
-@each $cal, $color in $cals {
-  .badge.cal-#{$cal} {
+@each $event, $color in $events {
+  .badge.event-#{$event} {
     background-color: $color;
   }
-  a.badge.cal-#{$cal}:hover {
+  a.badge.event-#{$event}:hover {
     background-color: darken($color, 15%);
   }
 }

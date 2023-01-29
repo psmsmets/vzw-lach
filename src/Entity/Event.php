@@ -39,15 +39,6 @@ class Event
     private ?\DateTimeImmutable $cancelledAt = null;
 
     #[ORM\Column]
-    private ?bool $showUpdatedAt = null;
-
-    #[ORM\Column]
-    private ?bool $showPublishedAt = null;
-
-    #[ORM\Column]
-    private ?bool $showCancelledAt = null;
-
-    #[ORM\Column]
     private ?\DateTimeImmutable $startTime = null;
 
     #[ORM\Column(nullable: true)]
@@ -85,9 +76,6 @@ class Event
         $this->published = false;
         $this->cancelled = false;
         $this->archived = false;
-        $this->showUpdatedAt = true;
-        $this->showPublishedAt = true;
-        $this->showCancelledAt = false;
         $this->categories = new ArrayCollection();
     }
 
@@ -173,30 +161,6 @@ class Event
     public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
     {
         if (!$this->published) $this->publishedAt = $publishedAt;
-
-        return $this;
-    }
-
-    public function getShowUpdatedAt(): bool
-    {
-        return $this->showUpdatedAt;
-    }
-
-    public function setShowUpdatedAt(bool $showUpdatedAt): self
-    {
-        $this->showUpdatedAt = $showUpdatedAt;
-
-        return $this;
-    }
-
-    public function getShowPublishedAt(): bool
-    {
-        return $this->showPublishedAt;
-    }
-
-    public function setShowPublishedAt(bool $showPublishedAt): self
-    {
-        $this->showPublishedAt = $showPublishedAt;
 
         return $this;
     }

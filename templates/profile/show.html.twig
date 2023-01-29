@@ -13,6 +13,8 @@
       </ul>
     {% endif %}
 
+    <div class="p-3 mb-4 bg-white shadow-sm">
+
     <table class="table">
         <tbody>
             <tr>
@@ -52,8 +54,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('profile_index') }}">terug naar het overzicht</a>
+    </div>
 
-    <a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="{{ path('profile_index') }}">terug naar het overzicht</a></li>
+      <li class="list-inline-item"><a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a></li>
+    </ul>
 
 {% endblock %}

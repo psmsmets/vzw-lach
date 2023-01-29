@@ -37,13 +37,11 @@
     <h2 class="text-secondary mt-5">Laatste info</h2>
 
     {% for post in pinned %}
-      <h4 class="mt-4">{{post.title}}</h4>
-      {{post.body|raw}}
+      {% include 'post/template.html.twig' with {'item': post } %}
     {% endfor %}
 
     {% for post in posts %}
-      <h4 class="mt-4">{{post.title}}</h4>
-      {{post.body|raw}}
+      {% include 'post/template.html.twig' with {'item': post } %}
     {% else %}
       geen berichten gevonden ...
     {% endfor %}
