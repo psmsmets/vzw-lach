@@ -77,9 +77,7 @@ class PostCrudController extends AbstractCrudController
         yield BooleanField::new('published')->renderAsSwitch(false)->hideOnForm();
 
         yield DateTimeField::new('createdAt')->onlyOnDetail();
-
         yield DateTimeField::new('updatedAt')->hideOnForm();
-        yield BooleanField::new('showUpdatedAt')->renderAsSwitch(true)->hideOnIndex();
 
         yield BooleanField::new('special')->renderAsSwitch(true);
         yield BooleanField::new('pinned')->renderAsSwitch(true);
