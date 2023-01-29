@@ -4,21 +4,31 @@
 
   <h1 class="text-secondary">Zoekertjes</h1>
 
-      <div class="my-4 d-flex justify-content-between text-secondary">
-        <div><i class="bi bi-info-square-fill"></i> Klik op een zoekertje voor meer informatie.</div>
-        <div class="d-none">
-          <a href="javascript:;" class="badge rounded-1 text-bg-secondary text-decoration-none" id="toggle-completed-adverts">
-            <i class="bi bi-eye-slash-fill"></i> voltooide zoekertjes
-          </a>
-        </div>
+    <div class="my-3 my-lg-4 d-flex justify-content-between text-secondary">
+      <div><i class="bi bi-info-square-fill"></i> Klik op een zoekertje voor meer informatie.</div>
+      <div class="d-none">
+        <a href="javascript:;" class="badge rounded-1 text-bg-secondary text-decoration-none" id="toggle-completed-adverts">
+          <i class="bi bi-eye-slash-fill"></i> voltooide zoekertjes
+        </a>
       </div>
+    </div>
 
-  {% for advert in adverts %}
-    {% include 'advert/template.html.twig' with {'item': advert, 'extend': false } %}
-  {% endfor %}
+  {% if adverts|length  == 0 %}
 
-  {% if pages > 1 %}
-    {% include 'modules/pagination.html.twig' %}
+    <div class="p-3 mb-4 bg-white shadow-sm">
+      <p class="my-2"><i class="bi bi-exclamation-circle-fill"></i> Geen zoekertjes gevonden.</p>
+    </div>
+
+  {% else %}
+
+    {% for advert in adverts %}
+      {% include 'advert/template.html.twig' with {'item': advert, 'extend': false } %}
+    {% endfor %}
+
+    {% if pages > 1 %}
+      {% include 'modules/pagination.html.twig' %}
+    {% endif %}
+
   {% endif %}
 
 {% endblock %}
