@@ -1,6 +1,6 @@
 <div class="p-3 mb-4 shadow-sm {% if not extend %}advert-link{% else%}bg-white{% endif %} {% if advert.completed %}completed{% endif %}" {% if not extend %}onclick="window.location='{{ path('profile_advert', {'uuid': advert.id}) }}';"{% endif %}>
 
-  <h4 class="text-{% if advert.completed %}secondary{% else %}primary{% endif %} d-flex justify-content-between mb-3">
+  <h5 class="text-{% if advert.completed %}secondary{% else %}primary{% endif %} d-flex justify-content-between mb-2">
     {{ advert.title|capitalize }}
     <span>
       <span class="badge bg-secondary">{{advert.acquired}} / {{advert.required}}</span>
@@ -16,19 +16,19 @@
           </small>
       {% endif %}
     </span>
-  </h4>
+  </h5>
 
   <div class="progress my-2" role="progressbar" aria-label="{{advert.title}}"
-       aria-valuenow="{{advert.progress}}" aria-valuemin="0" aria-valuemax="100" style="height: 5px">
+       aria-valuenow="{{advert.progress}}" aria-valuemin="0" aria-valuemax="100" style="height: 3px">
     <div class="progress-bar bg-{% if advert.completed %}secondary{% else %}primary{% endif %}"
          style="width: {{advert.progress}}%"></div>
   </div>
 
 {% if extend %}
-  <div class="mt-3">{{advert.body|raw}}</div>
+  <div class="my-3">{{advert.body|raw}}</div>
 {% endif %}
 
-  <div class="small text-secondary d-flex justify-content-between mt-3">
+  <div class="small text-secondary d-flex justify-content-between mt-2">
     <ul class="list-inline mb-0">
         <li class="list-inline-item small"><i class="bi bi-clock"></i> gepubliceerd
           {{ advert.publishedAt|format_datetime('medium', 'none') }}
