@@ -93,7 +93,5 @@ class EventCrudController extends AbstractCrudController
         yield DateTimeField::new('createdAt')->onlyOnDetail();
 
         yield DateTimeField::new('updatedAt')->hideOnForm();
-        yield BooleanField::new('showUpdatedAt')->renderAsSwitch(false)->onlyOnDetail();
-        yield BooleanField::new('showUpdatedAt')->renderAsSwitch(true)->onlyOnForms();
     }
 }

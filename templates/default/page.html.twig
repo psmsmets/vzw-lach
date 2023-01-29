@@ -19,11 +19,11 @@
       </h1>
 
       <ul class="list-inline small fw-lighter text-muted py-2">
-        {% if page.showCreatedAt%}
-          <li class="list-inline-item">Aangemaakt op {{ page.createdAt|format_datetime('full','none') }}.</li>
-        {% endif %}
-        {% if page.showUpdatedAt%}
-          <li class="list-inline-item">Laatst aangepast op {{ page.updatedAt|format_datetime('full','none') }}.</li>
+        {#
+          <li class="list-inline-item"><i class="bi bi-clock"></i> Aangemaakt op {{ page.createdAt|format_datetime('full','none') }}.</li>
+        #}
+        {% if page.updatedAt %}
+          <li class="list-inline-item"><i class="bi bi-clock-history"></i> Laatst aangepast op {{ page.updatedAt|format_datetime('full','none') }}.</li>
         {% endif %}
       </ul>
 
