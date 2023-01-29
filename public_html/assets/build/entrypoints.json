@@ -8,13 +8,20 @@
         "/assets/build/vzw-lach.2ff562ac.js"
       ],
       "css": [
-        "/assets/build/vzw-lach.9a38a33d.css"
+        "/assets/build/vzw-lach.cfc8c3db.css"
       ]
     },
     "vzw-lach-enroll-form": {
       "js": [
         "/assets/build/runtime.bff8fc39.js",
         "/assets/build/vzw-lach-enroll-form.4e1ef56b.js"
+      ]
+    },
+    "vzw-lach-advert": {
+      "js": [
+        "/assets/build/runtime.bff8fc39.js",
+        "/assets/build/755.62c4e74d.js",
+        "/assets/build/vzw-lach-advert.ca7ca2a0.js"
       ]
     },
     "vzw-lach-event": {
@@ -68,8 +75,9 @@
     "/assets/build/755.62c4e74d.js": "sha384-J5HcR1EhGFGYbqLpOcw4/r4ucv4Twwm1i/Xs930cIukGx6EyDl8Yyz3Nlf6vbSL5",
     "/assets/build/138.94aa6bd0.js": "sha384-I6gIXdMw/K+7SVHDBX99+O1F9oRVh2U5gzYweK7GRIij2kPh4U0+eEldFJR6ZYiy",
     "/assets/build/vzw-lach.2ff562ac.js": "sha384-C/plllm21BRuxQgyPMJ5hjbYrF8YGc37Fpi7niq1eTRK73o+AyQkGxUyPrLqjcFg",
-    "/assets/build/vzw-lach.9a38a33d.css": "sha384-lb6QYluDZ32dJxcz5wkkOA0XpvbaT0Xs2wjb3pxajEchlxHVqFM2/i7KFuPyAZMg",
+    "/assets/build/vzw-lach.cfc8c3db.css": "sha384-g44Gx+5fSHYFe1vk5wk4YtSlAUCQiQ2rgss89S14TIIFwXpBiCJv9goxqG0nKBXo",
     "/assets/build/vzw-lach-enroll-form.4e1ef56b.js": "sha384-rhV+ouCEDeZMakV9170WBfnjWo8l8f++3ErbevBWNj8Jd1isnQCvFVMgIz7kt2Wf",
+    "/assets/build/vzw-lach-advert.ca7ca2a0.js": "sha384-0aqZjfRmK3rlTr8hJEyT7PX1LMVbXHOUkEnQO3KYwixH+Ngq9tJ6C5gM4sY8EpIb",
     "/assets/build/vzw-lach-event.4925c50f.js": "sha384-ptvY294rhfyyCR8ZOogWgElIiCW6b6JRwh5skAtbcwUeVR1MwwoaVtgrgGtgNmiF",
     "/assets/build/ea-lightbox-prevent-scroll.aa4459ad.js": "sha384-erhx4Fya3daVAokPhLQu8LYfVgUdUxjY7MgZjJVotDcmRE7h0sTbZr+cZyrDvrhm",
     "/assets/build/cover.46cc48c9.css": "sha384-1JJLO0RfwH4zAYFvSTGNnnPfqFdyNBGAM878N5iX4yVECeKwEsQNvKzzFuNJxPOz",

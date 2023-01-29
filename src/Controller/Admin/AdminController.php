@@ -2,12 +2,14 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Advert;
 use App\Entity\Associate;
 use App\Entity\Category;
 use App\Entity\Event;
 use App\Entity\Page;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Controller\Admin\AdvertCrudController;
 use App\Controller\Admin\AssociateCrudController;
 use App\Controller\Admin\CategoryCrudController;
 use App\Controller\Admin\EventCrudController;
@@ -128,12 +130,15 @@ class AdminController extends AbstractDashboardController
             MenuItem::linkToCrud('Categories', 'bi bi-people-fill', Category::class),
 
             MenuItem::section('Calendar'),
-            MenuItem::linkToCrud('Events', 'bi bi-calendar-week', Event::class)->setPermission('ROLE_SUPER_ADMIN'),
+            MenuItem::linkToCrud('Events', 'bi bi-calendar-week', Event::class), //->setPermission('ROLE_SUPER_ADMIN'),
             //MenuItem::linkToCrud('New event', 'fa fa-calendar-plus', Event::class)
             //    ->setAction('new'),
 
             MenuItem::section('Posts'),
-            MenuItem::linkToCrud('Posts', 'bi bi-card-text', Post::class)->setPermission('ROLE_SUPER_ADMIN'),
+            MenuItem::linkToCrud('Posts', 'bi bi-card-text', Post::class), //->setPermission('ROLE_SUPER_ADMIN'),
+
+            MenuItem::section('Adverts'),
+            MenuItem::linkToCrud('Adverts', 'bi bi-search', Advert::class), //->setPermission('ROLE_SUPER_ADMIN'),
 
             MenuItem::section('Pages'),
             MenuItem::linkToCrud('Pages', 'bi bi-file-earmark-text', Page::class),

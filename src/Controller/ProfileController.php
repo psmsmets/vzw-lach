@@ -159,7 +159,7 @@ class ProfileController extends AbstractController
         $page = $this->getRequestedPage($request, $pages);
 
         return $this->render('advert/index.html.twig', [
-            'adverts' => $this->manager->getAdverts(),
+            'adverts' => $this->manager->getAdverts($page),
             'page' => $page,
             'pages' => $pages,
         ]);

@@ -19,6 +19,7 @@ class AssociateBaseType extends AbstractType
 {
     const PREF_ACTEUR = 'acteur';
     const PREF_FIGURANT = 'figurant';
+    const PREF_DANSER = 'danser';
     const PREF_PITCHOIR = 'pitchoir';
     const PREF_ORKEST = 'orkest';
     const PREF_BACKSTAGE = 'backstage-medewerker';
@@ -30,6 +31,7 @@ class AssociateBaseType extends AbstractType
     public const PREF_CATEGORIES = array(
         'Acteur' => self::PREF_ACTEUR,
         'Figurant' => self::PREF_FIGURANT,
+        'Danser' => self::PREF_DANSER,
         'Pitchoir' => self::PREF_PITCHOIR,
         'Orkest' => self::PREF_ORKEST,
         'Backstage-medewerker' => self::PREF_BACKSTAGE,

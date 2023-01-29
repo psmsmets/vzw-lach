@@ -21,14 +21,8 @@ class Page
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
-    private ?bool $showCreatedAt = null;
-
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
-
-    #[ORM\Column]
-    private ?bool $showUpdatedAt = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -47,8 +41,6 @@ class Page
         $this->id = Uuid::v4();
         $this->enabled = true;
         $this->createdAt = new \DateTimeImmutable();
-        $this->showCreatedAt = false;
-        $this->showUpdatedAt = true;
     }
 
     public function __toString(): string
@@ -84,18 +76,6 @@ class Page
         return $this->createdAt;
     }
 
-    public function getShowCreatedAt(): ?bool
-    {
-        return $this->showCreatedAt;
-    }
-
-    public function setShowCreatedAt(bool $showCreatedAt): self
-    {
-        $this->showCreatedAt = $showCreatedAt;
-
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
@@ -104,18 +84,6 @@ class Page
     public function setUpdatedAt(): self
     {
         $this->updatedAt = new \DateTimeImmutable();
-
-        return $this;
-    }
-
-    public function getShowUpdatedAt(): ?bool
-    {
-        return $this->showUpdatedAt;
-    }
-
-    public function setShowUpdatedAt(bool $showUpdatedAt): self
-    {
-        $this->showUpdatedAt = $showUpdatedAt;
 
         return $this;
     }

@@ -107,8 +107,9 @@ th .btn-link:hover {
   text-decoration: line-through;
 }
 
-.event-link {
+.event-link, .advert-link {
   cursor: pointer;
+  background-color: #fff;
   &:hover {
     background-color: #f8f9fa;
   }

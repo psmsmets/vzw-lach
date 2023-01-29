@@ -41,12 +41,6 @@ class Post
     #[ORM\Column]
     private ?\DateTimeImmutable $publishedAt = null;
 
-    #[ORM\Column]
-    private ?bool $showUpdatedAt = null;
-
-    #[ORM\Column]
-    private ?bool $showPublishedAt = null;
-
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
@@ -65,8 +59,6 @@ class Post
         $this->createdAt = new \DateTimeImmutable();
         $this->publishedAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', date('Y-m-d H:i'));
         $this->published = false;
-        $this->showUpdatedAt = true;
-        $this->showPublishedAt = true;
         $this->categories = new ArrayCollection();
     }
 
@@ -159,30 +151,6 @@ class Post
     public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
     {
         if (!$this->published) $this->publishedAt = $publishedAt;
-
-        return $this;
-    }
-
-    public function getShowUpdatedAt(): bool
-    {
-        return $this->showUpdatedAt;
-    }
-
-    public function setShowUpdatedAt(bool $showUpdatedAt): self
-    {
-        $this->showUpdatedAt = $showUpdatedAt;
-
-        return $this;
-    }
-
-    public function getShowPublishedAt(): bool
-    {
-        return $this->showPublishedAt;
-    }
-
-    public function setShowPublishedAt(bool $showPublishedAt): self
-    {
-        $this->showPublishedAt = $showPublishedAt;
 
         return $this;
     }

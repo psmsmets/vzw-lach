@@ -45,16 +45,16 @@ class AdvertRepository extends ServiceEntityRepository
      */
     public function findAdvert(Uuid $uuid): ?Advert
     {
-        $qb = $this->createQueryBuilder('add');
+        $qb = $this->createQueryBuilder('ad');
 
         $qb->setParameter('published', true);
-        $qb->andWhere('add.published = :published');
+        $qb->andWhere('ad.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('add.publishedAt <= :now');
+        $qb->andWhere('ad.publishedAt <= :now');
 
         $qb->setParameter('uuid', $uuid, 'uuid');
-        $qb->andWhere('add.id = :uuid');
+        $qb->andWhere('ad.id = :uuid');
 
         return $qb->getQuery()->getOneOrNullResult();
     }
@@ -64,18 +64,20 @@ class AdvertRepository extends ServiceEntityRepository
      */
     public function findAdverts(?int $limit = null, int $page = 1): array
     {
+        /* todo: optionally filter completed */
         $limit = is_null($limit) ? Advert::NUMBER_OF_ITEMS : $limit;
         $offset = ( $page < 1 ? 0 : $page - 1 ) * Advert::NUMBER_OF_ITEMS;
 
-        $qb = $this->createQueryBuilder('add');
+        $qb = $this->createQueryBuilder('ad');
 
         $qb->setParameter('published', true);
-        $qb->andWhere('add.published = :published');
+        $qb->andWhere('ad.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('add.publishedAt <= :now');
+        $qb->andWhere('ad.publishedAt <= :now');
 
-        $qb->orderBy('add.publishedAt', 'DESC');
+        $qb->addOrderBy('ad.progress', 'ASC');
+        $qb->addOrderBy('ad.publishedAt', 'DESC');
         $qb->setFirstResult($offset);
         $qb->setMaxResults($limit);
 
@@ -84,13 +86,13 @@ class AdvertRepository extends ServiceEntityRepository
 
     public function countAdverts(): int
     {
-        $qb = $this->createQueryBuilder('add');
+        $qb = $this->createQueryBuilder('ad');
 
         $qb->setParameter('published', true);
-        $qb->andWhere('add.published = :published');
+        $qb->andWhere('ad.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('add.publishedAt <= :now');
+        $qb->andWhere('ad.publishedAt <= :now');
 
         return count($qb->getQuery()->getResult());
     }

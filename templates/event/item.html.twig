@@ -49,18 +49,16 @@
 
        {% if event.url %}
        <div class="my-4">
-         <a href="{{ event.url }}" class="btn btn-outline-secondary fw-light"><i class="bi bi-info-lg"></i> klik voor meer informatie</a>
+         <a href="{{ event.url }}" class="btn btn-outline-secondary fw-light rounded-1" target="_Blank"><i class="bi bi-info-square-fill"></i> klik voor meer informatie</a>
        </div>
        {% endif %}
 
        <div class="small text-muted d-flex justify-content-between mt-2 mb-0">
          <ul class="list-inline mb-0">
-           {% if event.showPublishedAt %}
            <li class="list-inline-item small"><i class="bi bi-clock-history"></i> gepubliceerd
              {{ event.publishedAt|format_datetime('medium', 'none') }}
            </li>
-           {% endif %}
-           {% if event.showUpdatedAt and event.updatedAt %}
+           {% if event.updatedAt %}
            <li class="list-inline-item small"><i class="bi bi-clock-history"></i> aangepast
              {{ event.updatedAt|format_datetime('medium', 'none') }}
            </li>
