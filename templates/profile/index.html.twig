@@ -36,11 +36,7 @@
 
     <h2 class="text-secondary mt-5">Laatste info</h2>
 
-    {% for post in pinned %}
-      {% include 'post/template.html.twig' with {'item': post } %}
-    {% endfor %}
-
-    {% for post in posts %}
+    {% for post in specials %}
       {% include 'post/template.html.twig' with {'item': post } %}
     {% else %}
       geen berichten gevonden ...

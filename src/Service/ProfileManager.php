@@ -125,7 +125,7 @@ class ProfileManager
 
     public function getSpecialPosts($obj): array
     {
-        return $this->postRepository->findPosts($obj, true, false, Post::NUMBER_OF_ITEMS_HOMEPAGE);
+        return $this->postRepository->findPosts($obj, true, null, Post::NUMBER_OF_ITEMS_HOMEPAGE);
     }
 
     public function getPinnedPosts($obj): array

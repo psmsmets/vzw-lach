@@ -54,9 +54,7 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/index.html.twig', [
             //'associates' => $user->getEnabledAssociates(),
-            'special' => $this->manager->getSpecialPosts($user),
-            'pinned' => $this->manager->getPinnedPosts($user),
-            'posts' => $this->manager->getPosts($user),
+            'specials' => $this->manager->getSpecialPosts($user),
             'events' => $this->manager->userEvents($user),
         ]);
     }
@@ -103,6 +101,7 @@ class ProfileController extends AbstractController
         $page = $this->getRequestedPage($request, $pages); 
 
         return $this->render('post/index.html.twig', [
+            'pinned' => $this->manager->getPinnedPosts($user),
             'posts' => $this->manager->getPosts($user, $page),
             'page' => $page,
             'pages' => $pages,
