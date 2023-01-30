@@ -1,6 +1,21 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 
-{% if path('profile_events') not in currentPath %}
-  <h5 class="mt-5">Kalender</h5>
-  ...
+{% if path('profile_events') not in currentPath and events is defined %}
+  <h5 class="mt-5 text-secondary">Kalender</h5>
+
+  {% for event in events %}
+    <div class="media shadow-sm event event-link p-2 text-{% if event.cancelled %}danger{% else %}secondary{% endif %}"
+         onclick="window.location='{{ path('profile_event', {'uuid': event.id}) }}';">
+      <span class="badge mr-2 event event-sm bg-primary rounded-1">
+        {{event.startTime|format_datetime(pattern='d')}}<br>{{event.startTime|format_datetime(pattern='MMM')|trim('.')}}
+      </span>
+      <div class="media-body ms-2 mb-0 small lh-125 {% if not loop.last %}border-bottom border-gray{% endif %}">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <strong class="text-gray-dark">{% if event.cancelled %}<s>{{event.title|title}}</s>{% else %}{{event.title|title}}{% endif %}</strong>
+        </div>
+        {#<span class="d-block">{{event.startTime|format_datetime('full', 'none')}}</span>#}
+        <span class="d-block"><i class="bi bi-pin-map"></i> {{event.location}}</span>
+      </div>
+    </div>
+  {% endfor %}
 {% endif %}

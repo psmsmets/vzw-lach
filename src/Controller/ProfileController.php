@@ -55,12 +55,27 @@ class ProfileController extends AbstractController
         return $this->render('profile/index.html.twig', [
             //'associates' => $user->getEnabledAssociates(),
             'specials' => $this->manager->getSpecialPosts($user),
-            'events' => $this->manager->userEvents($user),
+            'events' => $this->manager->getUpcomingEvents($user),
         ]);
     }
 
     #[Route('/deelnemer/{id}', name: '_show', methods: ['GET'])]
     public function show(Associate $associate): Response
+    {
+        // usually you'll want to make sure the user is authenticated first,
+        // see "Authorization" below
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
+
+        return $this->render('profile/index.html.twig', [
+            'specials' => $this->manager->getSpecialPosts($associate),
+            'events' => $this->manager->getUpcomingEvents($associate),
+        ]);
+    }
+
+    #[Route('/deelnemer/{id}/detail', name: '_detail', methods: ['GET'])]
+    public function detail(Associate $associate): Response
     {
         if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
 

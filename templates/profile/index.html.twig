@@ -22,7 +22,8 @@
                 <td>{{ associate.fullname }}</td>
                 <td>{{ associate.categoryNames }}</td>
                 <td>
-                    <a href="{{ path('profile_show', {'id': associate.id}) }}">bekijk</a>
+                    <a href="{{ path('profile_show', {'id': associate.id}) }}">selecteer</a>
+                    <a href="{{ path('profile_detail', {'id': associate.id}) }}">details</a>
                     <a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a>
                 </td>
             </tr>
