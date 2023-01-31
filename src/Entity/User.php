@@ -81,11 +81,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'enabled' => $this->enabled,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
+            'passwordUpdatedAt' => $this->passwordUpdatedAt,
             'email' => $this->email,
             'phone' => $this->phone,
             'password' => $this->password,
             'passwordUpdatedAt' => $this->passwordUpdatedAt,
             'roles' => $this->roles,
+            //'associates' => $this->associates,
         ];
     }
 
@@ -95,11 +97,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->enabled = $serialized['enabled'];
         $this->createdAt = $serialized['createdAt'];
         $this->updatedAt = $serialized['updatedAt'];
+        $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
         $this->email = $serialized['email'];
         $this->phone = $serialized['phone'];
         $this->password = $serialized['password'];
         $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
         $this->roles = $serialized['roles'];
+        //$this->associates = $serialized['associates'];
     }
 
     #[ORM\PreUpdate]

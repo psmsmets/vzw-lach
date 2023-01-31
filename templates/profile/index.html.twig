@@ -1,7 +1,7 @@
 {% extends 'profile.html.twig' %}
 
 {% block main %}
-    <h1 class="text-secondary">Deelnemers</h1> 
+    <h1 class="text-secondary">Deelnemer{% if viewpoint == app.user%}s{% endif %}</h1> 
     <table class="table">
         <thead>
             <tr>
@@ -12,8 +12,8 @@
             </tr>
         </thead>
         <tbody>
-        {% for associate in app.user.enabledAssociates %}
-            <tr style="height:60px; vertical-align: middle;">
+          {% for associate in app.user.enabledAssociates %}
+            <tr style="height:60px; vertical-align: middle;" class="{% if viewpoint != app.user and associate != viewpoint%}text-muted{% endif %} {% if viewpoint == associate %}text-primary fw-semibold{% endif %}">
                 <td class="text-center">
                   {% if associate.imagePortrait %}
                     <img src="{{path.thumbPortrait}}/{{ associate.imagePortrait }}" height="45"></img>
@@ -22,18 +22,23 @@
                 <td>{{ associate.fullname }}</td>
                 <td>{{ associate.categoryNames }}</td>
                 <td>
-                    <a href="{{ path('profile_show', {'id': associate.id}) }}">selecteer</a>
-                    <a href="{{ path('profile_detail', {'id': associate.id}) }}">details</a>
+                    <a href="{{ path('profile_show', {'id': associate.id}) }}">toon</a>
                     <a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a>
                 </td>
             </tr>
-        {% else %}
+          {% else %}
             <tr>
                 <td colspan="2">geen gegevens gevonden</td>
             </tr>
-        {% endfor %}
+          {% endfor %}
         </tbody>
     </table>
+    {% if viewpoint != app.user and app.user.enabledAssociates|length > 1 %}
+    <ul class="list-inline">
+      <li class="list-inline-item">Je bekijkt enkel de informatie voor {{viewpoint}}.</li>
+      <li class="list-inline-item"><a href="{{ path('profile_reset') }}">Bekijk de informatie van al je deelnemers.</a></li>
+    </ul>
+    {% endif %}
 
     <h2 class="text-secondary mt-5">Laatste info</h2>
 

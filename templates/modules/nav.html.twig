@@ -38,17 +38,18 @@
           </li>
           <li class="nav-item">
             <a class="nav-link {% if currentPath == '/contact' %}active{% endif %}"
-               href="{{path('page', {slug: 'contact'})}}">Contact</a>
+               href="{{path('page', {'slug': 'contact'})}}">Contact</a>
           </li>
+          {% if viewpoint is defined %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{app.user.email}}
+              {% if viewpoint == app.user %}{{app.user.email}}{% else %}{{viewpoint}}{% endif %}
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" style="margin-top: 7px;">
-              <li><a class="dropdown-item fw-lighter" href="#">{{app.user.email}}</a></li>
+              <li><a class="dropdown-item fw-lighter" href="{{path('profile_reset')}}">{{app.user.email}}</a></li>
               <li><hr class="dropdown-divider"></li>
               {% for associate in app.user.associates %}
-              <li><a class="dropdown-item fw-lighter" href="#">{{associate}}</a></li>
+              <li><a class="dropdown-item fw-lighter" href="{{path('profile_select', {'id': associate.id})}}">{{associate}}</a></li>
               {% endfor %}
               <li><hr class="dropdown-divider"></li>
               <li><a href="{{path('security_signout')}}" class="dropdown-item fw-lighter">
@@ -56,6 +57,7 @@
               </li>
             </ul>
           </li>
+          {% endif %}
         </ul>
       </div>
     </div>

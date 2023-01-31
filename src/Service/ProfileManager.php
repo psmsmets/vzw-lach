@@ -83,6 +83,11 @@ class ProfileManager
         return $this->postRepository->findPosts($user, null, null, $limit);
     }
 
+    public function getAssociate(Uuid $uuid): ?Associate
+    {
+        return $this->associateRepository->find($uuid);
+    }
+
     public function getUpcomingEvents($obj, ?int $limit = null): array
     {
         return $this->eventRepository->findEvents($obj, null, null, $limit);

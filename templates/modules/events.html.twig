@@ -5,7 +5,7 @@
 
   {% for event in events %}
     <div class="media shadow-sm event event-link p-2 text-{% if event.cancelled %}danger{% else %}secondary{% endif %}"
-         onclick="window.location='{{ path('profile_event', {'uuid': event.id}) }}';">
+         onclick="window.location='{{ path('profile_event', {'id': event.id}) }}';">
       <span class="badge mr-2 event event-sm bg-primary rounded-1">
         {{event.startTime|format_datetime(pattern='d')}}<br>{{event.startTime|format_datetime(pattern='MMM')|trim('.')}}
       </span>
