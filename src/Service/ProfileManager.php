@@ -16,6 +16,9 @@ use App\Repository\EventRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\Uuid as UuidConstraint;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Uid\Uuid;
@@ -23,10 +26,14 @@ use Symfony\Component\Uid\Uuid;
 class ProfileManager 
 {
     private $em;
-    private $associateRep;
-    private $eventRep;
-    private $postRep;
-    private $userRep;
+    private $advertRepository;
+    private $associateRepository;
+    private $categoryRepository;
+    private $eventRepository;
+    private $postRepository;
+    private $userRepository;
+    private $requestStack;
+    private $security;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -36,6 +43,8 @@ class ProfileManager
         EventRepository $eventRepository,
         PostRepository $postRepository,
         UserRepository $userRepository,
+        RequestStack $requestStack,
+        Security $security,
     )
     {
         $this->em = $em;
@@ -45,6 +54,8 @@ class ProfileManager
         $this->eventRepository = $eventRepository;
         $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
+        $this->requestStack = $requestStack;
+        $this->security = $security;
         setlocale(LC_ALL, 'nl_BE');
     }
 
@@ -155,5 +166,44 @@ class ProfileManager
     public function getAdvertPages(): int 
     {
         return (int) ceil($this->advertRepository->countAdverts() / Advert::NUMBER_OF_ITEMS);
+    }
+
+    public function getRequestedPage(Request $request, int $pages): int
+    {
+        $page = (int) $request->query->get('pagina', 1);
+        $page = $page < 1 ? 1 : $page;
+        $page = $page > $pages ? $pages : $page;
+
+        return $page;
+    }
+
+    public function getViewpoint()
+    {
+        $session = $this->requestStack->getSession();
+        $viewpoint = $session->get('viewpoint', false);
+
+        if ($viewpoint instanceof Uuid)
+        {
+            $associate = $this->getAssociate($viewpoint);
+            if (!$associate or $associate->getUser() !== $this->security->getUser()) throw $this->createAccessDeniedException();
+
+            return $associate;
+        }
+        return $this->getUser();
+    }
+
+    public function setViewpoint($viewpoint): self
+    {
+        $session = $this->requestStack->getSession();
+        if ($viewpoint instanceof Associate)
+        {
+            $session->set('viewpoint', $viewpoint->getId());
+            $session->getFlashBag()->add('alert-success', 'Je bekijkt nu enkel de informatie van '.strval($viewpoint));
+        } else {
+            $session->set('viewpoint', false);
+            $session->getFlashBag()->add('alert-success', 'Je bekijkt nu de informatie voor al je deelnemers');
+        }
+
+        return $this;
     }
 }

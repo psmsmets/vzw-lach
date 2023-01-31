@@ -47,10 +47,9 @@ class ProfileController extends AbstractController
         // see "Authorization" below
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $viewpoint = $this->getViewpoint();
+        $viewpoint = $this->manager->getViewpoint();
 
         return $this->render('profile/index.html.twig', [
-            'viewpoint' => $viewpoint,
             'specials' => $this->manager->getSpecialPosts($viewpoint),
             'events' => $this->manager->getUpcomingEvents($viewpoint),
         ]);
@@ -63,7 +62,7 @@ class ProfileController extends AbstractController
         // see "Authorization" below
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $this->setViewpoint(false);
+        $this->manager->setViewpoint(false);
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -76,7 +75,7 @@ class ProfileController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
-        $this->setViewpoint($associate);
+        $this->manager->setViewpoint($associate);
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -85,10 +84,8 @@ class ProfileController extends AbstractController
     public function show(Associate $associate): Response
     {
         if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
-        $viewpoint = $this->getViewpoint();
 
         return $this->render('profile/show.html.twig', [
-            'viewpoint' => $viewpoint,
             'associate' => $associate,
         ]);
     }
@@ -97,7 +94,6 @@ class ProfileController extends AbstractController
     public function edit(Request $request, Associate $associate): Response
     {
         if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
-        $viewpoint = $this->getViewpoint();
 
         $form = $this->createForm(AssociateType::class, $associate);
         $form->handleRequest($request);
@@ -109,7 +105,6 @@ class ProfileController extends AbstractController
         }
 
         return $this->renderForm('profile/edit.html.twig', [
-            'viewpoint' => $viewpoint,
             'associate' => $associate,
             'form' => $form,
         ]);
@@ -118,13 +113,12 @@ class ProfileController extends AbstractController
     #[Route('/berichten', name: '_posts', methods: ['GET'])]
     public function posts(Request $request): Response
     {
-        $viewpoint = $this->getViewpoint();
+        $viewpoint = $this->manager->getViewpoint();
 
         $pages = $this->manager->getPostPages($viewpoint);
-        $page = $this->getRequestedPage($request, $pages); 
+        $page = $this->manager->getRequestedPage($request, $pages); 
 
         return $this->render('post/index.html.twig', [
-            'viewpoint' => $viewpoint,
             'pinned' => $this->manager->getPinnedPosts($viewpoint),
             'posts' => $this->manager->getPosts($viewpoint, $page),
             'page' => $page,
@@ -135,14 +129,11 @@ class ProfileController extends AbstractController
     #[Route('/berichten/{id}', name: '_post', methods: ['GET'])]
     public function post(string $id): Response
     {
-        $viewpoint = $this->getViewpoint();
-
         if (!($post = $this->manager->getPost($viewpoint, $id))) {
             return $this->redirectToRoute('profile_index');
         }
 
         return $this->render('post/item.html.twig', [
-            'viewpoint' => $viewpoint,
             'post' => $post,
         ]);
     }
@@ -150,10 +141,9 @@ class ProfileController extends AbstractController
     #[Route('/kalender', name: '_events', methods: ['GET'])]
     public function events(): Response
     {
-        $viewpoint = $this->getViewpoint();
+        $viewpoint = $this->manager->getViewpoint();
 
         return $this->render('event/index.html.twig', [
-            'viewpoint' => $viewpoint,
             'events' => $this->manager->getPeriodEvents($viewpoint),
         ]);
     }
@@ -161,10 +151,9 @@ class ProfileController extends AbstractController
     #[Route('/kalender/{id}', name: '_event', methods: ['GET'])]
     public function event(string $id): Response
     {
-        $viewpoint = $this->getViewpoint();
+        $viewpoint = $this->manager->getViewpoint();
 
         return $this->render('event/item.html.twig', [
-            'viewpoint' => $viewpoint,
             'event' => $this->manager->getEvent($viewpoint, $id),
         ]);
     }
@@ -172,13 +161,10 @@ class ProfileController extends AbstractController
     #[Route('/zoekertjes', name: '_adverts', methods: ['GET'])]
     public function adverts(Request $request): Response
     {
-        $viewpoint = $this->getViewpoint();
-
         $pages = $this->manager->getAdvertPages();
-        $page = $this->getRequestedPage($request, $pages);
+        $page = $this->manager->getRequestedPage($request, $pages);
 
         return $this->render('advert/index.html.twig', [
-            'viewpoint' => $viewpoint,
             'adverts' => $this->manager->getAdverts($page),
             'page' => $page,
             'pages' => $pages,
@@ -193,47 +179,7 @@ class ProfileController extends AbstractController
         }
 
         return $this->render('advert/item.html.twig', [
-            'viewpoint' => $viewpoint,
             'advert' => $advert,
         ]);
-    }
-
-    private function getRequestedPage(Request $request, int $pages): int
-    {
-        $page = (int) $request->query->get('pagina', 1);
-        $page = $page < 1 ? 1 : $page;
-        $page = $page > $pages ? $pages : $page;
-
-        return $page;
-    }
-
-    private function getViewpoint()
-    {
-        $session = $this->requestStack->getSession();
-        $viewpoint = $session->get('viewpoint', false);
-
-        if ($viewpoint instanceof Uuid)
-        {
-            $associate = $this->manager->getAssociate($viewpoint);
-            if (!$associate or $associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
-
-            return $associate;
-        }
-        return $this->getUser();
-    }
-
-    private function setViewpoint($viewpoint): self
-    {
-        $session = $this->requestStack->getSession();
-        if ($viewpoint instanceof Associate)
-        {
-            $session->set('viewpoint', $viewpoint->getId());
-            $session->getFlashBag()->add('alert-success', 'Je bekijkt nu enkel de informatie van '.strval($viewpoint));
-        } else {
-            $session->set('viewpoint', false);
-            $session->getFlashBag()->add('alert-success', 'Je bekijkt nu de informatie voor al je deelnemers');
-        }
-
-        return $this;
     }
 }

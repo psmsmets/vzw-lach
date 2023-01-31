@@ -14,9 +14,7 @@ twig:
                 'thumbEntire': '%app.path.associates.entire%/thumbs',
                 'imagePortrait': '%app.path.associates.portrait%',
                 'thumbPortrait': '%app.path.associates.portrait%/thumbs'}
-#        calendarManager: '@App\Service\CalendarManager'
-#        contactManager: '@App\Service\ContactManager'
-#        memberManager: '@App\Service\MemberManager'
+        manager: '@App\Service\ProfileManager'
     form_themes:
          - 'bootstrap_5_layout.html.twig'
 

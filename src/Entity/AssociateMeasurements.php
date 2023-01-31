@@ -23,25 +23,25 @@ class AssociateMeasurements
     private ?int $headGirth = null;
 
     #[ORM\Column(length: 10, nullable: true)]
-    private ?string $size = null;
+    private ?string $size = null; // confectiemaat
 
     #[ORM\Column(length: 40, nullable: true)]
-    private ?string $hairType = null;
+    private ?string $hairType = null; // lang of kort haar
 
     #[ORM\Column(length: 40, nullable: true)]
-    private ?string $hairColor = null;
+    private ?string $hairColor = null; // kleur haar
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail0 = null;
+    private ?int $detail0 = null; // totale lengte [cm]
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail1 = null;
+    private ?int $detail1 = null; // borstomtrek [cm]
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail2 = null;
+    private ?int $detail2 = null; // tailleomtrek [cm]
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail3 = null;
+    private ?int $detail3 = null; // heupomtrek [cm]
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $detail4 = null;

@@ -1,7 +1,16 @@
 {% extends 'profile.html.twig' %}
 
 {% block main %}
-    <h1 class="text-secondary">Deelnemer{% if viewpoint == app.user%}s{% endif %}</h1> 
+
+    <h1 class="text-secondary">Laatste berichten</h1>
+
+    {% for post in specials %}
+      {% include 'post/template.html.twig' with {'item': post } %}
+    {% else %}
+      geen berichten gevonden ...
+    {% endfor %}
+
+    <h2 class="text-secondary mt-5">Deelnemer{% if app.user.enabledAssociates|length > 1 %}s{% endif %}</h2>
     <table class="table">
         <thead>
             <tr>
@@ -39,13 +48,5 @@
       <li class="list-inline-item"><a href="{{ path('profile_reset') }}">Bekijk de informatie van al je deelnemers.</a></li>
     </ul>
     {% endif %}
-
-    <h2 class="text-secondary mt-5">Laatste info</h2>
-
-    {% for post in specials %}
-      {% include 'post/template.html.twig' with {'item': post } %}
-    {% else %}
-      geen berichten gevonden ...
-    {% endfor %}
 
 {% endblock %}
