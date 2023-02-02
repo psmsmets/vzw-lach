@@ -232,10 +232,10 @@ class ProfileManager
         if ($viewpoint instanceof Associate)
         {
             $session->set('viewpoint', $viewpoint->getId());
-            $session->getFlashBag()->add('alert-success', 'Je bekijkt nu enkel de informatie van '.strval($viewpoint));
+            $session->getFlashBag()->add('alert-success', 'Je bekijkt vanaf nu enkel de informatie voor '.strval($viewpoint));
         } else {
             $session->set('viewpoint', false);
-            $session->getFlashBag()->add('alert-success', 'Je bekijkt nu de informatie voor al je deelnemers');
+            $session->getFlashBag()->add('alert-success', 'Je bekijkt weer de informatie voor al je deelnemers');
         }
 
         return $this;
