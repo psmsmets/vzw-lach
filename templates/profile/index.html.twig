@@ -18,8 +18,8 @@
 
     {% if viewpoint != app.user and app.user.enabledAssociates|length > 1 %}
     <div class="alert alert-secondary mt-5" role="alert">
-      <i class="bi bi-exclamation-diamond"></i> Je bekijkt <u>enkel de informatie</u> voor <strong>{{viewpoint}}</strong>.</li>
-      <a href="{{ path('profile_reset') }}"><i class="bi bi-chevron-double-right"></i> Bekijk de informatie van al je deelnemers.</a>
+      <i class="bi bi-exclamation-diamond"></i> Je ziet enkel de informatie voor <strong>{{viewpoint}}</strong>.</li>
+      <a href="{{ path('profile_reset') }}">Bekijk de informatie van al je deelnemers.</a>
     </div>
     {% endif %}
 
