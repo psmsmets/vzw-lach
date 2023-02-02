@@ -189,7 +189,7 @@ class ProfileManager
 
             return $associate;
         }
-        return $this->getUser();
+        return $this->security->getUser();
     }
 
     public function setViewpoint($viewpoint): self
