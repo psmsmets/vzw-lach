@@ -2,13 +2,26 @@
 
 {% block main %}
 
-    <h1 class="text-secondary">Laatste berichten</h1>
+    <h1 class="text-secondary">Uitgelicht</h1>
 
     {% for post in specials %}
       {% include 'post/template.html.twig' with {'item': post } %}
     {% else %}
       geen berichten gevonden ...
     {% endfor %}
+
+    <div class="mt-2 text-end">
+      <a href="{{path('profile_posts')}}" class="small fw-lighter text-secondary text-decoration-none">
+        <i class="bi bi-chevron-double-right"></i> naar alle berichten
+      </a>
+    </div>
+
+    {% if viewpoint != app.user and app.user.enabledAssociates|length > 1 %}
+    <div class="alert alert-secondary mt-5" role="alert">
+      Je bekijkt enkel de informatie voor {{viewpoint}}.</li>
+      <a href="{{ path('profile_reset') }}">Bekijk de informatie van al je deelnemers.</a>
+    </div>
+    {% endif %}
 
     <h2 class="text-secondary mt-5">Deelnemer{% if app.user.enabledAssociates|length > 1 %}s{% endif %}</h2>
     <table class="table">
@@ -42,11 +55,10 @@
           {% endfor %}
         </tbody>
     </table>
-    {% if viewpoint != app.user and app.user.enabledAssociates|length > 1 %}
-    <ul class="list-inline">
-      <li class="list-inline-item">Je bekijkt enkel de informatie voor {{viewpoint}}.</li>
-      <li class="list-inline-item"><a href="{{ path('profile_reset') }}">Bekijk de informatie van al je deelnemers.</a></li>
-    </ul>
-    {% endif %}
 
+{% endblock %}
+
+{% block side %}
+  {{ parent() }}
+  {% include 'document/module.html.twig' %}
 {% endblock %}

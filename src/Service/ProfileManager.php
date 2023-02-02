@@ -7,12 +7,14 @@ use App\Entity\Associate;
 use App\Entity\AssociateAddress;
 use App\Entity\Category;
 use App\Entity\Event;
+use App\Entity\Document;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Repository\AdvertRepository;
 use App\Repository\AssociateRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
+use App\Repository\DocumentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,6 +32,7 @@ class ProfileManager
     private $associateRepository;
     private $categoryRepository;
     private $eventRepository;
+    private $documentRepository;
     private $postRepository;
     private $userRepository;
     private $requestStack;
@@ -41,6 +44,7 @@ class ProfileManager
         AssociateRepository $associateRepository,
         CategoryRepository $categoryRepository,
         EventRepository $eventRepository,
+        DocumentRepository $documentRepository,
         PostRepository $postRepository,
         UserRepository $userRepository,
         RequestStack $requestStack,
@@ -52,6 +56,7 @@ class ProfileManager
         $this->associateRepository = $associateRepository;
         $this->categoryRepository = $categoryRepository;
         $this->eventRepository = $eventRepository;
+        $this->documentRepository = $documentRepository;
         $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
         $this->requestStack = $requestStack;
@@ -141,12 +146,12 @@ class ProfileManager
 
     public function getSpecialPosts($obj): array
     {
-        return $this->postRepository->findPosts($obj, true, null, Post::NUMBER_OF_ITEMS_HOMEPAGE);
+        return $this->postRepository->findPosts($obj, true, null, Post::NUMBER_OF_ITEMS_SPECIAL);
     }
 
     public function getPinnedPosts($obj): array
     {
-        return $this->postRepository->findPosts($obj, null, true, Post::NUMBER_OF_ITEMS_HOMEPAGE);
+        return $this->postRepository->findPosts($obj, null, true, Post::NUMBER_OF_ITEMS_PINNED);
     }
 
     public function getAdvert(string $uuid): ?Advert
@@ -166,6 +171,35 @@ class ProfileManager
     public function getAdvertPages(): int 
     {
         return (int) ceil($this->advertRepository->countAdverts() / Advert::NUMBER_OF_ITEMS);
+    }
+
+    public function getDocument($obj, string $uuid): ?Document
+    {
+        $validator = Validation::createValidator();
+        $uuidContraint = new UuidConstraint();
+
+        $errors = $validator->validate($uuid, $uuidContraint);
+        return count($errors) == 0 ? $this->documentRepository->findDocument(Uuid::fromString($uuid), $obj) : null;
+    }
+
+    public function getDocuments($obj, int $page = 1): array
+    {
+        return $this->documentRepository->findDocuments($obj, null, false, Document::NUMBER_OF_ITEMS, $page);
+    }
+
+    public function getDocumentPages($obj): int 
+    {
+        return (int) ceil($this->documentRepository->countDocuments($obj, null, false) / Document::NUMBER_OF_ITEMS);
+    }
+
+    public function getSpecialDocuments($obj): array
+    {
+        return $this->documentRepository->findDocuments($obj, true, null, Document::NUMBER_OF_ITEMS_SPECIAL);
+    }
+
+    public function getPinnedDocuments($obj): array
+    {
+        return $this->documentRepository->findDocuments($obj, null, true, Document::NUMBER_OF_ITEMS_PINNED);
     }
 
     public function getRequestedPage(Request $request, int $pages): int

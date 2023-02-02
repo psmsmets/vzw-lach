@@ -20,11 +20,11 @@
 
   <div class="small text-secondary d-flex justify-content-between mt-3">
     <ul class="list-inline mb-0">
-      <li class="list-inline-item small"><i class="bi bi-clock"></i> gepubliceerd
+      <li class="list-inline-item small fw-lighter"><i class="bi bi-clock"></i> gepubliceerd
         {{ post.publishedAt|format_datetime('medium', 'none') }}
       </li>
       {% if post.updatedAt %}
-        <li class="list-inline-item small"><i class="bi bi-clock-history"></i> aangepast
+        <li class="list-inline-item small fw-lighter"><i class="bi bi-clock-history"></i> aangepast
           {{ post.updatedAt|format_datetime('medium', 'none') }}
         </li>
       {% endif %}

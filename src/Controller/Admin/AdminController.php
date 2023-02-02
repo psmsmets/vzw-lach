@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Advert;
 use App\Entity\Associate;
 use App\Entity\Category;
+use App\Entity\Document;
 use App\Entity\Event;
 use App\Entity\Page;
 use App\Entity\Post;
@@ -12,6 +13,7 @@ use App\Entity\User;
 use App\Controller\Admin\AdvertCrudController;
 use App\Controller\Admin\AssociateCrudController;
 use App\Controller\Admin\CategoryCrudController;
+use App\Controller\Admin\DocumentCrudController;
 use App\Controller\Admin\EventCrudController;
 use App\Controller\Admin\PageCrudController;
 use App\Controller\Admin\PostCrudController;
@@ -117,8 +119,8 @@ class AdminController extends AbstractDashboardController
     {
 
         return [
-            //MenuItem::linkToLogout('Logout', 'fa fa-exit'),
-           // MenuItem::linkToDashboard('Dashboard', 'bi bi-house-door-fill'),
+            // MenuItem::linkToLogout('Logout', 'fa fa-exit'),
+            // MenuItem::linkToDashboard('Dashboard', 'bi bi-house-door-fill'),
 
             MenuItem::section('Users'),
             MenuItem::linkToCrud('Users', 'bi bi-person-fill-gear', User::class),
@@ -129,16 +131,17 @@ class AdminController extends AbstractDashboardController
             MenuItem::section('Categories'),
             MenuItem::linkToCrud('Categories', 'bi bi-people-fill', Category::class),
 
-            MenuItem::section('Calendar'),
-            MenuItem::linkToCrud('Events', 'bi bi-calendar-week', Event::class), //->setPermission('ROLE_SUPER_ADMIN'),
-            //MenuItem::linkToCrud('New event', 'fa fa-calendar-plus', Event::class)
-            //    ->setAction('new'),
-
             MenuItem::section('Posts'),
-            MenuItem::linkToCrud('Posts', 'bi bi-card-text', Post::class), //->setPermission('ROLE_SUPER_ADMIN'),
+            MenuItem::linkToCrud('Posts', 'bi bi-card-text', Post::class),
+
+            MenuItem::section('Events'),
+            MenuItem::linkToCrud('Events', 'bi bi-calendar-week', Event::class),
+
+            MenuItem::section('Documents'),
+            MenuItem::linkToCrud('Documents', 'bi bi-file-earmark-arrow-down', Document::class),
 
             MenuItem::section('Adverts'),
-            MenuItem::linkToCrud('Adverts', 'bi bi-search', Advert::class), //->setPermission('ROLE_SUPER_ADMIN'),
+            MenuItem::linkToCrud('Adverts', 'bi bi-search', Advert::class),
 
             MenuItem::section('Pages'),
             MenuItem::linkToCrud('Pages', 'bi bi-file-earmark-text', Page::class),

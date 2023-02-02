@@ -51,7 +51,6 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/index.html.twig', [
             'specials' => $this->manager->getSpecialPosts($viewpoint),
-            'events' => $this->manager->getUpcomingEvents($viewpoint),
         ]);
     }
 
@@ -129,6 +128,8 @@ class ProfileController extends AbstractController
     #[Route('/berichten/{id}', name: '_post', methods: ['GET'])]
     public function post(string $id): Response
     {
+        $viewpoint = $this->manager->getViewpoint();
+
         if (!($post = $this->manager->getPost($viewpoint, $id))) {
             return $this->redirectToRoute('profile_index');
         }
@@ -155,6 +156,36 @@ class ProfileController extends AbstractController
 
         return $this->render('event/item.html.twig', [
             'event' => $this->manager->getEvent($viewpoint, $id),
+        ]);
+    }
+
+    #[Route('/documenten', name: '_documents', methods: ['GET'])]
+    public function documents(Request $request): Response
+    {
+        $viewpoint = $this->manager->getViewpoint();
+
+        $pages = $this->manager->getDocumentPages($viewpoint);
+        $page = $this->manager->getRequestedPage($request, $pages); 
+
+        return $this->render('document/index.html.twig', [
+            'pinned' => $this->manager->getPinnedDocuments($viewpoint),
+            'documents' => $this->manager->getDocuments($viewpoint, $page),
+            'page' => $page,
+            'pages' => $pages,
+        ]);
+    }
+
+    #[Route('/documenten/{id}', name: '_document', methods: ['GET'])]
+    public function document(string $id): Response
+    {
+        $viewpoint = $this->manager->getViewpoint();
+
+        if (!($document = $this->manager->getDocument($viewpoint, $id))) {
+            return $this->redirectToRoute('profile_index');
+        }
+
+        return $this->render('document/item.html.twig', [
+            'document' => $document,
         ]);
     }
 

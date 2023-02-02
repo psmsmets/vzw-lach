@@ -47,11 +47,15 @@ class Category
     #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'categories')]
     private Collection $posts;
 
+    #[ORM\ManyToMany(targetEntity: Document::class, mappedBy: 'categories')]
+    private Collection $documents;
+
     public function __construct()
     {
         $this->enabled = true;
         $this->associates = new ArrayCollection();
         $this->posts = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -226,6 +230,33 @@ class Category
     {
         if ($this->posts->removeElement($post)) {
             $post->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Document>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addDocument(Document $document): self
+    {
+        if (!$this->files->contains($document)) {
+            $this->files->add($documents);
+            $document->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): self
+    {
+        if ($this->files->removeElement($document)) {
+            $document->removeCategory($this);
         }
 
         return $this;

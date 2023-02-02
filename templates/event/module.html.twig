@@ -1,6 +1,8 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 
-{% if path('profile_events') not in currentPath and events is defined %}
+{% set events = manager.getUpcomingEvents(viewpoint) %}
+
+{% if path('profile_events') not in currentPath %}
   <h5 class="mt-5 text-secondary">Kalender</h5>
 
   {% for event in events %}
@@ -13,9 +15,19 @@
         <div class="d-flex justify-content-between align-items-center w-100">
           <strong class="text-gray-dark">{% if event.cancelled %}<s>{{event.title|title}}</s>{% else %}{{event.title|title}}{% endif %}</strong>
         </div>
-        {#<span class="d-block">{{event.startTime|format_datetime('full', 'none')}}</span>#}
-        <span class="d-block"><i class="bi bi-pin-map"></i> {{event.location}}</span>
+        {% if event.location %}<span class="d-block small fw-lighter"><i class="bi bi-pin-map"></i> {{event.location}}</span>{% endif %}
       </div>
     </div>
+  {% else %}
+    <div class="media shadow-sm document p-2 text-secondary">
+      <div class="media-body ms-2 mb-0 small lh-125 text-gray-dark">Niets gevonden.</div>
+    </div>
   {% endfor %}
+
+  <div class="mt-2 text-end">
+    <a href="{{path('profile_events')}}" class="small fw-lighter text-secondary text-decoration-none">
+      <i class="bi bi-chevron-double-right"></i> naar de volledige kalender
+    </a>
+  </div>
+
 {% endif %}

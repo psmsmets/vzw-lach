@@ -13,7 +13,8 @@ twig:
         path : {'imageEntire': '%app.path.associates.entire%',
                 'thumbEntire': '%app.path.associates.entire%/thumbs',
                 'imagePortrait': '%app.path.associates.portrait%',
-                'thumbPortrait': '%app.path.associates.portrait%/thumbs'}
+                'thumbPortrait': '%app.path.associates.portrait%/thumbs',
+                'documents': '%app.path.documents%'}
         manager: '@App\Service\ProfileManager'
     form_themes:
          - 'bootstrap_5_layout.html.twig'

@@ -1,0 +1,62 @@
+{% if pinned is not defined %}{% set pinned = false %}{% endif %}
+{% if extend is not defined %}{% set extend = false %}{% endif %}
+
+{#
+<div class="p-3 mb-4 shadow-sm {% if not extend %}document-link{% else%}bg-white{% endif %}" {% if not extend %}onclick="window.location='{{ path('profile_document', {'id': document.id}) }}';"{% endif %}>
+#}
+
+<div class="p-3 mb-4 shadow-sm {% if pinned %}border border-primary{% endif %} document-link"
+     onclick="window.open('{{path.documents}}/{{document.documentName}}');">
+
+  <h4 class="text-primary d-flex justify-content-between mb-3">
+    <span><i class="bi bi-cloud-download"></i> {{ document.title|capitalize }}</span>
+    {% if pinned %}<i class="bi bi-pin-fill"></i>{% endif %}
+    {% if document.publishedAt > date()%}
+      <small>
+        <i class="fas fa-lock" data-toggle="tooltip" data-placement="bottom" title=""
+           data-original-title="Nog niet publiek"></i>
+      </small>
+    {% elseif not document.published %}
+        <small>
+          <i class="fas fa-lock" data-toggle="tooltip" data-placement="bottom" title=""
+            data-original-title="Niet gepubliceerd"></i>
+        </small>
+    {% endif %}
+  </h4>
+
+  <p>{{document.description}}<p>
+
+  {% if extend %}
+    <a href="{{path.documents}}/{{document.documentName}}" target="_blank" class="btn btn-outline-secondary fw-light rounded-1"><i class="bi bi-cloud-download"></i> Download</a>
+  {% endif %}
+
+  <div class="small text-secondary d-flex justify-content-between mt-3">
+    <ul class="list-inline mb-0">
+      <li class="list-inline-item small fw-lighter"><i class="bi bi-clock"></i> gepubliceerd
+        {{ document.publishedAt|format_datetime('medium', 'none') }}
+      </li>
+      {% if document.updatedAt %}
+        <li class="list-inline-item small fw-lighter"><i class="bi bi-clock-history"></i> aangepast
+          {{ document.updatedAt|format_datetime('medium', 'none') }}
+        </li>
+      {% endif %}
+      <li class="list-inline-item small"><i class="bi bi-people-fill"></i>
+        {% for category in document.categories %}
+          {{ category|lower }}{% if not loop.last%} | {% endif %}
+        {% else %}
+          iedereen
+        {% endfor %}
+      </li>
+    </ul>
+{#
+    {% if not extend %}
+    <ul class="list-inline mb-0">
+      <li class="list-inline-item">
+        <a href="{{ path('profile_document', {'id': document.id}) }}"><i class="bi bi-link-45deg"></i></a>
+      </li>
+    </ul>
+    {% endif %}
+#}
+  </div>
+
+</div>

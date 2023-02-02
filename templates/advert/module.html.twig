@@ -1,0 +1,33 @@
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+
+{% set adverts = manager.getSpecialAdverts() %}
+
+{% if path('profile_adverts') not in currentPath %}
+  <h5 class="mt-5 text-secondary">Zoekertjes</h5>
+
+  {% for advert in adverts %}
+    <div class="media shadow-sm advert advert-link p-2 text-secondary"
+         onclick="window.location='{{ path('profile_advert', {'id': advert.id}) }}';">
+      <span class="badge mr-2 advert advert-sm bg-primary rounded-1">
+        <i class="bi bi-cloud-download"></i> 
+      </span>
+      <div class="media-body ms-2 mb-0 small lh-125 {% if not loop.last %}border-bottom border-gray{% endif %}">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <strong class="text-gray-dark">{{advert.title|title}}</strong>
+        </div>
+        <span class="d-block small fw-lighter"><i class="bi bi-clock"></i> versie {{advert.updatedAt|format_datetime('medium', 'none')}}</span>
+      </div>
+    </div>
+  {% else %}
+    <div class="media shadow-sm document p-2 text-secondary">
+      <div class="media-body ms-2 mb-0 small lh-125 text-gray-dark">Niets gevonden.</div>
+    </div>
+  {% endfor %}
+
+  <div class="mt-2 text-end">
+    <a href="{{path('profile_adverts')}}" class="small fw-lighter text-secondary text-decoration-none">
+      <i class="bi bi-chevron-double-right"></i> naar alle zoekertjes
+    </a>
+  </div>
+
+{% endif %}

@@ -55,7 +55,7 @@ body {
   color: rgba(255, 255, 255, .65);
 }
 
-.nav-link .active {
+.nav-link.active {
   font-weight: 600;
   color: rgba(255, 255, 255, 1);
 }
@@ -107,7 +107,7 @@ th .btn-link:hover {
 /*
  * Events
 */
-.event.media {
+.event.media, .document.media {
   display: flex;
   width: 100%;
 }
@@ -116,7 +116,7 @@ th .btn-link:hover {
   text-decoration: line-through;
 }
 
-.event-link, .advert-link {
+.event-link, .advert-link, .document-link {
   cursor: pointer;
   background-color: #fff;
   &:hover {

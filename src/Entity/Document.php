@@ -2,20 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\PostRepository;
+use App\Repository\DocumentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-#[ORM\Entity(repositoryClass: PostRepository::class)]
+#[ORM\Entity(repositoryClass: DocumentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Post
+#[Vich\Uploadable]
+class Document 
 {
     public const NUMBER_OF_ITEMS_SPECIAL = 5;
-    public const NUMBER_OF_ITEMS_PINNED = 2;
-    public const NUMBER_OF_ITEMS = 10;
+    public const NUMBER_OF_ITEMS_PINNED = 3;
+    public const NUMBER_OF_ITEMS = 25;
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -31,9 +37,6 @@ class Post
     private ?bool $pinned = null;
 
     #[ORM\Column]
-    private ?bool $archived = null;
-
-    #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -45,14 +48,24 @@ class Post
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $body = null;
-
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'posts')]
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'documents')]
     private Collection $categories;
+
+    // NOTE: This is not a mapped field of entity metadata, just a simple property.
+    #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'documentName')]
+    #[Assert\File(
+        maxSize: '16M',
+        mimeTypes: ['application/pdf'],
+        mimeTypesMessage: 'Please upload a valid document (pdf only)',
+    )]
+    #[Ignore]
+    private ?File $documentFile = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $documentName = null;
 
     public function __construct()
     {
@@ -115,18 +128,6 @@ class Post
         return $this;
     }
 
-    public function isArchived(): ?bool
-    {
-        return $this->archived;
-    }
-
-    public function setArchived(bool $archived): self
-    {
-        $this->archived = $archived;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -168,26 +169,14 @@ class Post
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getDescription(): ?string
     {
-        return $this->slug;
+        return $this->description;
     }
 
-    public function setSlug(string $slug): self
+    public function setDescription(string $description): self
     {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getBody(): ?string
-    {
-        return $this->body;
-    }
-
-    public function setBody(string $body): self
-    {
-        $this->body = $body;
+        $this->description = $description;
 
         return $this;
     }
@@ -214,6 +203,42 @@ class Post
         $this->categories->removeElement($category);
 
         return $this;
+    }
+
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     * @Ignore()
+     */
+    public function setDocumentFile(?File $documentFile = null): void
+    {
+        $this->documentFile = $documentFile;
+
+        if (null !== $documentFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getDocumentFile(): ?File
+    {
+        return $this->documentFile;
+    }
+
+    public function setDocumentName(?string $documentName): void
+    {
+        $this->documentName = $documentName;
+    }
+
+    public function getDocumentName(): ?string
+    {
+        return $this->documentName;
     }
 
 }

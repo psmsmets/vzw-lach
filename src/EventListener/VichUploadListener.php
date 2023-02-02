@@ -2,10 +2,11 @@
 
 namespace App\EventListener;
 
+use App\Entity\Associate;
 use App\Service\ImageOptimizer;
 use Vich\UploaderBundle\Event\Event;
 
-class ImageUploadListener
+class VichUploadListener
 {
     public function __construct(ImageOptimizer $imageOptimizer)
     {
@@ -18,12 +19,14 @@ class ImageUploadListener
         $mapping = $event->getMapping();
 
         // resize image and make thumbs
-        if (!is_null($object->getImagePortraitFile())) {
-            $this->imageOptimizer->resize($object->getImagePortraitFile()->getRealPath());
-        }
+        if ($object instanceof Associate) {
+            if (!is_null($object->getImagePortraitFile())) {
+                $this->imageOptimizer->resize($object->getImagePortraitFile()->getRealPath());
+            }
 
-        if (!is_null($object->getImageEntireFile())) {
-            $this->imageOptimizer->resize($object->getImageEntireFile()->getRealPath());
+            if (!is_null($object->getImageEntireFile())) {
+                $this->imageOptimizer->resize($object->getImageEntireFile()->getRealPath());
+            }
         }
     }
 }

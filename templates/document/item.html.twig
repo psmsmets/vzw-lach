@@ -1,0 +1,13 @@
+{% extends 'profile.html.twig' %}
+
+{% block main %}
+
+    <h1 class="text-secondary">Documenten</h1> 
+
+    {% include 'document/template.html.twig' with {'item': document, 'extend': true } %}
+
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="{{ path('profile_documents') }}">terug naar het overzicht</a></li>
+    </ul>
+
+{% endblock %}

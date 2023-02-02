@@ -12,7 +12,7 @@
       
     <div class="media align-top mt-3 event {% if past %} past{% endif %}{% if event.cancelled %} alert-danger{% endif %}">
 
-     <span class="badge rounded-1 mr-3 event text-bg-{% if past %}secondary{% else %}primary{% endif %}">{% if past %}<s>{% endif %}{{event.startTime|date('d')}}{% if past %}</s>{% endif %}</span>
+     <span class="badge rounded-1 mr-3 event event-md text-bg-{% if past %}secondary{% else %}primary{% endif %}">{% if past %}<s>{% endif %}{{event.startTime|format_datetime(pattern='d')}}<br>{{event.startTime|format_datetime(pattern='MMM')|trim('.')}}{% if past %}</s>{% endif %}</span>
 
      <div class="media-body ms-3 pb-0 mb-0 lh-125 w-100">
 
@@ -26,7 +26,7 @@
 
        <h6 class="mb-2">{{event.getFormattedPeriod|lower}}</h6>
 
-       <div class="small text-secondary d-flex justify-content-between mt-2 mb-0">
+       <div class="text-secondary d-flex justify-content-between mt-2 mb-0">
          <ul class="list-inline mb-0">
            {% if event.location %}
            <li class="list-inline-item small"><i class="bi bi-pin-map"></i>
@@ -54,11 +54,11 @@
 
        <div class="small text-muted d-flex justify-content-between mt-2 mb-0">
          <ul class="list-inline mb-0">
-           <li class="list-inline-item small"><i class="bi bi-clock-history"></i> gepubliceerd
+           <li class="list-inline-item small fw-lighter"><i class="bi bi-clock-history"></i> gepubliceerd
              {{ event.publishedAt|format_datetime('medium', 'none') }}
            </li>
            {% if event.updatedAt %}
-           <li class="list-inline-item small"><i class="bi bi-clock-history"></i> aangepast
+           <li class="list-inline-item small fw-lighter"><i class="bi bi-clock-history"></i> aangepast
              {{ event.updatedAt|format_datetime('medium', 'none') }}
            </li>
            {% endif %}
