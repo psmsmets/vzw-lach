@@ -8,10 +8,12 @@ use Vich\UploaderBundle\Event\Event;
 
 class VichUploadListener
 {
+/*
     public function __construct(ImageOptimizer $imageOptimizer)
     {
         $this->imageOptimizer = $imageOptimizer;
     }
+*/
 
     public function onVichUploaderPostUpload(Event $event)
     {
@@ -20,12 +22,15 @@ class VichUploadListener
 
         // resize image and make thumbs
         if ($object instanceof Associate) {
+
+            $imageOptimizer = new ImageOptimizer();
+
             if (!is_null($object->getImagePortraitFile())) {
-                $this->imageOptimizer->resize($object->getImagePortraitFile()->getRealPath());
+                $imageOptimizer->resize($object->getImagePortraitFile()->getRealPath());
             }
 
             if (!is_null($object->getImageEntireFile())) {
-                $this->imageOptimizer->resize($object->getImageEntireFile()->getRealPath());
+                $imageOptimizer->resize($object->getImageEntireFile()->getRealPath());
             }
         }
     }
