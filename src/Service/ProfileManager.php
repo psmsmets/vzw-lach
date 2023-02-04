@@ -173,6 +173,11 @@ class ProfileManager
         return (int) ceil($this->advertRepository->countAdverts() / Advert::NUMBER_OF_ITEMS);
     }
 
+    public function getSpecialAdverts(): array
+    {
+        return $this->advertRepository->findAdverts(Advert::NUMBER_OF_ITEMS_SPECIAL, null, 50);
+    }
+
     public function getDocument($obj, string $uuid): ?Document
     {
         $validator = Validation::createValidator();

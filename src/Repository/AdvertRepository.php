@@ -62,7 +62,7 @@ class AdvertRepository extends ServiceEntityRepository
     /**
      * @return Advert[] Returns an array of Advert objects
      */
-    public function findAdverts(?int $limit = null, int $page = 1): array
+    public function findAdverts(?int $limit = null, ?int $page = 1, ?int $progress = null, ?bool $completed = null): array
     {
         /* todo: optionally filter completed */
         $limit = is_null($limit) ? Advert::NUMBER_OF_ITEMS : $limit;
@@ -75,6 +75,16 @@ class AdvertRepository extends ServiceEntityRepository
 
         $qb->setParameter('now', new \DateTime());
         $qb->andWhere('ad.publishedAt <= :now');
+
+        if (!is_null($progress)) {
+            $qb->setParameter('progress', $progress);
+            $qb->andWhere('ad.progress < :progress');
+        }
+
+        if (!is_null($completed)) {
+            $qb->setParameter('completed', $completed);
+            $qb->andWhere('ad.completed = :completed');
+        }
 
         $qb->addOrderBy('ad.progress', 'ASC');
         $qb->addOrderBy('ad.publishedAt', 'DESC');
