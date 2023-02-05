@@ -29,12 +29,12 @@ security:
             # https://symfony.com/doc/current/security.html#the-firewall
 
             # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+            switch_user: true
 
             login_link:
                 check_route: security_check
                 signature_properties: [id, email]
-                lifetime: 600
+                lifetime: 300
                 check_post_only: true
                 max_uses: 1
 

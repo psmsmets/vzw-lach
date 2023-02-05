@@ -31,6 +31,9 @@ class SecurityController extends AbstractController
     #[Route('/login', name: 'security_signin')]
     public function signin(AuthenticationUtils $authenticationUtils): Response
     {
+        // redirect if user is already logged in
+        if ($this->getUser() !== null) return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -68,6 +71,9 @@ class SecurityController extends AbstractController
         Request $request
     )
     {
+        // redirect if user is already logged in
+        if ($this->getUser() !== null) return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+
         // check if login form is submitted
         if ($request->isMethod('POST')) {
 
@@ -88,7 +94,7 @@ class SecurityController extends AbstractController
                 $loginLink = $loginLinkDetails->getUrl();
 
                 // create a notification based on the login link details
-                $notification = new LoginLinkNotification(
+                $notification = new CustomLoginLinkNotification(
                     $loginLinkDetails,
                     'Inloggen leden-vzw-lach.be' // email subject
                 );

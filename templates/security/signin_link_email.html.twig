@@ -1,10 +1,10 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Login{% endblock %}
-
-{% block stylesheets %}
-  {{ parent() }}
-  {{ encore_entry_link_tags('security') }}
-{% endblock %}
-
-Hallo
+{% apply inline_css(source('@styles/email.css')) %}
+    <h1>Aanmelden bij HGCVHKV</h1>
+    <p class="lead">Klik op de onderstaande link om te bevestigen dat u zich wilt aanmelden. Deze link verloopt over 5 minuten.</p>
+    <p class="lead"><a href="{{ action_url }}">Aanmelden</a></p>
+    <p>&nbsp;</p>
+    <small>
+      <p>---</p>
+      <p><i>Dit is een automatisch bericht van <a href="{https://leden-vzw-lach.be}">leden-vzw-lach.be</a></i></p>
+    </small>
+{% endapply %}

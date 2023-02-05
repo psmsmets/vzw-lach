@@ -18,6 +18,8 @@ twig:
         manager: '@App\Service\ProfileManager'
     form_themes:
          - 'bootstrap_5_layout.html.twig'
+    paths:
+        '%kernel.project_dir%/assets/css': styles
 
 when@test:
     twig:
