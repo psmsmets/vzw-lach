@@ -3,7 +3,6 @@
 {% block title %}Login{% endblock %}
 
 {% block stylesheets %}
-  {{ parent() }}
   {{ encore_entry_link_tags('security') }}
 {% endblock %}
 
@@ -16,7 +15,6 @@
       {% if error %}
         <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
       {% endif %}
-      {# include 'modules/alerts.html.twig' #}
 
       <a href="{{ path('home') }}"><img class="mb-4" src="{{ asset('assets/img/logo/lach.png') }}" alt="" height="250"></a>
 
@@ -33,11 +31,13 @@
         <label for="floatingPassword">Wachtwoord</label>
       </div>
 
+{#
       <div class="checkbox my-3 d-none">
         <label>
           <input type="checkbox" value="remember-me"> Remember me
         </label>
       </div>
+#}
 
       {# If you want to control the URL the user is redirected to on success
       <input type="hidden" name="_target_path" value="/account"/> #}
@@ -45,6 +45,8 @@
       <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
       <button class="w-100 btn btn-lg btn-primary" type="submit">Inloggen</button>
+
+      <p class="mt-4"><a href="{{ path('security_signin_link') }}">Inloggen zonder wachtwoord via een link</a></p>
 
     </form>
 

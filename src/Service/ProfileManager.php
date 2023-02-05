@@ -7,15 +7,20 @@ use App\Entity\Associate;
 use App\Entity\AssociateAddress;
 use App\Entity\Category;
 use App\Entity\Event;
+use App\Entity\Document;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Repository\AdvertRepository;
 use App\Repository\AssociateRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
+use App\Repository\DocumentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\Uuid as UuidConstraint;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Uid\Uuid;
@@ -23,10 +28,15 @@ use Symfony\Component\Uid\Uuid;
 class ProfileManager 
 {
     private $em;
-    private $associateRep;
-    private $eventRep;
-    private $postRep;
-    private $userRep;
+    private $advertRepository;
+    private $associateRepository;
+    private $categoryRepository;
+    private $eventRepository;
+    private $documentRepository;
+    private $postRepository;
+    private $userRepository;
+    private $requestStack;
+    private $security;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -34,8 +44,11 @@ class ProfileManager
         AssociateRepository $associateRepository,
         CategoryRepository $categoryRepository,
         EventRepository $eventRepository,
+        DocumentRepository $documentRepository,
         PostRepository $postRepository,
         UserRepository $userRepository,
+        RequestStack $requestStack,
+        Security $security,
     )
     {
         $this->em = $em;
@@ -43,8 +56,11 @@ class ProfileManager
         $this->associateRepository = $associateRepository;
         $this->categoryRepository = $categoryRepository;
         $this->eventRepository = $eventRepository;
+        $this->documentRepository = $documentRepository;
         $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
+        $this->requestStack = $requestStack;
+        $this->security = $security;
         setlocale(LC_ALL, 'nl_BE');
     }
 
@@ -81,6 +97,11 @@ class ProfileManager
     public function userPosts(User $user, ?int $limit = null): array
     {
         return $this->postRepository->findPosts($user, null, null, $limit);
+    }
+
+    public function getAssociate(Uuid $uuid): ?Associate
+    {
+        return $this->associateRepository->find($uuid);
     }
 
     public function getUpcomingEvents($obj, ?int $limit = null): array
@@ -125,12 +146,12 @@ class ProfileManager
 
     public function getSpecialPosts($obj): array
     {
-        return $this->postRepository->findPosts($obj, true, false, Post::NUMBER_OF_ITEMS_HOMEPAGE);
+        return $this->postRepository->findPosts($obj, true, null, Post::NUMBER_OF_ITEMS_SPECIAL);
     }
 
     public function getPinnedPosts($obj): array
     {
-        return $this->postRepository->findPosts($obj, null, true, Post::NUMBER_OF_ITEMS_HOMEPAGE);
+        return $this->postRepository->findPosts($obj, null, true, Post::NUMBER_OF_ITEMS_PINNED);
     }
 
     public function getAdvert(string $uuid): ?Advert
@@ -150,5 +171,78 @@ class ProfileManager
     public function getAdvertPages(): int 
     {
         return (int) ceil($this->advertRepository->countAdverts() / Advert::NUMBER_OF_ITEMS);
+    }
+
+    public function getSpecialAdverts(): array
+    {
+        return $this->advertRepository->findAdverts(Advert::NUMBER_OF_ITEMS_SPECIAL, null, 50);
+    }
+
+    public function getDocument($obj, string $uuid): ?Document
+    {
+        $validator = Validation::createValidator();
+        $uuidContraint = new UuidConstraint();
+
+        $errors = $validator->validate($uuid, $uuidContraint);
+        return count($errors) == 0 ? $this->documentRepository->findDocument(Uuid::fromString($uuid), $obj) : null;
+    }
+
+    public function getDocuments($obj, int $page = 1): array
+    {
+        return $this->documentRepository->findDocuments($obj, null, false, Document::NUMBER_OF_ITEMS, $page);
+    }
+
+    public function getDocumentPages($obj): int 
+    {
+        return (int) ceil($this->documentRepository->countDocuments($obj, null, false) / Document::NUMBER_OF_ITEMS);
+    }
+
+    public function getSpecialDocuments($obj): array
+    {
+        return $this->documentRepository->findDocuments($obj, true, null, Document::NUMBER_OF_ITEMS_SPECIAL);
+    }
+
+    public function getPinnedDocuments($obj): array
+    {
+        return $this->documentRepository->findDocuments($obj, null, true, Document::NUMBER_OF_ITEMS_PINNED);
+    }
+
+    public function getRequestedPage(Request $request, int $pages): int
+    {
+        $page = (int) $request->query->get('pagina', 1);
+        $page = $page < 1 ? 1 : $page;
+        $page = $page > $pages ? $pages : $page;
+
+        return $page;
+    }
+
+    public function getViewpoint()
+    {
+        $session = $this->requestStack->getSession();
+        $viewpoint = $session->get('viewpoint', false);
+
+        if ($viewpoint instanceof Uuid)
+        {
+            $associate = $this->getAssociate($viewpoint);
+            if (!$associate or $associate->getUser() !== $this->security->getUser()) throw $this->createAccessDeniedException();
+
+            return $associate;
+        }
+        return $this->security->getUser();
+    }
+
+    public function setViewpoint($viewpoint): self
+    {
+        $session = $this->requestStack->getSession();
+        if ($viewpoint instanceof Associate)
+        {
+            $session->set('viewpoint', $viewpoint->getId());
+            $session->getFlashBag()->add('alert-success', 'Je bekijkt vanaf nu enkel de informatie voor '.strval($viewpoint));
+        } else {
+            $session->set('viewpoint', false);
+            $session->getFlashBag()->add('alert-success', 'Je bekijkt weer de informatie voor al je deelnemers');
+        }
+
+        return $this;
     }
 }

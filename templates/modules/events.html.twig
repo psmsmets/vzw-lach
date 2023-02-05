@@ -1,6 +1,0 @@
-{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
-
-{% if path('profile_events') not in currentPath %}
-  <h5 class="mt-5">Kalender</h5>
-  ...
-{% endif %}

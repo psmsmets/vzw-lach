@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% set viewpoint = manager.getViewpoint() %}
+
 {% block title %}Mijn profiel{% endblock %}
 
 {% block header %}
@@ -7,7 +9,7 @@
 {% endblock %}
 
 {% block side %}
-  {% include 'modules/events.html.twig' %}
+  {% include 'event/module.html.twig' %}
 {% endblock %}
 
 {% block stylesheets %}

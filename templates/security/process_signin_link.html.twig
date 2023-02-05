@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('security') }}
+{% endblock %}
+
+{% block body %}
+
+  <main class="form-signin w-100 m-auto">
+
+    <form action="{{ path('security_check') }}" class="text-center" method="POST">
+
+      <a href="{{ path('home') }}"><img class="mb-4" src="{{ asset('assets/img/logo/lach.png') }}" alt="" height="250"></a>
+
+      <h1 class="h3 mb-3 fw-normal">Hoi! Je staat op het punt om in te loggen bij HGCVHKV...</h1>
+
+      <input type="hidden" name="expires" value="{{ expires }}">
+      <input type="hidden" name="user" value="{{ user }}">
+      <input type="hidden" name="hash" value="{{ hash }}">
+
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Doorgaan</button>
+
+    </form>
+
+  </main>
+
+{% endblock %}

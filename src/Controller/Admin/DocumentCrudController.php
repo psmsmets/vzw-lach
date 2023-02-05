@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Post;
+use App\Entity\Document;
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -10,12 +10,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, IdField, BooleanField, DateTimeField, SlugField, TextField, TextareaField, TextEditorField};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
-class PostCrudController extends AbstractCrudController
+class DocumentCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Post::class;
+        return Document::class;
     }
 
     public function configureActions(Actions $actions): Actions
@@ -48,19 +49,14 @@ class PostCrudController extends AbstractCrudController
         yield IdField::new('id')->onlyOnDetail();
 
         yield TextField::new('title');
-        //yield SlugField::new('slug')->setTargetFieldName('title')->hideOnIndex();
 
-        yield TextEditorField::new('body')
-            ->setTrixEditorConfig([
-                'blockAttributes' => [
-                    'default' => ['tagName' => 'p'],
-                    'heading1' => ['tagName' => 'h3'],
-                ],
-                'css' => [
-                    'attachment' => 'bootstrap.css',
-                ],
-            ])
-            ->setNumOfRows(20)
+        yield TextField::new('documentFile')
+            ->setFormType(VichFileType::class)
+            ->onlyOnForms()
+            ;
+
+        yield TextareaField::new('description')
+            ->setNumOfRows(6)
             ->onlyOnForms()
             ;
 
@@ -81,7 +77,6 @@ class PostCrudController extends AbstractCrudController
 
         yield BooleanField::new('special')->renderAsSwitch(true);
         yield BooleanField::new('pinned')->renderAsSwitch(true);
-        // yield BooleanField::new('archived')->renderAsSwitch(true)->hideOnIndex();
 
     }
 }

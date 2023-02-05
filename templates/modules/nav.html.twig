@@ -15,34 +15,43 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link" href="{{path('profile_index')}}">Start</a>
+            <a class="nav-link {% if path('profile_index') == currentPath %}active{% endif %}"
+               href="{{path('profile_index')}}">Start</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('profile_posts')}}">Berichten</a>
+            <a class="nav-link {% if path('profile_posts') in currentPath %}active{% endif %}"
+               href="{{path('profile_posts')}}">Berichten</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('profile_events')}}">Kalender</a>
+            <a class="nav-link {% if path('profile_events') in currentPath %}active{% endif %}"
+               href="{{path('profile_events')}}">Kalender</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('profile_index')}}">Documenten</a>
+            <a class="nav-link {% if path('profile_documents') in currentPath %}active{% endif %}"
+               href="{{path('profile_documents')}}">Documenten</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" aria-current="page" href="{{path('profile_adverts')}}">Zoekertjes</a>
+            <a class="nav-link {% if path('profile_adverts') in currentPath %}active{% endif %}"
+               href="{{path('profile_adverts')}}">Zoekertjes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{path('page', {slug: 'contact'})}}">Contact</a>
+            <a class="nav-link {% if currentPath == '/contact' %}active{% endif %}"
+               href="{{path('page', {'slug': 'contact'})}}">Contact</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{app.user.email}}
+              {% if viewpoint == app.user %}{{app.user.email}}{% else %}{{viewpoint}}{% endif %}
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li>
-                <hr class="dropdown-divider">
+            <ul class="dropdown-menu dropdown-menu-dark" style="margin-top: 7px;">
+              <li><a class="dropdown-item fw-lighter" href="{{path('profile_reset')}}">{{app.user.email}}</a></li>
+              <li><hr class="dropdown-divider"></li>
+              {% for associate in app.user.associates %}
+              <li><a class="dropdown-item fw-lighter" href="{{path('profile_select', {'id': associate.id})}}">{{associate}}</a></li>
+              {% endfor %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a href="{{path('security_signout')}}" class="dropdown-item fw-lighter">
+                <i class="bi bi-power"></i> afmelden</a>
               </li>
-              <li><a href="{{path('security_signout')}}" class="dropdown-item"><i class="bi bi-power"></i> afmelden</a></li>
             </ul>
           </li>
         </ul>

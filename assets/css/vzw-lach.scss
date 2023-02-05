@@ -51,6 +51,15 @@ body {
   border-bottom-color: rgba(149, 20, 31, 1);
 }
 
+.nav-link {
+  color: rgba(255, 255, 255, .65);
+}
+
+.nav-link.active {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 1);
+}
+
 footer {
   font-size: .75em;
   font-weight: lighter !important;
@@ -98,7 +107,7 @@ th .btn-link:hover {
 /*
  * Events
 */
-.event.media {
+.event.media, .document.media, .advert.media {
   display: flex;
   width: 100%;
 }
@@ -107,7 +116,7 @@ th .btn-link:hover {
   text-decoration: line-through;
 }
 
-.event-link, .advert-link {
+.event-link, .advert-link, .document-link {
   cursor: pointer;
   background-color: #fff;
   &:hover {
@@ -136,12 +145,13 @@ th .btn-link:hover {
   }
 
   &.event-sm {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     font-size: .85rem;
+    font-weight: 300;
     padding: .2rem;
     line-height: .85;
-    margin-top: .15rem;
+    margin-top: .10rem;
   }
 }
 
@@ -151,17 +161,6 @@ ul.event-small i {
 
 ul.event-smaller i {
   width: 1.5rem;
-}
-
-$events: (1: #ed1c24, 2: #d4af37, 3: #6c757d, 4: #343a40, 5: #ffc107);
-
-@each $event, $color in $events {
-  .badge.event-#{$event} {
-    background-color: $color;
-  }
-  a.badge.event-#{$event}:hover {
-    background-color: darken($color, 15%);
-  }
 }
 
 /* make keyframes that tell the start state and the end state of our object */

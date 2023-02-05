@@ -73,7 +73,7 @@ class Event
         $this->id = Uuid::v6();
         $this->createdAt = new \DateTimeImmutable();
         $this->publishedAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', date('Y-m-d H:i'));
-        $this->published = false;
+        $this->published = true;
         $this->cancelled = false;
         $this->archived = false;
         $this->categories = new ArrayCollection();

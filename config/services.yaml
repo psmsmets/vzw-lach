@@ -18,6 +18,7 @@ parameters:
     app.path.public: /public_html
     app.path.associates.entire: /uploads/associates/entire
     app.path.associates.portrait: /uploads/associates/portrait
+    app.path.documents: /uploads/documents
     app.regex.email: '^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+(@)[a-zA-Z0-9-]+\.([a-zA-Z0-9-]{2,})*$'
     app.regex.phone: '^(\+|00)(32|31)([1-9]\d{8})$' # enkel Belgie en Nederland
     app.regex.name: '^([ \u00c0-\u01ffa-zA-Z\-]){2,}$'
@@ -57,6 +58,6 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    App\EventListener\ImageUploadListener:
+    App\EventListener\VichUploadListener:
         tags:
             - { name: kernel.event_listener, event: vich_uploader.post_upload }

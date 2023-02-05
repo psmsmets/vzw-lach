@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block stylesheets %}
+  {{ encore_entry_link_tags('security') }}
+{% endblock %}
+
+{% block body %}
+
+  <main class="form-signin w-100 m-auto">
+
+    <form action="{{ path('security_signin_link') }}" class="text-center needs-validation" method="POST">
+
+      <a href="{{ path('home') }}"><img class="mb-4" src="{{ asset('assets/img/logo/lach.png') }}" alt="" height="250"></a>
+
+      <h1 class="h3 mb-3 fw-normal">Gelieve in te loggen</h1>
+
+      <div class="form-floating">
+        <input type="email" class="form-control rounded-2 mb-2" name="email"
+         placeholder="name@example.com">
+        <label for="floatingInput">E-mailadres</label>
+      </div>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Verzend login link</button>
+
+    </form>
+
+  </main>
+
+{% endblock %}

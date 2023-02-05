@@ -1,0 +1,29 @@
+{% extends 'profile.html.twig' %}
+
+{% block main %}
+
+  <h1 class="text-secondary">Documenten</h1>
+
+  {% if (pinned|length == 0) and (documents|length  == 0) %}
+
+    <div class="p-3 mb-4 bg-white shadow-sm">
+      <p class="my-2"><i class="bi bi-exclamation-circle-fill"></i> Geen documenten gevonden.</p>
+    </div>
+
+  {% else %}
+
+    {% for document in pinned %}
+      {% include 'document/template.html.twig' with {'item': document, 'pinned': true, 'extend': false} %}
+    {% endfor %}
+ 
+    {% for document in documents %}
+      {% include 'document/template.html.twig' with {'item': document, 'pinned': false, 'extend': false} %}
+    {% endfor %}
+
+    {% if pages > 1 %}
+      {% include 'modules/pagination.html.twig' %}
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}

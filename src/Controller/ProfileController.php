@@ -41,27 +41,45 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/', name: '_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
         // usually you'll want to make sure the user is authenticated first,
         // see "Authorization" below
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // returns your User object, or null if the user is not authenticated
-        // use inline documentation to tell your editor your exact User class
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
+        $viewpoint = $this->manager->getViewpoint();
 
         return $this->render('profile/index.html.twig', [
-            //'associates' => $user->getEnabledAssociates(),
-            'special' => $this->manager->getSpecialPosts($user),
-            'pinned' => $this->manager->getPinnedPosts($user),
-            'posts' => $this->manager->getPosts($user),
-            'events' => $this->manager->userEvents($user),
+            'specials' => $this->manager->getSpecialPosts($viewpoint),
         ]);
     }
 
-    #[Route('/deelnemer/{id}', name: '_show', methods: ['GET'])]
+    #[Route('/gebruiker', name: '_reset', methods: ['GET'])]
+    public function reset(Request $request): Response
+    {
+        // usually you'll want to make sure the user is authenticated first,
+        // see "Authorization" below
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->manager->setViewpoint(false);
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    #[Route('/deelnemer/{id}', name: '_select', methods: ['GET'])]
+    public function select(Associate $associate, Request $request): Response
+    {
+        // usually you'll want to make sure the user is authenticated first,
+        // see "Authorization" below
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
+        $this->manager->setViewpoint($associate);
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    #[Route('/deelnemer/{id}/show', name: '_show', methods: ['GET'])]
     public function show(Associate $associate): Response
     {
         if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
@@ -94,30 +112,25 @@ class ProfileController extends AbstractController
     #[Route('/berichten', name: '_posts', methods: ['GET'])]
     public function posts(Request $request): Response
     {
-        // returns your User object, or null if the user is not authenticated
-        // use inline documentation to tell your editor your exact User class
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
+        $viewpoint = $this->manager->getViewpoint();
 
-        $pages = $this->manager->getPostPages($user);
-        $page = $this->getRequestedPage($request, $pages); 
+        $pages = $this->manager->getPostPages($viewpoint);
+        $page = $this->manager->getRequestedPage($request, $pages); 
 
         return $this->render('post/index.html.twig', [
-            'posts' => $this->manager->getPosts($user, $page),
+            'pinned' => $this->manager->getPinnedPosts($viewpoint),
+            'posts' => $this->manager->getPosts($viewpoint, $page),
             'page' => $page,
             'pages' => $pages,
         ]);
     }
 
-    #[Route('/berichten/{uuid}', name: '_post', methods: ['GET'])]
-    public function post(string $uuid): Response
+    #[Route('/berichten/{id}', name: '_post', methods: ['GET'])]
+    public function post(string $id): Response
     {
-        // returns your User object, or null if the user is not authenticated
-        // use inline documentation to tell your editor your exact User class
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
+        $viewpoint = $this->manager->getViewpoint();
 
-        if (!($post = $this->manager->getPost($user, $uuid))) {
+        if (!($post = $this->manager->getPost($viewpoint, $id))) {
             return $this->redirectToRoute('profile_index');
         }
 
@@ -129,26 +142,50 @@ class ProfileController extends AbstractController
     #[Route('/kalender', name: '_events', methods: ['GET'])]
     public function events(): Response
     {
-        // returns your User object, or null if the user is not authenticated
-        // use inline documentation to tell your editor your exact User class
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
+        $viewpoint = $this->manager->getViewpoint();
 
         return $this->render('event/index.html.twig', [
-            'events' => $this->manager->getPeriodEvents($user),
+            'events' => $this->manager->getPeriodEvents($viewpoint),
         ]);
     }
 
-    #[Route('/kalender/{uuid}', name: '_event', methods: ['GET'])]
-    public function event(string $uuid): Response
+    #[Route('/kalender/{id}', name: '_event', methods: ['GET'])]
+    public function event(string $id): Response
     {
-        // returns your User object, or null if the user is not authenticated
-        // use inline documentation to tell your editor your exact User class
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
+        $viewpoint = $this->manager->getViewpoint();
 
         return $this->render('event/item.html.twig', [
-            'event' => $this->manager->getEvent($user, $uuid),
+            'event' => $this->manager->getEvent($viewpoint, $id),
+        ]);
+    }
+
+    #[Route('/documenten', name: '_documents', methods: ['GET'])]
+    public function documents(Request $request): Response
+    {
+        $viewpoint = $this->manager->getViewpoint();
+
+        $pages = $this->manager->getDocumentPages($viewpoint);
+        $page = $this->manager->getRequestedPage($request, $pages); 
+
+        return $this->render('document/index.html.twig', [
+            'pinned' => $this->manager->getPinnedDocuments($viewpoint),
+            'documents' => $this->manager->getDocuments($viewpoint, $page),
+            'page' => $page,
+            'pages' => $pages,
+        ]);
+    }
+
+    #[Route('/documenten/{id}', name: '_document', methods: ['GET'])]
+    public function document(string $id): Response
+    {
+        $viewpoint = $this->manager->getViewpoint();
+
+        if (!($document = $this->manager->getDocument($viewpoint, $id))) {
+            return $this->redirectToRoute('profile_index');
+        }
+
+        return $this->render('document/item.html.twig', [
+            'document' => $document,
         ]);
     }
 
@@ -156,7 +193,7 @@ class ProfileController extends AbstractController
     public function adverts(Request $request): Response
     {
         $pages = $this->manager->getAdvertPages();
-        $page = $this->getRequestedPage($request, $pages);
+        $page = $this->manager->getRequestedPage($request, $pages);
 
         return $this->render('advert/index.html.twig', [
             'adverts' => $this->manager->getAdverts($page),
@@ -165,24 +202,15 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/zoekertjes/{uuid}', name: '_advert', methods: ['GET'])]
-    public function advert(string $uuid): Response
+    #[Route('/zoekertjes/{id}', name: '_advert', methods: ['GET'])]
+    public function advert(string $id): Response
     {
-        if (!($advert = $this->manager->getAdvert($uuid))) {
+        if (!($advert = $this->manager->getAdvert($id))) {
             return $this->redirectToRoute('profile_index');
         }
 
         return $this->render('advert/item.html.twig', [
             'advert' => $advert,
         ]);
-    }
-
-    private function getRequestedPage(Request $request, int $pages): int
-    {
-        $page = (int) $request->query->get('pagina', 1);
-        $page = $page < 1 ? 1 : $page;
-        $page = $page > $pages ? $pages : $page;
-
-        return $page;
     }
 }

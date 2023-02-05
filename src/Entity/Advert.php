@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Advert 
 {
+    public const NUMBER_OF_ITEMS_SPECIAL = 5;
     public const NUMBER_OF_ITEMS = 25;
 
     #[ORM\Id]
@@ -53,7 +54,7 @@ class Advert
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $body = null;
 
     public function __construct()
