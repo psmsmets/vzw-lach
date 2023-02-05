@@ -1,0 +1,78 @@
+/*
+ *
+ * email.scss
+ *
+ */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1, h2, h3, h4, h5, h5 {
+  font-weight: 500;
+  line-height: 1.2;
+  color: rgb(176, 24, 36);
+}
+
+a {
+  color: rgb(176, 24, 36);
+  text-decoration: underline;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.lead {
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.small, small {
+  font-size: .875em;
+}
+
+.text-muted {
+  color: rgba(33, 37, 41, 0.75)!important;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.5;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  -webkit-text-decoration: none solid rgb(255, 255, 255);
+  -webkit-user-select: none;
+  background: rgb(176, 24, 36) none repeat scroll 0% 0% / auto padding-box border-box;
+  border: 1px solid rgb(149, 20, 31);
+  border-bottom: 1px solid rgb(149, 20, 31);
+  border-color: rgb(149, 20, 31);
+  border-left: 1px solid rgb(149, 20, 31);
+  border-radius: 8px;
+  border-right: 1px solid rgb(149, 20, 31);
+  border-style: solid;
+  border-top: 1px solid rgb(149, 20, 31);
+  border-width: 1px;
+  box-sizing: border-box;
+  color: #ffffff;
+}
