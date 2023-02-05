@@ -28,13 +28,13 @@ use Symfony\Component\Uid\Uuid;
 class ProfileManager 
 {
     private $em;
-    private $advertRepository;
-    private $associateRepository;
-    private $categoryRepository;
-    private $eventRepository;
-    private $documentRepository;
-    private $postRepository;
-    private $userRepository;
+    public $advertRepository;
+    public $associateRepository;
+    public $categoryRepository;
+    public $eventRepository;
+    public $documentRepository;
+    public $postRepository;
+    public $userRepository;
     private $requestStack;
     private $security;
 
