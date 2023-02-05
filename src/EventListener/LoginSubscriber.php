@@ -3,24 +3,36 @@
 namespace App\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Http\Event\CheckPassportEvent;
+use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class LoginSubscriber implements EventSubscriberInterface
 {
+    private $requestStack;
+
     public function __construct(
-        RequestStack $requestStack
+        RequestStack $requestStack,
     ) {
         $this->requestStack = $requestStack;
-
-        // Accessing the session in the constructor is *NOT* recommended, since
-        // it might not be accessible yet or lead to unwanted side-effects
-        // $this->session = $requestStack->getSession();
     }
 
     public static function getSubscribedEvents(): array
     {
+        return [CheckPassportEvent::class => 'preLogin'];
         return [LoginSuccessEvent::class => 'onLogin'];
+    }
+
+    public function preLogin(CheckPassportEvent $event): void
+    {
+        if (!$event->getPassport()->getUser()->isEnabled())
+        {
+            $session = $this->requestStack->getSession();
+            $session->getFlashBag()->add('alert-warning', 'Inloggen succesvol, maar je profiel is helaas niet actief.');
+            throw new AccessDeniedHttpException('Je profiel is niet actief!');
+        }
     }
 
     public function onLogin(LoginSuccessEvent $event): void
