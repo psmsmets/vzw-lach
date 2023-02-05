@@ -86,7 +86,7 @@ class SecurityController extends AbstractController
             $email = $request->request->get('email');
             $user = $userRepository->findOneBy(['email' => $email]);
 
-            if ($user) {
+            if ($user && $user->isEnabled()) {
 
                 // create a login link for $user this returns an instance
                 // of LoginLinkDetails

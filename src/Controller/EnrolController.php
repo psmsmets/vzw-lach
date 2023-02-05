@@ -225,7 +225,7 @@ class EnrolController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $associate->setEnabled(true);
+            $associate->setEnabled(false); // disable automatic access!!
 
             $this->entityManager->flush();
 
