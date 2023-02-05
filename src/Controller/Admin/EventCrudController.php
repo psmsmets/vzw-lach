@@ -47,8 +47,7 @@ class EventCrudController extends AbstractCrudController
         yield IdField::new('id')->onlyOnDetail();
 
         yield TextField::new('title');
-        yield SlugField::new('slug')->setTargetFieldName('title')->onlyWhenCreating();
-        yield TextField::new('slug')->hideWhenCreating()->hideOnForm();
+        yield SlugField::new('slug')->setTargetFieldName('title')->hideOnIndex();
 
         yield TextEditorField::new('body')
             ->setTrixEditorConfig([
@@ -78,7 +77,9 @@ class EventCrudController extends AbstractCrudController
         yield FormField::addTab('Who');
         yield FormField::addPanel('Who');
 
-        yield AssociationField::new('categories')->autocomplete()->hideOnIndex();
+        yield AssociationField::new('categories')->autocomplete();
+
+        yield TextField::new('location')->onlyOnIndex();
         
         yield FormField::addTab('Options');
         yield FormField::addPanel('Options');

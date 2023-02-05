@@ -37,20 +37,12 @@
         "/assets/build/ea-lightbox-prevent-scroll.aa4459ad.js"
       ]
     },
-    "cover": {
+    "email": {
       "js": [
         "/assets/build/runtime.bff8fc39.js"
       ],
       "css": [
-        "/assets/build/cover.b0e7a6b5.css"
-      ]
-    },
-    "security": {
-      "js": [
-        "/assets/build/runtime.bff8fc39.js"
-      ],
-      "css": [
-        "/assets/build/security.fb8a8e2d.css"
+        "/assets/build/email.1613c1d6.css"
       ]
     },
     "bootstrap": {
@@ -68,6 +60,14 @@
       "css": [
         "/assets/build/safari_select_fix.a8bfcbe6.css"
       ]
+    },
+    "security": {
+      "js": [
+        "/assets/build/runtime.bff8fc39.js"
+      ],
+      "css": [
+        "/assets/build/security.fb8a8e2d.css"
+      ]
     }
   },
   "integrity": {
@@ -80,9 +80,9 @@
     "/assets/build/vzw-lach-advert.ca7ca2a0.js": "sha384-0aqZjfRmK3rlTr8hJEyT7PX1LMVbXHOUkEnQO3KYwixH+Ngq9tJ6C5gM4sY8EpIb",
     "/assets/build/vzw-lach-event.4925c50f.js": "sha384-ptvY294rhfyyCR8ZOogWgElIiCW6b6JRwh5skAtbcwUeVR1MwwoaVtgrgGtgNmiF",
     "/assets/build/ea-lightbox-prevent-scroll.aa4459ad.js": "sha384-erhx4Fya3daVAokPhLQu8LYfVgUdUxjY7MgZjJVotDcmRE7h0sTbZr+cZyrDvrhm",
-    "/assets/build/cover.b0e7a6b5.css": "sha384-dGqSW6nKY5YyXgszlc7tkCNxCxO2aRIqJzmeWxHDPoJGBxobHNL5iXQyCaZ/ewFl",
-    "/assets/build/security.fb8a8e2d.css": "sha384-t+1t+up5ocwMHj0aR7TbAEZ1PBJSLzjohHLIhqj+EURoPUWV0ajL5whLJACvOInm",
+    "/assets/build/email.1613c1d6.css": "sha384-zslzCxTQxVWxkA3I4uGKbGTZuJ8GSjbm1c2kxosLT6AYA/cCO4gGE7tSbwBKZwAi",
     "/assets/build/bootstrap.79826f7c.css": "sha384-cmRPp2s3eYv0FSkQfGDkh/H2HEA4bYbhU2n1zbR9QmoYO0L3BDQ2yqavB6GXy3a/",
-    "/assets/build/safari_select_fix.a8bfcbe6.css": "sha384-ItcFc7oAmgvz+g/DtFmVpB/7AyWQHzFRglCCbu8SNg6M3HybLDeSTaXirgKYGU0w"
+    "/assets/build/safari_select_fix.a8bfcbe6.css": "sha384-ItcFc7oAmgvz+g/DtFmVpB/7AyWQHzFRglCCbu8SNg6M3HybLDeSTaXirgKYGU0w",
+    "/assets/build/security.fb8a8e2d.css": "sha384-t+1t+up5ocwMHj0aR7TbAEZ1PBJSLzjohHLIhqj+EURoPUWV0ajL5whLJACvOInm"
   }
 }

@@ -23,10 +23,10 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addStyleEntry('cover', './assets/css/cover.scss')
-    .addStyleEntry('security', './assets/css/security.scss')
+    //.addStyleEntry('email', './assets/css/email.scss')
     .addStyleEntry('bootstrap', './assets/css/bootstrap.scss')
     .addStyleEntry('safari_select_fix', './assets/css/safari_select_fix.scss')
+    .addStyleEntry('security', './assets/css/security.scss')
     .addEntry('vzw-lach', './assets/js/vzw-lach.js')
     .addEntry('vzw-lach-enroll-form', './assets/js/vzw-lach-enroll-form.js')
     .addEntry('vzw-lach-advert', './assets/js/vzw-lach-advert.js')

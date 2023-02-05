@@ -48,7 +48,7 @@ class PostCrudController extends AbstractCrudController
         yield IdField::new('id')->onlyOnDetail();
 
         yield TextField::new('title');
-        //yield SlugField::new('slug')->setTargetFieldName('title')->hideOnIndex();
+        yield SlugField::new('slug')->setTargetFieldName('title')->hideOnIndex();
 
         yield TextEditorField::new('body')
             ->setTrixEditorConfig([
