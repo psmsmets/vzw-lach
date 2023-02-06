@@ -21,13 +21,14 @@ class LoginSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [CheckPassportEvent::class => 'preLogin'];
-        return [LoginSuccessEvent::class => 'onLogin'];
+        return [CheckPassportEvent::class => 'preLogin', 
+                LoginSuccessEvent::class => 'onLogin'];
     }
 
     public function preLogin(CheckPassportEvent $event): void
     {
-        if (!$event->getPassport()->getUser()->isEnabled())
+        $user = $event->getPassport()->getUser();
+        if (!$user->isEnabled() or count($user->getEnabledAssociates()) == 0)
         {
             $session = $this->requestStack->getSession();
             $session->getFlashBag()->add('alert-warning', 'Inloggen succesvol, maar je profiel is helaas niet actief.');
