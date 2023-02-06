@@ -3,6 +3,7 @@
 {% set events = manager.getUpcomingEvents(viewpoint) %}
 
 {% if path('profile_events') not in currentPath %}
+  {% if path('profile_index') != currentPath %}<div class="d-none d-md-block">{% endif %}
   <h5 class="mt-5 text-secondary">Kalender</h5>
 
   {% for event in events %}
@@ -29,5 +30,5 @@
       <i class="bi bi-chevron-double-right"></i> naar de volledige kalender
     </a>
   </div>
-
+  {% if path('profile_index') != currentPath %}</div>{% endif %}
 {% endif %}

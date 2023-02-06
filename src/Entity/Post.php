@@ -60,6 +60,7 @@ class Post
         $this->createdAt = new \DateTimeImmutable();
         $this->publishedAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', date('Y-m-d H:i'));
         $this->published = true;
+        $this->archived = false;
         $this->categories = new ArrayCollection();
     }
 

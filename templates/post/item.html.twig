@@ -4,11 +4,11 @@
 
     <h1 class="text-secondary">Berichten</h1> 
 
-    {% include 'post/template.html.twig' with {'item': post } %}
+    {% include 'post/template.html.twig' with {'item': post, 'islast': true } %}
 
-    <ul class="list-inline">
+    <ul class="list-inline mt-2">
       <li class="list-inline-item">
-        <a href="{{ path('profile_posts') }}"><i class="bi bi-chevron-double-left"></i> terug naar het overzicht</a>
+        <a href="{{ path('profile_posts') }}" class="fw-lighter text-secondary text-decoration-none"><i class="bi bi-chevron-double-left"></i> terug naar het overzicht</a>
       </li>
     </ul>
 
