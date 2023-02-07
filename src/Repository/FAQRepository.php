@@ -39,28 +39,44 @@ class FAQRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return FAQ[] Returns an array of FAQ objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Advert[] Returns a Advert objects
+     */
+    public function findFAQ(int $id): ?FAQ
+    {
+        $qb = $this->createQueryBuilder('faq');
 
-//    public function findOneBySomeField($value): ?FAQ
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $qb->setParameter('enabled', true);
+        $qb->andWhere('faq.enabled = :enabled');
+
+        $qb->setParameter('id', $id);
+        $qb->andWhere('faq.id = :id');
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @return FAQ[] Returns an array of FAQ objects
+     */
+    public function findFAQs(): array
+    {
+        $qb = $this->createQueryBuilder('faq');
+
+        $qb->setParameter('enabled', true);
+        $qb->andWhere('faq.enabled = :enabled');
+
+        //$qb->addOrderBy('faq.enabled', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function countFAQs(): int
+    {
+        $qb = $this->createQueryBuilder('faq');
+
+        $qb->setParameter('enabled', true);
+        $qb->andWhere('faq.enabled = :enabled');
+
+        return count($qb->getQuery()->getResult());
+    }
 }

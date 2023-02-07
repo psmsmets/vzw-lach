@@ -1,0 +1,34 @@
+{% extends 'profile.html.twig' %}
+
+{% block main %}
+
+  <h1 class="text-secondary">Vragen</h1>
+
+  {% if faqs|length  == 0 %}
+
+    <div class="p-3 mb-4 bg-white shadow-sm">
+      <p class="my-2"><i class="bi bi-exclamation-circle-fill"></i> Geen vragen gevonden.</p>
+    </div>
+
+  {% else %}
+
+    <div class="my-3 my-lg-4 d-flex justify-content-between text-secondary">
+      <div><i class="bi bi-info-square-fill"></i> Klik op een vraag voor het antwoord.</div>
+    </div>
+
+    {% for faq in faqs %}
+    <div class="p-3 mb-2 shadow-sm advert-link" data-bs-toggle="collapse" data-bs-target="#faq-{{ faq.id }}" aria-expanded="false" aria-controls="faq-{{ faq.id }}">
+      <h5 class="text-primary mb-0">{{ faq.question|capitalize }}</h5>
+
+      <div class="collapse mt-4" id="faq-{{ faq.id }}">{{ faq.answer|raw }}</div>
+    </div>
+    {% endfor %}
+
+  {% endif %}
+
+  <div class="mt-5 text-secondary">
+    <h4 class="mb-3">Staat je vraag hier niet tussen?</h4>
+    {{contact.body|raw}}
+  </div>
+
+{% endblock %}

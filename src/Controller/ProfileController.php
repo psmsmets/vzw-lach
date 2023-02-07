@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Associate;
+use App\Entity\Page;
 use App\Form\AssociateType;
 use App\Service\ProfileManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -224,6 +225,20 @@ class ProfileController extends AbstractController
 
         return $this->render('advert/item.html.twig', [
             'advert' => $advert,
+        ]);
+    }
+
+    #[Route('/faq', name: '_faq', methods: ['GET'])]
+    public function faq(Request $request): Response
+    {
+        $contact = $this->getDoctrine()
+            ->getRepository(Page::class)
+            ->findOneBySlug('contact')
+            ;
+
+        return $this->render('faq/index.html.twig', [
+            'faqs' => $this->manager->getFAQs(),
+            'contact' => $contact,
         ]);
     }
 }

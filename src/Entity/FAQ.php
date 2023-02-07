@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: FAQRepository::class)]
 class FAQ
 {
+    public const NUMBER_OF_ITEMS = 25;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

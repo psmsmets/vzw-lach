@@ -8,7 +8,7 @@
         "/assets/build/vzw-lach.2ff562ac.js"
       ],
       "css": [
-        "/assets/build/vzw-lach.59082cf2.css"
+        "/assets/build/vzw-lach.b7b3072c.css"
       ]
     },
     "vzw-lach-enroll-form": {
@@ -35,14 +35,6 @@
       "js": [
         "/assets/build/runtime.bff8fc39.js",
         "/assets/build/ea-lightbox-prevent-scroll.aa4459ad.js"
-      ]
-    },
-    "email": {
-      "js": [
-        "/assets/build/runtime.bff8fc39.js"
-      ],
-      "css": [
-        "/assets/build/email.1613c1d6.css"
       ]
     },
     "bootstrap": {
@@ -75,12 +67,11 @@
     "/assets/build/755.62c4e74d.js": "sha384-J5HcR1EhGFGYbqLpOcw4/r4ucv4Twwm1i/Xs930cIukGx6EyDl8Yyz3Nlf6vbSL5",
     "/assets/build/138.94aa6bd0.js": "sha384-I6gIXdMw/K+7SVHDBX99+O1F9oRVh2U5gzYweK7GRIij2kPh4U0+eEldFJR6ZYiy",
     "/assets/build/vzw-lach.2ff562ac.js": "sha384-C/plllm21BRuxQgyPMJ5hjbYrF8YGc37Fpi7niq1eTRK73o+AyQkGxUyPrLqjcFg",
-    "/assets/build/vzw-lach.59082cf2.css": "sha384-v7ZtIouc0cULtb/FcBKrQeYGVc0vmcHs4Y1Hls5hzYiIr9KC1i4PCG/N1ZDS88oL",
+    "/assets/build/vzw-lach.b7b3072c.css": "sha384-haazmBtmttEV5eB1aRpBgBd2q2i7Ozm7ZNwWVe00Z+gDE2tRs/1VKUmFgyoqoQNY",
     "/assets/build/vzw-lach-enroll-form.4e1ef56b.js": "sha384-rhV+ouCEDeZMakV9170WBfnjWo8l8f++3ErbevBWNj8Jd1isnQCvFVMgIz7kt2Wf",
     "/assets/build/vzw-lach-advert.ca7ca2a0.js": "sha384-0aqZjfRmK3rlTr8hJEyT7PX1LMVbXHOUkEnQO3KYwixH+Ngq9tJ6C5gM4sY8EpIb",
     "/assets/build/vzw-lach-event.4925c50f.js": "sha384-ptvY294rhfyyCR8ZOogWgElIiCW6b6JRwh5skAtbcwUeVR1MwwoaVtgrgGtgNmiF",
     "/assets/build/ea-lightbox-prevent-scroll.aa4459ad.js": "sha384-erhx4Fya3daVAokPhLQu8LYfVgUdUxjY7MgZjJVotDcmRE7h0sTbZr+cZyrDvrhm",
-    "/assets/build/email.1613c1d6.css": "sha384-zslzCxTQxVWxkA3I4uGKbGTZuJ8GSjbm1c2kxosLT6AYA/cCO4gGE7tSbwBKZwAi",
     "/assets/build/bootstrap.79826f7c.css": "sha384-cmRPp2s3eYv0FSkQfGDkh/H2HEA4bYbhU2n1zbR9QmoYO0L3BDQ2yqavB6GXy3a/",
     "/assets/build/safari_select_fix.a8bfcbe6.css": "sha384-ItcFc7oAmgvz+g/DtFmVpB/7AyWQHzFRglCCbu8SNg6M3HybLDeSTaXirgKYGU0w",
     "/assets/build/security.fb8a8e2d.css": "sha384-t+1t+up5ocwMHj0aR7TbAEZ1PBJSLzjohHLIhqj+EURoPUWV0ajL5whLJACvOInm"
