@@ -29,6 +29,15 @@ body {
     z-index: 1;
 }
 
+.nav-link {
+  color: rgba(255, 255, 255, .65);
+}
+
+.nav-link.active {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 1);
+}
+
 .nav-masthead .nav-link {
   color: rgba(149, 20, 31, .5);
   border-bottom: .25rem solid transparent;
@@ -49,15 +58,6 @@ body {
 .nav-masthead .active {
   color: rgba(149, 20, 31, 1);
   border-bottom-color: rgba(149, 20, 31, 1);
-}
-
-.nav-link {
-  color: rgba(255, 255, 255, .65);
-}
-
-.nav-link.active {
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
 }
 
 footer {
