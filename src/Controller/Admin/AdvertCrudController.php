@@ -37,6 +37,7 @@ class AdvertCrudController extends AbstractCrudController
             ->setDateTimeFormat('medium', 'short')
             ->setTimezone('Europe/Brussels')
             ->setNumberFormat('%.2d')
+            ->setPaginatorPageSize(50)
             ;
     }
 

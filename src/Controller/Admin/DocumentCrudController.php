@@ -38,6 +38,7 @@ class DocumentCrudController extends AbstractCrudController
             ->setDateTimeFormat('medium', 'short')
             ->setTimezone('Europe/Brussels')
             ->setNumberFormat('%.2d')
+            ->setPaginatorPageSize(50)
             ;
     }
 
@@ -52,6 +53,11 @@ class DocumentCrudController extends AbstractCrudController
 
         yield TextField::new('documentFile')
             ->setFormType(VichFileType::class)
+            ->setFormTypeOptions(
+               [
+                 'download_label' => false,
+                 'download_uri' => false,
+               ])
             ->onlyOnForms()
             ;
 

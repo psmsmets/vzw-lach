@@ -7,7 +7,8 @@ use App\Form\AssociateType;
 use App\Service\ProfileManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,19 +20,16 @@ use Symfony\Component\Uid\Uuid;
 class ProfileController extends AbstractController
 {
     private $manager;
-    private $parameterBag;
     private $requestStack;
     private $security;
 
     public function __construct(
         ProfileManager $profileManager,
-        ParameterBagInterface $parameterBag,
         RequestStack $requestStack,
         Security $security,
     )
     {
         $this->manager = $profileManager;
-        $this->parameterBag = $parameterBag;
         $this->requestStack = $requestStack;
         $this->security = $security;
 
@@ -187,6 +185,21 @@ class ProfileController extends AbstractController
         return $this->render('document/item.html.twig', [
             'document' => $document,
         ]);
+    }
+
+    #[Route('/documenten/{id}/download', name: '_download', methods: ['GET'])]
+    public function download(string $id): BinaryFileResponse
+    {
+        $viewpoint = $this->manager->getViewpoint();
+
+        if (!($document = $this->manager->getDocument($viewpoint, $id))) throw $this->createAccessDeniedException();
+
+        $file = $this->getParameter('kernel.project_dir').
+                $this->getParameter('app.path.private').
+                $this->getParameter('app.path.documents').
+                '/'.$document->getDocumentName();
+
+        return $this->file($file, $document->getTitle().'.pdf');
     }
 
     #[Route('/zoekertjes', name: '_adverts', methods: ['GET'])]

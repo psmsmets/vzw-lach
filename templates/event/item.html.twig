@@ -4,7 +4,7 @@
 
   <h1 class="text-secondary">Kalender</h1> 
 
-  <div class="p-3 bg-white shadow-sm">
+  <div class="p-3 bg-white shadow-sm mb-4">
 
     {% set past  = date(event.trueEndTime) < date() %}
     {% set year  = date(event.trueEndTime)|date_modify('last day of december this year noon') %}
