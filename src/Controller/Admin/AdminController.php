@@ -123,7 +123,7 @@ class AdminController extends AbstractDashboardController
         return [
             // MenuItem::linkToLogout('Logout', 'fa fa-exit'),
             // MenuItem::linkToDashboard('Dashboard', 'bi bi-house-door-fill'),
-            MenuItem::linkToRoute('home', 'bi bi-house-check-fill', 'home'),
+            MenuItem::linkToRoute('Frontpagina', 'bi bi-house-check-fill', 'home'),
 
             MenuItem::section('Users'),
             MenuItem::linkToCrud('Users', 'bi bi-person-fill-gear', User::class),

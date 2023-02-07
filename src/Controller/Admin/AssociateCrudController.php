@@ -156,17 +156,18 @@ class AssociateCrudController extends AbstractCrudController
         yield Field::new('categoryPreferencesList', 'Eigen voorkeur')->hideOnForm();
         yield TextField::new('companion')->onlyOnDetail();
 
-        yield FormField::addTab('Matentabel');
-        yield FormField::addPanel('Matentabel');
+        yield FormField::addTab('Uiterlijk en kledingmaat');
+        yield FormField::addPanel('Uiterlijk en kledingmaat');
 
         yield BooleanField::new('measurements.completed', 'Volledig')->hideOnIndex();
-        yield Field::new('measurements.size', 'Confectiemaat')->hideOnIndex();
-        yield Field::new('measurements.hairType', 'Haartype')->hideOnIndex();
         yield Field::new('measurements.hairColor', 'Haarkleur')->hideOnIndex();
+        yield Field::new('measurements.hairType', 'Haartype')->hideOnIndex();
+        yield Field::new('measurements.hairLength', 'Haarlengte')->hideOnIndex();
+        yield Field::new('measurements.fittingSize', 'Confectiemaat')->hideOnIndex();
         yield Field::new('measurements.height', 'Lengte in cm')->hideOnIndex();
-        yield Field::new('measurements.chestGirth', 'Borstomtrek in cm')->hideOnIndex();
-        yield Field::new('measurements.waistGirth', 'Tailleomtrek in cm')->hideOnIndex();
-        yield Field::new('measurements.hipGirth', 'Heupomtrek in cm')->hideOnIndex();
+        yield Field::new('measurements.chestGirth', 'Borstomvang in cm')->hideOnIndex();
+        yield Field::new('measurements.waistGirth', 'Taille in cm')->hideOnIndex();
+        yield Field::new('measurements.hipGirth', 'Heup in cm')->hideOnIndex();
 
         yield FormField::addTab('Options');
 
