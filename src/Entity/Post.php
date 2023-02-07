@@ -13,7 +13,7 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\HasLifecycleCallbacks]
 class Post
 {
-    public const NUMBER_OF_ITEMS_SPECIAL = 5;
+    public const NUMBER_OF_ITEMS_SPECIAL = 4;
     public const NUMBER_OF_ITEMS_PINNED = 2;
     public const NUMBER_OF_ITEMS = 10;
 
