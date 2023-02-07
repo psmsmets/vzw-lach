@@ -34,7 +34,7 @@ security:
             login_link:
                 check_route: security_check
                 signature_properties: [id, email]
-                lifetime: 300
+                lifetime: 600
                 check_post_only: true
                 max_uses: 1
 

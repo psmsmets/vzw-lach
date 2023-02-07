@@ -35,55 +35,58 @@
       </dl>
 
       <dl class="row mt-4">
-        <dt class="col-sm-3 text-md-end">Geboortedatum</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Geboortedatum</dt>
         <dd class="col-sm-9">{{ associate.details.birthdate|format_datetime('long', 'none') }}</dd>
 
-        <dt class="col-sm-3 text-md-end">Geslacht</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Geslacht</dt>
         <dd class="col-sm-9">{{ associate.details.genderName }}</dd>
 
-        <dt class="col-sm-3 text-md-end">E-mailadres</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">E-mailadres</dt>
         <dd class="col-sm-9">{{ associate.details.email ? associate.details.email : 'niet opgegeven' }}</dd>
 
-        <dt class="col-sm-3 text-md-end">Telefoonnummer</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Telefoonnummer</dt>
         <dd class="col-sm-9">{{ associate.details.phone ? associate.details.phone : 'niet opgegeven' }}</dd>
 
-        <dt class="col-sm-3 text-md-end">Adres van deelnemer</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Adres</dt>
         <dd class="col-sm-9">{{ associate.address }}</dd>
       </dl>
 
       {% if associate.onstage %}
       <dl class="row mt-4">
-        <dt class="col-sm-3 text-md-end">Confectiemaat</dt>
-        <dd class="col-sm-9">{{ associate.measurements.size }}</dd>
-
-        <dt class="col-sm-3 text-md-end">Haartype</dt>
-        <dd class="col-sm-9">{{ associate.measurements.hairType }}</dd>
-
-        <dt class="col-sm-3 text-md-end">Haarkleur</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Haarkleur</dt>
         <dd class="col-sm-9">{{ associate.measurements.hairColor }}</dd>
 
-        <dt class="col-sm-3 text-md-end">Lengte</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Haartype</dt>
+        <dd class="col-sm-9">{{ associate.measurements.hairType }}</dd>
+
+        <dt class="col-sm-3 text-md-end fw-lighter">Haarlengte</dt>
+        <dd class="col-sm-9">{{ associate.measurements.hairLength }}</dd>
+
+        <dt class="col-sm-3 text-md-end fw-lighter">Confectiemaat</dt>
+        <dd class="col-sm-9">{{ associate.measurements.fittingSize }}</dd>
+
+        <dt class="col-sm-3 text-md-end fw-lighter">Lengte</dt>
         <dd class="col-sm-9">{{ associate.measurements.height }} cm</dd>
 
-        <dt class="col-sm-3 text-md-end">Borstomtrek</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Borstomvang</dt>
         <dd class="col-sm-9">{{ associate.measurements.chestGirth }} cm</dd>
 
-        <dt class="col-sm-3 text-md-end">Tailleomtrek</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Taille</dt>
         <dd class="col-sm-9">{{ associate.measurements.waistGirth }} cm</dd>
 
-        <dt class="col-sm-3 text-md-end">Heupomtrek</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Heup</dt>
         <dd class="col-sm-9">{{ associate.measurements.hipGirth }} cm</dd>
       </dl>
       {% endif %}
 
       <dl class="row text-muted mt-4">
-        <dt class="col-sm-3 text-md-end">Id</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Id</dt>
         <dd class="col-sm-9">{{ associate.id }}</dd>
 
-        <dt class="col-sm-3 text-md-end">Geregistreerd op</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Geregistreerd op</dt>
         <dd class="col-sm-9">{{ associate.createdAt ? associate.createdAt|format_datetime('long', 'medium') : '' }}</dd>
 
-        <dt class="col-sm-3 text-md-end">Laatst aangepast op</dt>
+        <dt class="col-sm-3 text-md-end fw-lighter">Laatst aangepast op</dt>
         <dd class="col-sm-9">{{ associate.updatedAt ? associate.updatedAt|format_datetime('long', 'medium') : '' }}</dd>
       </dl>
 

@@ -2,7 +2,7 @@
 
 {% set adverts = manager.getSpecialAdverts() %}
 
-{% if path('profile_adverts') not in currentPath %}
+{% if path('profile_adverts') not in currentPath and adverts|length > 0  %}
   <h5 class="mt-5 text-secondary">Zoekertjes</h5>
 
   {% for advert in adverts %}

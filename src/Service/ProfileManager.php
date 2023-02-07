@@ -7,6 +7,7 @@ use App\Entity\Associate;
 use App\Entity\AssociateAddress;
 use App\Entity\Category;
 use App\Entity\Event;
+use App\Entity\FAQ;
 use App\Entity\Document;
 use App\Entity\Post;
 use App\Entity\User;
@@ -14,6 +15,7 @@ use App\Repository\AdvertRepository;
 use App\Repository\AssociateRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
+use App\Repository\FAQRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
@@ -32,6 +34,7 @@ class ProfileManager
     public $associateRepository;
     public $categoryRepository;
     public $eventRepository;
+    public $faqRepository;
     public $documentRepository;
     public $postRepository;
     public $userRepository;
@@ -44,6 +47,7 @@ class ProfileManager
         AssociateRepository $associateRepository,
         CategoryRepository $categoryRepository,
         EventRepository $eventRepository,
+        FAQRepository $faqRepository,
         DocumentRepository $documentRepository,
         PostRepository $postRepository,
         UserRepository $userRepository,
@@ -56,6 +60,7 @@ class ProfileManager
         $this->associateRepository = $associateRepository;
         $this->categoryRepository = $categoryRepository;
         $this->eventRepository = $eventRepository;
+        $this->faqRepository = $faqRepository;
         $this->documentRepository = $documentRepository;
         $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
@@ -176,6 +181,16 @@ class ProfileManager
     public function getSpecialAdverts(): array
     {
         return $this->advertRepository->findAdverts(Advert::NUMBER_OF_ITEMS_SPECIAL, null, 50);
+    }
+
+    public function getFAQ(int $id): ?FAQ
+    {
+        return $this->faqRepository->findFAQ($id);
+    }
+
+    public function getFAQs(): array
+    {
+        return $this->faqRepository->findFAQs();
     }
 
     public function getDocument($obj, string $uuid): ?Document

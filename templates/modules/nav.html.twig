@@ -35,9 +35,15 @@
                href="{{path('profile_adverts')}}">Zoekertjes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if currentPath == '/contact' %}active{% endif %}"
-               href="{{path('page', {'slug': 'contact'})}}">Contact</a>
+            <a class="nav-link {% if path('profile_faq') in currentPath %}active{% endif %}"
+               href="{{path('profile_faq')}}">Vragen</a>
           </li>
+          {% if app.user.isAdmin %}
+          <li class="nav-item">
+            <a class="nav-link"
+               href="{{path('admin')}}">Beheer</a>
+          </li>
+          {% endif %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {% if viewpoint == app.user %}{{app.user.email}}{% else %}{{viewpoint}}{% endif %}
