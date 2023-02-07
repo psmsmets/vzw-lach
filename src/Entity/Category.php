@@ -36,10 +36,10 @@ class Category
     private ?string $body = null;
 
     #[ORM\Column]
-    private ?bool $isHidden = null;
+    private ?bool $hidden = null;
 
     #[ORM\Column]
-    private ?bool $isActor = null;
+    private ?bool $onstage = null;
 
     #[ORM\ManyToMany(targetEntity: Associate::class, mappedBy: 'categories', cascade: ['persist'])]
     private Collection $associates;
@@ -53,6 +53,8 @@ class Category
     public function __construct()
     {
         $this->enabled = true;
+        $this->hidden = false;
+        $this->onstage = false;
         $this->associates = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->files = new ArrayCollection();
@@ -64,9 +66,15 @@ class Category
     }
 
     #[ORM\PreUpdate]
-    public function preUpdate()
+    public function preUpdate(): self
     {
         $this->setUpdatedAt();
+
+        foreach ($this->associates as $associate) {
+            $associate->setOnstageFromCategories();
+        }
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -146,26 +154,30 @@ class Category
         return $this;
     }
 
-    public function isIsHidden(): ?bool
+    public function isHidden(): ?bool
     {
-        return $this->isHidden;
+        return $this->hidden;
     }
 
-    public function setIsHidden(bool $isHidden): self
+    public function setHidden(bool $hidden): self
     {
-        $this->isHidden = $isHidden;
+        $this->hidden = $hidden;
 
         return $this;
     }
 
-    public function isIsActor(): ?bool
+    public function isOnstage(): ?bool
     {
-        return $this->isActor;
+        return $this->onstage;
     }
 
-    public function setIsActor(bool $isActor): self
+    public function setOnstage(bool $onstage): self
     {
-        $this->isActor = $isActor;
+        $this->onstage = $onstage;
+
+        foreach ($this->associates as $associate) {
+            $associate->setOnstageFromCategories();
+        }
 
         return $this;
     }

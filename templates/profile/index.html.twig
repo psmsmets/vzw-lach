@@ -30,6 +30,7 @@
                 <th class="text-center"></th>
                 <th>Naam</th>
                 <th>Groep(en)</th>
+                <th class="text-center">Onstage</th>
                 <th>Actie</th>
             </tr>
         </thead>
@@ -43,6 +44,7 @@
                 </td>
                 <td>{{ associate.fullname }}</td>
                 <td>{{ associate.categoryNames }}</td>
+                <td class="text-center">{% if associate.onstage %}<i class="bi bi-check-square"></i>{% endif %}</td>
                 <td>
                     <a href="{{ path('profile_show', {'id': associate.id}) }}">toon</a>
                     <a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a>

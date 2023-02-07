@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: AssociateMeasurementsRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class AssociateMeasurements
 {
     #[ORM\Id]
@@ -15,6 +16,9 @@ class AssociateMeasurements
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id = null;
+
+    #[ORM\Column]
+    private ?bool $completed = null;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $shoeSize = null;
@@ -32,16 +36,16 @@ class AssociateMeasurements
     private ?string $hairColor = null; // kleur haar
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail0 = null; // totale lengte [cm]
+    private ?int $height = null; // totale lengte [cm]
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail1 = null; // borstomtrek [cm]
+    private ?int $chestGirth = null; // borstomtrek [cm]
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail2 = null; // tailleomtrek [cm]
+    private ?int $waistGirth = null; // tailleomtrek [cm]
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail3 = null; // heupomtrek [cm]
+    private ?int $hipGirth = null; // heupomtrek [cm]
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $detail4 = null;
@@ -61,38 +65,45 @@ class AssociateMeasurements
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $detail9 = null;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail10 = null;
-
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail11 = null;
-
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail12 = null;
-
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail13 = null;
-
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail14 = null;
-
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail15 = null;
-
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail16 = null;
-
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $detail17 = null;
-
     public function __construct(Associate $associate)
     {
+      $this->completed = false;
       $this->associate = $associate;
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(): self
+    {
+        if (
+            !is_null($this->size) and
+            !is_null($this->hairType) and
+            !is_null($this->hairColor) and
+            !is_null($this->height) and
+            !is_null($this->chestGirth) and
+            !is_null($this->waistGirth) and
+            !is_null($this->hipGirth)
+        ) {
+            $this->setCompleted(true);
+        }
+
+        return $this;
     }
 
     public function getId(): ?Uuid
     {
         return $this->id;
+    }
+
+    public function hasCompleted(): ?bool
+    {
+        return $this->completed;
+    }
+
+    public function setCompleted(bool $completed): self
+    {
+        $this->completed = $completed;
+
+        return $this;
     }
 
     public function getAssociate(): ?Associate
@@ -160,50 +171,50 @@ class AssociateMeasurements
         return $this;
     }
 
-    public function getDetail0(): ?int
+    public function getHeight(): ?int
     {
-        return $this->detail0;
+        return $this->height;
     }
 
-    public function setDetail0(?int $detail0): self
+    public function setHeight(?int $height): self
     {
-        $this->detail0 = $detail0;
+        $this->height = $height;
 
         return $this;
     }
 
-    public function getDetail1(): ?int
+    public function getChestGirth(): ?int
     {
-        return $this->detail1;
+        return $this->chestGirth;
     }
 
-    public function setDetail1(?int $detail1): self
+    public function setChestGirth(?int $chestGirth): self
     {
-        $this->detail1 = $detail1;
+        $this->chestGirth = $chestGirth;
 
         return $this;
     }
 
-    public function getDetail2(): ?int
+    public function getWaistGirth(): ?int
     {
-        return $this->detail2;
+        return $this->waistGirth;
     }
 
-    public function setDetail2(?int $detail2): self
+    public function setWaistGirth(?int $waistGirth): self
     {
-        $this->detail2 = $detail2;
+        $this->waistGirth = $waistGirth;
 
         return $this;
     }
 
-    public function getDetail3(): ?int
+    public function getHipGirth(): ?int
     {
-        return $this->detail3;
+        return $this->hipGirth;
     }
 
-    public function setDetail3(?int $detail3): self
+    public function setHipGirth(?int $hipGirth): self
     {
-        $this->detail3 = $detail3;
+        $this->hipGirth = $hipGirth;
 
         return $this;
     }
@@ -276,102 +287,6 @@ class AssociateMeasurements
     public function setDetail9(?int $detail9): self
     {
         $this->detail9 = $detail9;
-
-        return $this;
-    }
-
-    public function getDetail10(): ?int
-    {
-        return $this->detail10;
-    }
-
-    public function setDetail10(?int $detail10): self
-    {
-        $this->detail10 = $detail10;
-
-        return $this;
-    }
-
-    public function getDetail11(): ?int
-    {
-        return $this->detail11;
-    }
-
-    public function setDetail11(?int $detail11): self
-    {
-        $this->detail11 = $detail11;
-
-        return $this;
-    }
-
-    public function getDetail12(): ?int
-    {
-        return $this->detail12;
-    }
-
-    public function setDetail12(?int $detail12): self
-    {
-        $this->detail12 = $detail12;
-
-        return $this;
-    }
-
-    public function getDetail13(): ?int
-    {
-        return $this->detail13;
-    }
-
-    public function setDetail13(?int $detail13): self
-    {
-        $this->detail13 = $detail13;
-
-        return $this;
-    }
-
-    public function getDetail14(): ?int
-    {
-        return $this->detail14;
-    }
-
-    public function setDetail14(?int $detail14): self
-    {
-        $this->detail14 = $detail14;
-
-        return $this;
-    }
-
-    public function getDetail15(): ?int
-    {
-        return $this->detail15;
-    }
-
-    public function setDetail15(?int $detail15): self
-    {
-        $this->detail15 = $detail15;
-
-        return $this;
-    }
-
-    public function getDetail16(): ?int
-    {
-        return $this->detail16;
-    }
-
-    public function setDetail16(?int $detail16): self
-    {
-        $this->detail16 = $detail16;
-
-        return $this;
-    }
-
-    public function getDetail17(): ?int
-    {
-        return $this->detail17;
-    }
-
-    public function setDetail17(?int $detail17): self
-    {
-        $this->detail17 = $detail17;
 
         return $this;
     }

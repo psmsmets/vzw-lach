@@ -100,8 +100,11 @@ class AssociateCrudController extends AbstractCrudController
             ->onlyOnIndex()
             ;
 
-        yield Field::new('categoryPreferences', 'Voorkeur')->hideOnForm();
+
+        yield Field::new('categoryPreferencesList', 'Voorkeur')->onlyOnDetail();
         yield TextField::new('companion')->hideOnIndex();
+
+        yield BooleanField::new('onstage')->renderAsSwitch(false)->hideOnForm();
 
         yield BooleanField::new('singer')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('singer')->renderAsSwitch(true)->onlyOnForms();
@@ -134,9 +137,6 @@ class AssociateCrudController extends AbstractCrudController
         yield FormField::addTab('Categories');
         yield FormField::addPanel('Categories');
 
-        yield Field::new('categoryPreferences', 'Voorkeur')->onlyOnDetail();
-        yield TextField::new('companion')->hideOnForm();
-
         yield AssociationField::new('categories', 'Groep(en)')
             ->setQueryBuilder(function ($queryBuilder) {
                 return $queryBuilder->andWhere('entity.enabled = true'); 
@@ -148,8 +148,25 @@ class AssociateCrudController extends AbstractCrudController
             ])
             ->autocomplete()
             ;
-        yield TextField::new('categoryNames', 'Toegewezen groep(en)')->onlyOnDetail();
-        yield TextField::new('role')->hideOnIndex();
+        yield TextField::new('categoryNames', 'Toegewezen groep(en)')->hideOnForm();
+        yield BooleanField::new('onstage')->renderAsSwitch(false)->onlyOnDetail();
+        yield TextField::new('role');#->hideOnIndex();
+        yield BooleanField::new('measurements.completed', 'Matentabel volledig')->renderAsSwitch(false)->onlyOnIndex();
+
+        yield Field::new('categoryPreferencesList', 'Eigen voorkeur')->hideOnForm();
+        yield TextField::new('companion')->onlyOnDetail();
+
+        yield FormField::addTab('Matentabel');
+        yield FormField::addPanel('Matentabel');
+
+        yield BooleanField::new('measurements.completed', 'Volledig')->hideOnIndex();
+        yield Field::new('measurements.size', 'Confectiemaat')->hideOnIndex();
+        yield Field::new('measurements.hairType', 'Haartype')->hideOnIndex();
+        yield Field::new('measurements.hairColor', 'Haarkleur')->hideOnIndex();
+        yield Field::new('measurements.height', 'Lengte in cm')->hideOnIndex();
+        yield Field::new('measurements.chestGirth', 'Borstomtrek in cm')->hideOnIndex();
+        yield Field::new('measurements.waistGirth', 'Tailleomtrek in cm')->hideOnIndex();
+        yield Field::new('measurements.hipGirth', 'Heupomtrek in cm')->hideOnIndex();
 
         yield FormField::addTab('Options');
 
@@ -160,7 +177,7 @@ class AssociateCrudController extends AbstractCrudController
         yield BooleanField::new('declarePresent', 'Akkoord aanwezig')->hideOnIndex();
         yield BooleanField::new('declareSecrecy', 'Akkoord geheimhouding')->hideOnIndex();
         yield BooleanField::new('declareTerms', 'Akkoord voorwaarden')->hideOnIndex();
-        yield Field::new('updatedAt')->onlyOnDetail();
+        yield Field::new('updatedAt')->hideOnForm();
         yield AssociationField::new('user')
             ->autocomplete()
             ->setCrudController(UserCrudController::class)
