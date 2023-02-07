@@ -3,13 +3,16 @@
 {% block title %}{{associate.fullname}}{% endblock %}
 
 {% block main %}
-    <h1 class="">
+    <h1 class="d-flex justify-content-between">
       {{associate.fullname}}
       {% if associate.role %}<small class="align-top"><span class="ms-3 badge bg-primary fw-lighter">Rol: <span class="fw-light">{{ associate.role }}</span></span></small>{% endif %}
     </h1>
 
-    {% if associate.categories %}
+    {% if associate.categories or associate.onstage %}
       <ul class="list-inline">
+        {% if associate.onstage %}
+          <li class="list-inline-item"><span class="badge text-bg-primary fw-light">onstage</span></li>
+        {% endif %}
         {% for category in associate.categories %}
           <li class="list-inline-item"><span class="badge text-bg-secondary fw-light">{{category.slug}}</span></li>
         {% endfor %}
@@ -47,6 +50,31 @@
         <dt class="col-sm-3 text-md-end">Adres van deelnemer</dt>
         <dd class="col-sm-9">{{ associate.address }}</dd>
       </dl>
+
+      {% if associate.onstage %}
+      <dl class="row mt-4">
+        <dt class="col-sm-3 text-md-end">Confectiemaat</dt>
+        <dd class="col-sm-9">{{ associate.measurements.size }}</dd>
+
+        <dt class="col-sm-3 text-md-end">Haartype</dt>
+        <dd class="col-sm-9">{{ associate.measurements.hairType }}</dd>
+
+        <dt class="col-sm-3 text-md-end">Haarkleur</dt>
+        <dd class="col-sm-9">{{ associate.measurements.hairColor }}</dd>
+
+        <dt class="col-sm-3 text-md-end">Lengte</dt>
+        <dd class="col-sm-9">{{ associate.measurements.height }} cm</dd>
+
+        <dt class="col-sm-3 text-md-end">Borstomtrek</dt>
+        <dd class="col-sm-9">{{ associate.measurements.chestGirth }} cm</dd>
+
+        <dt class="col-sm-3 text-md-end">Tailleomtrek</dt>
+        <dd class="col-sm-9">{{ associate.measurements.waistGirth }} cm</dd>
+
+        <dt class="col-sm-3 text-md-end">Heupomtrek</dt>
+        <dd class="col-sm-9">{{ associate.measurements.hipGirth }} cm</dd>
+      </dl>
+      {% endif %}
 
       <dl class="row text-muted mt-4">
         <dt class="col-sm-3 text-md-end">Id</dt>

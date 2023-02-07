@@ -42,6 +42,9 @@ class Associate
     private ?string $lastname = null;
 
     #[ORM\Column]
+    private ?bool $onstage = null;
+
+    #[ORM\Column]
     private ?bool $singer = null;
 
     #[ORM\Column]
@@ -115,6 +118,9 @@ class Associate
         $this->id = Uuid::v4();
         $this->createdAt = new \DateTimeImmutable();
         $this->enabled = false;
+        $this->onstage = false;
+        $this->singer = false;
+        $this->singerSoloist = false;
         $this->address = new AssociateAddress($this);
         $this->details = new AssociateDetails($this);
         $this->measurements = new AssociateMeasurements($this);
@@ -152,9 +158,12 @@ class Associate
 */
 
     #[ORM\PreUpdate]
-    public function preUpdate()
+    public function preUpdate(): self
     {
         $this->setUpdatedAt();
+        $this->setOnstageFromCategories();
+
+        return $this;
     }
 
     public function getId(): ?Uuid
@@ -223,6 +232,31 @@ class Associate
     public function getFullName(bool $reverse=false, string $separator=' '): string
     {
         return $reverse ? $this->lastname.$separator.$this->firstname : $this->firstname.$separator.$this->lastname;
+    }
+
+    public function isOnstage(): ?bool
+    {
+        return $this->onstage;
+    }
+
+    public function setOnstage(bool $onstage): self
+    {
+        $this->onstage = $onstage;
+
+        return $this;
+    }
+
+    public function setOnstageFromCategories(): self
+    {
+        $onstage = false;
+
+        foreach ($this->categories as $category) {
+            $onstage = ($onstage or $category->isOnstage());
+        }
+
+        $this->onstage = $onstage;
+
+        return $this;
     }
 
     public function isSinger(): ?bool
@@ -473,7 +507,7 @@ class Associate
 
     public function getCategoryPreferencesList(): string
     {
-        return implode('|', $this->categoryPreferences);
+        return implode(' | ', $this->categoryPreferences);
     }
 
     public function setCategoryPreferences(array $categoryPreferences): self
