@@ -277,6 +277,11 @@ class Event
         return strftime('%B', $this->trueEndTime()->getTimestamp());
     }
 
+    public function isAllDay(): ?bool
+    {
+        return $this->allDay;
+    }
+
     public function getAllDay(): ?bool
     {
         return $this->allDay;

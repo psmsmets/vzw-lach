@@ -46,7 +46,7 @@ class UserCrudController extends AbstractCrudController
             ->setTimezone('Europe/Brussels')
             ->setNumberFormat('%.2d')
             ->setDefaultSort(['createdAt' => 'DESC'])
-            ->setPaginatorPageSize(200)
+            ->setPaginatorPageSize(100)
             ;
     }
 

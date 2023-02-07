@@ -5,7 +5,7 @@
     <h1 class="text-secondary">Uitgelicht</h1>
 
     {% for post in specials %}
-      {% include 'post/template.html.twig' with {'item': post, 'islast': loop.last } %}
+      {% include 'post/template.html.twig' with {'item': post } %}
     {% else %}
       geen berichten gevonden ...
     {% endfor %}

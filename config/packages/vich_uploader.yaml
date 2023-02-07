@@ -10,21 +10,21 @@ vich_uploader:
     mappings:
         associates_entire:
             uri_prefix:         '%app.path.associates.entire%'
-            upload_destination: '%kernel.project_dir%/public_html%app.path.associates.entire%'
+            upload_destination: '%kernel.project_dir%%app.path.public%%app.path.associates.entire%'
             namer: Vich\UploaderBundle\Naming\UniqidNamer
             inject_on_load: false
             delete_on_remove: true
             delete_on_update: true
         associates_portrait:
             uri_prefix:         '%app.path.associates.portrait%'
-            upload_destination: '%kernel.project_dir%/public_html%app.path.associates.portrait%'
+            upload_destination: '%kernel.project_dir%%app.path.public%%app.path.associates.portrait%'
             namer: Vich\UploaderBundle\Naming\UniqidNamer
             inject_on_load: false
             delete_on_remove: true
             delete_on_update: true
         documents:
             uri_prefix:         '%app.path.documents%'
-            upload_destination: '%kernel.project_dir%/public_html%app.path.documents%'
+            upload_destination: '%kernel.project_dir%%app.path.private%%app.path.documents%'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             inject_on_load: false
             delete_on_remove: true

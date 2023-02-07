@@ -1,6 +1,5 @@
 {% if pinned is not defined %}{% set pinned = false %}{% endif %}
-{% if islast is not defined %}{% set islast = false %}{% endif %}
-<div class="p-3 {% if not islast %}mb-4{% endif %} bg-white shadow-sm {% if pinned %}border border-primary{% endif %}">
+<div class="p-3 mb-4 bg-white shadow-sm {% if pinned %}border border-primary{% endif %}">
 
   <h4 class="text-primary d-flex justify-content-between mb-3">{{ post.title|capitalize }} 
     {% if pinned %}<i class="bi bi-pin-fill"></i>{% endif %}
