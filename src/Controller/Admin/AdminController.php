@@ -7,6 +7,7 @@ use App\Entity\Associate;
 use App\Entity\Category;
 use App\Entity\Document;
 use App\Entity\Event;
+use App\Entity\FAQ;
 use App\Entity\Page;
 use App\Entity\Post;
 use App\Entity\User;
@@ -15,6 +16,7 @@ use App\Controller\Admin\AssociateCrudController;
 use App\Controller\Admin\CategoryCrudController;
 use App\Controller\Admin\DocumentCrudController;
 use App\Controller\Admin\EventCrudController;
+use App\Controller\Admin\FAQCrudController;
 use App\Controller\Admin\PageCrudController;
 use App\Controller\Admin\PostCrudController;
 use App\Controller\Admin\UserCrudController;
@@ -142,6 +144,9 @@ class AdminController extends AbstractDashboardController
 
             MenuItem::section('Adverts'),
             MenuItem::linkToCrud('Adverts', 'bi bi-search', Advert::class),
+
+            MenuItem::section('FAQ'),
+            MenuItem::linkToCrud('FAQ', 'bi bi-question-square', FAQ::class),
 
             MenuItem::section('Pages'),
             MenuItem::linkToCrud('Pages', 'bi bi-file-earmark-text', Page::class),
