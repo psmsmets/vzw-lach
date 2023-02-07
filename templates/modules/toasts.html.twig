@@ -6,7 +6,7 @@
   <div class="toast-container top-0 end-0 p-3">
 
   {% for type in ['primary', 'secondary', 'danger', 'warning', 'success'] %}
-    {% for alert in app.session.flashbag.get('alert-'~type) %}
+    {% for alert in app.flashes('alert-'~type) %}
       <div class="toast align-items-center text-bg-{{type}} border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="8000">
         <div class="d-flex">
           <div class="toast-body">{{ alert|raw }}</div>
