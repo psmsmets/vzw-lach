@@ -40,7 +40,9 @@
 
         <div class="media align-top mt-3 event event-link {% if past %} past{% endif %}{% if event.cancelled %} alert-danger{% endif %}" onclick="window.location='{{ path('profile_event', {'id': event.id}) }}';">
 
-          <span class="badge rounded-1 mr-3 event text-bg-{% if past %}secondary{% else %}primary{% endif %}">{% if past %}<s>{% endif %}{{event.startTime|date('d')}}{% if past %}</s>{% endif %}</span>
+          <span class="badge rounded-1 mr-3 event text-bg-{% if past %}secondary{% else %}primary{% endif %} d-flex">
+              <span class="m-auto">{% if past %}<s>{% endif %}{{event.startTime|date('d')}}{% if past %}</s>{% endif %}</span>
+          </span>
 
           <div class="media-body ms-3 pb-0 mb-0 lh-125 w-100">
 

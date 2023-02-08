@@ -27,12 +27,14 @@ class AssociateType extends AbstractType
             ->add('details', AssociateDetailsType::class, [
                 'row_attr' => [
                     'class' => 'mt-3',
+                    'id' => 'details',
                 ],
                 'label' => false,
             ])
             ->add('address', AssociateAddressType::class, [
                 'row_attr' => [
                     'class' => 'mt-3',
+                    'id' => 'adres',
                 ],
                 'label' => 'Adres',
             ])
@@ -71,6 +73,7 @@ class AssociateType extends AbstractType
             $builder->add('measurements', AssociateMeasurementsType::class, [
                 'row_attr' => [
                     'class' => 'mt-3',
+                    'id' => 'uiterlijk-en-kledingmaat',
                 ],
                 'label' => 'Uiterlijk en kledingmaat',
             ]);

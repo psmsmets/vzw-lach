@@ -1,4 +1,5 @@
 {% extends 'profile.html.twig' %}
+{% if birthdays is not defined %}{% set birthdays = false %}{% endif %}
 
 {% block main %}
 
@@ -64,4 +65,32 @@
   {{ parent() }}
   {% include 'document/module.html.twig' %}
   {% include 'advert/module.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {% if birthdays %}
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+var duration = 100;
+var end = Date.now() + duration;
+
+(function frame() {
+  confetti({
+    particleCount: 100,
+    startVelocity: 30,
+    spread: 360,
+    origin: {
+      x: Math.random(),
+      // since they fall down, start a bit higher than random
+      y: Math.random() - 0.2
+    }
+  });
+  // keep going until we are out of time
+  if (Date.now() < end) {
+    requestAnimationFrame(frame);
+  }
+}());
+</script>
+  {% endif %}
 {% endblock %}

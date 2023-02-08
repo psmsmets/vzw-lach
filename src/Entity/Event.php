@@ -72,10 +72,13 @@ class Event
     {
         $this->id = Uuid::v6();
         $this->createdAt = new \DateTimeImmutable();
-        $this->publishedAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', date('Y-m-d H:i'));
+        $this->publishedAt = $this->createdAt;
         $this->published = true;
         $this->cancelled = false;
         $this->archived = false;
+        $this->startTime = new \DateTimeImmutable("today noon"); 
+        $this->endTime = new \DateTimeImmutable("today noon");
+        $this->allDay = true;
         $this->categories = new ArrayCollection();
     }
 
@@ -105,6 +108,11 @@ class Event
         $this->published = $published;
 
         return $this;
+    }
+
+    public function isDraft(): ?bool
+    {
+        return !$this->published;
     }
 
     public function isCancelled(): ?bool
@@ -255,20 +263,23 @@ class Event
 
         if (is_null($this->endTime)) {
 
-            return strftime($this->allDay ? $fmt : $fmt.' vanaf %H:%M', $this->startTime->getTimestamp());
+            return strftime($this->allDay ? $fmt : $fmt.' vanaf %H:%M', $this->trueStartTime()->getTimestamp());
 
         } else {
 
             if ($this->isSameDay()) {
-
-                return strftime($fmt.' van %H:%M', $this->startTime->getTimestamp()).strftime(' tot %H:%M', $this->endTime->getTimestamp());
-
+                if ($this->allDay) {
+                    return strftime($fmt, $this->trueStartTime()->getTimestamp());
+                } else {
+                    return strftime($fmt.' van %H:%M', $this->trueStartTime()->getTimestamp()).
+                           strftime(' tot %H:%M', $this->trueEndTime()->getTimestamp());
+                }
             } else {
-
                 $fmt = $this->allDay ? $fmt : $fmt . ' %H:%M';
-                return strftime($fmt, $this->startTime->getTimestamp()).strftime(' tot '.$fmt, $this->endTime->getTimestamp());
-
+                return strftime($fmt, $this->trueStartTime()->getTimestamp()).
+                       strftime(' tot '.$fmt, $this->trueEndTime()->getTimestamp());
             }
+
         }
     }
 

@@ -38,7 +38,7 @@ class AssociateMeasurementsType extends AbstractType
                 'required' => false,
             ])
             ->add('height', IntegerType::class, [
-                'label' => 'Lengte in cm',
+                'label' => 'Lichaamslengte in cm',
                 'required' => false,
             ])
             ->add('chestGirth', IntegerType::class, [
