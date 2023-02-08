@@ -231,6 +231,27 @@ class ProfileManager
         return $page;
     }
 
+    public function getBirthdays(): array
+    {
+        $birthdays = [];
+
+        foreach ($this->security->getUser()->getEnabledAssociates() as $associate) {
+            if ($associate->getDetails()->hasBirthday()) $birthdays[] = $associate->getFirstName();
+        }
+
+        $session = $this->requestStack->getSession();
+        $birthdayWishes = (bool) ($birthdays !== [] and $session->get('birthdays', []) !== $birthdays);
+
+        if ($birthdayWishes) {
+            foreach ($birthdays as $birthday) {
+                $session->getFlashBag()->add('alert-success', sprintf('Gelukkige verjaardag %s', $birthday));
+            }
+            $session->set('birthdays', $birthdays);
+        }
+
+        return $birthdays;
+    }
+
     public function getViewpoint()
     {
         $session = $this->requestStack->getSession();

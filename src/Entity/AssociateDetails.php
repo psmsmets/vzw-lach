@@ -83,6 +83,16 @@ class AssociateDetails
         return $this;
     }
 
+    public function hasBirthday(): bool
+    {
+        if (is_null($this->birthdate)) return false;
+
+        $today = (int) (new \DateTimeImmutable())->format('z');
+        $bday = (int) $this->birthdate->format('z');
+
+        return $bday === $today;
+    }
+
     public function getBirthyear(): ?int
     {
         return $this->birthdate ? (int) $this->birthdate->format('Y') : null;
