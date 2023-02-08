@@ -248,7 +248,7 @@ class ProfileManager
 
         if ($birthdayWishes) {
             foreach ($birthdays as $birthday) {
-                $session->getFlashBag()->add('alert-success', sprintf('Gelukkige verjaardag %s', $birthday));
+                $session->getFlashBag()->add('alert-success', sprintf('Gelukkige verjaardag %s &#x1f973;', $birthday));
             }
             $session->set('birthdays', $birthdays);
         }
