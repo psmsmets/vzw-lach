@@ -259,20 +259,27 @@ class ProfileManager
     public function verifyAssociates(): void
     {
         $session = $this->requestStack->getSession();
+        $verifyAfter = $session->get('verifyAssociatesOnstageAfter', new \DateTime());
 
-        foreach ($this->security->getUser()->getEnabledAssociates() as $associate) {
-            if ($associate->isOnstage() && !$associate->getMeasurements()->hasCompleted()) {
-                $session->getFlashBag()->add(
-                    'alert-warning',
-                    sprintf(
-                        "<strong>%s</strong> heeft een rol op het podium. ".
-                        "Hiervoor zijn bijkomende gegevens nodig over het uiterlijk en de kledingmaat. ".
-                        "<a href=\"%s\">Klik hier om het profiel aan te vullen.</a>",
-                        $associate->getFullName(),
-                        $this->router->generate('profile_edit', ['id' => $associate->getId()])
-                    )
-                );
+        $now = new \DateTime();
+
+        if ($now > $verifyAfter) {
+            foreach ($this->security->getUser()->getEnabledAssociates() as $associate) {
+                if ($associate->isOnstage() && !$associate->getMeasurements()->hasCompleted()) {
+                    $session->getFlashBag()->add(
+                        'alert-warning',
+                        sprintf(
+                            "<strong>%s</strong> heeft een rol op het podium. ".
+                            "Hiervoor zijn bijkomende gegevens nodig over het uiterlijk en de kledingmaat. ".
+                            "<a href=\"%s\">Klik hier om het profiel aan te vullen.</a>",
+                            $associate->getFullName(),
+                            $this->router->generate('profile_show', ['id' => $associate->getId()])
+                                //.'#uiterlijk-en-kledingmaat'
+                        )
+                    );
+                }
             }
+            $session->set('verifyAssociatesOnstageAfter', $now->modify('+1 day'));
         }
     }
 
@@ -284,7 +291,9 @@ class ProfileManager
         if ($viewpoint instanceof Uuid)
         {
             $associate = $this->getAssociate($viewpoint);
-            if (!$associate or $associate->getUser() !== $this->security->getUser()) throw $this->createAccessDeniedException();
+            if (!$associate or $associate->getUser() !== $this->security->getUser()) {
+                throw $this->createAccessDeniedException();
+            }
 
             return $associate;
         }
