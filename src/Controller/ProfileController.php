@@ -48,6 +48,8 @@ class ProfileController extends AbstractController
 
         $viewpoint = $this->manager->getViewpoint();
 
+        $this->manager->verifyAssociates();
+
         return $this->render('profile/index.html.twig', [
             'specials' => $this->manager->getSpecialPosts($viewpoint),
             'birthdays' => $this->manager->getBirthdays(),

@@ -22,6 +22,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\Uuid as UuidConstraint;
 use Symfony\Component\Validator\Validation;
@@ -29,7 +30,7 @@ use Symfony\Component\Uid\Uuid;
 
 class ProfileManager 
 {
-    private $em;
+    public $em;
     public $advertRepository;
     public $associateRepository;
     public $categoryRepository;
@@ -38,8 +39,9 @@ class ProfileManager
     public $documentRepository;
     public $postRepository;
     public $userRepository;
-    private $requestStack;
-    private $security;
+    public $requestStack;
+    public $router;
+    public $security;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -52,6 +54,7 @@ class ProfileManager
         PostRepository $postRepository,
         UserRepository $userRepository,
         RequestStack $requestStack,
+        UrlGeneratorInterface $router,
         Security $security,
     )
     {
@@ -65,6 +68,7 @@ class ProfileManager
         $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
         $this->requestStack = $requestStack;
+        $this->router = $router;
         $this->security = $security;
         setlocale(LC_ALL, 'nl_BE');
     }
@@ -250,6 +254,26 @@ class ProfileManager
         }
 
         return $birthdays;
+    }
+
+    public function verifyAssociates(): void
+    {
+        $session = $this->requestStack->getSession();
+
+        foreach ($this->security->getUser()->getEnabledAssociates() as $associate) {
+            if ($associate->isOnstage() && !$associate->getMeasurements()->hasCompleted()) {
+                $session->getFlashBag()->add(
+                    'alert-warning',
+                    sprintf(
+                        "<strong>%s</strong> heeft een rol op het podium. ".
+                        "Hiervoor zijn bijkomende gegevens nodig over het uiterlijk en de kledingmaat. ".
+                        "<a href=\"%s\">Klik hier om het profiel aan te vullen.</a>",
+                        $associate->getFullName(),
+                        $this->router->generate('profile_edit', ['id' => $associate->getId()])
+                    )
+                );
+            }
+        }
     }
 
     public function getViewpoint()

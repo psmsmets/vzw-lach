@@ -109,7 +109,7 @@ class AssociateMeasurements
     {
         if (
             !is_null($this->fittingSize) and
-            !is_null($this->hairType) and
+            !is_null($this->hairLength) and
             !is_null($this->hairColor) and
             !is_null($this->height) and
             !is_null($this->chestGirth) and
