@@ -136,11 +136,11 @@ th .btn-link:hover {
   padding: .5rem;
 
   &.event-md {
-    width: 48px;
-    height: 48px;
+    width: 48px!important;
+    height: 48px!important;
     font-weight: 300;
-    line-height: .8;
-    font-size: 1.5rem;
+    line-height: .85;
+    font-size: 1.35rem;
     text-align: center;
     padding: .3rem;
   }
