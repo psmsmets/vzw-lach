@@ -60,6 +60,14 @@ body {
   border-bottom-color: rgba(149, 20, 31, 1);
 }
 
+.navbar .nav-link:not(.active):hover {
+  transform: rotate(0deg) scale(1.1);
+}
+
+.navbar .nav-link {
+  transition: .2s ease-in-out transform;
+}
+
 footer {
   font-size: .75em;
   font-weight: lighter !important;
