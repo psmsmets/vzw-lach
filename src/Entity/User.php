@@ -42,6 +42,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $enabled = null;
 
+    #[ORM\Column]
+    private ?bool $viewmaster = null;
+
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -63,6 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = null;
         $this->enabled = true;
+        $this->viewmaster = false;
         $this->passwordUpdatedAt = null;
         $this->password = bin2hex(random_bytes(64));
         $this->associates = new ArrayCollection();
@@ -79,6 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return [
             'id' => $this->id,
             'enabled' => $this->enabled,
+            'viewmaster' => $this->viewmaster,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
             'passwordUpdatedAt' => $this->passwordUpdatedAt,
@@ -95,6 +100,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->id = $serialized['id'];
         $this->enabled = $serialized['enabled'];
+        $this->viewmaster = $serialized['viewmaster'];
         $this->createdAt = $serialized['createdAt'];
         $this->updatedAt = $serialized['updatedAt'];
         $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
@@ -248,6 +254,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function isViewmaster(): ?bool
+    {
+        return $this->viewmaster;
+    }
+
+    public function setViewmaster(bool $viewmaster): self
+    {
+        $this->viewmaster = $viewmaster;
 
         return $this;
     }

@@ -98,6 +98,8 @@ class UserCrudController extends AbstractCrudController
             ->autocomplete()
             ->hideOnIndex()
             ;
+        yield BooleanField::new('viewmaster')->renderAsSwitch(false)->hideOnForm();
+        yield BooleanField::new('viewmaster')->renderAsSwitch(true)->onlyOnForms();
 
         yield Field::new('createdAt')->onlyOnIndex();
         yield Field::new('updatedAt')->onlyOnIndex();
