@@ -63,19 +63,20 @@ class PostRepository extends ServiceEntityRepository
             $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
         }
 
-        if ($obj instanceof User and !$obj->isViewmaster()) {
-            $count = 0;
-            foreach ($obj->getEnabledAssociates() as $associate)
-            {
-                $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
-                $count++;
+        if ($obj instanceof User) {
+            if  ($obj->isViewmaster()) {
+                $qb->orWhere('categories is not null');
+            } else {
+                $count = 0;
+                foreach ($obj->getEnabledAssociates() as $associate) {
+                    $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
+                    $count++;
+                }
             }
         }
 
-        if (!($obj instanceof User) or ($obj instanceof User and !$obj->isViewmaster())) {
-            $qb->orWhere('categories is null');
-        }
+        $qb->orWhere('categories is null');
 
         $qb->setParameter('published', true);
         $qb->andWhere('post.published = :published');
@@ -114,19 +115,20 @@ class PostRepository extends ServiceEntityRepository
             $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
         }
 
-        if ($obj instanceof User and !$obj->isViewmaster()) {
-            $count = 0;
-            foreach ($obj->getEnabledAssociates() as $associate)
-            {
-                $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
-                $count++;
+        if ($obj instanceof User) {
+            if  ($obj->isViewmaster()) {
+                $qb->orWhere('categories is not null');
+            } else {
+                $count = 0;
+                foreach ($obj->getEnabledAssociates() as $associate) {
+                    $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
+                    $count++;
+                }
             }
         }
 
-        if (!($obj instanceof User) or ($obj instanceof User and !$obj->isViewmaster())) {
-            $qb->orWhere('categories is null');
-        }
+        $qb->orWhere('categories is null');
 
         $qb->setParameter('published', true);
         $qb->andWhere('post.published = :published');
@@ -170,18 +172,17 @@ class PostRepository extends ServiceEntityRepository
             $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
         }
 
-        if ($obj instanceof User and !$obj->isViewmaster()) {
-            $count = 0;
-            foreach ($obj->getEnabledAssociates() as $associate)
-            {
-                $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
-                $count++;
+        if ($obj instanceof User) {
+            if  ($obj->isViewmaster()) {
+                $qb->orWhere('categories is not null');
+            } else {
+                $count = 0;
+                foreach ($obj->getEnabledAssociates() as $associate) {
+                    $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
+                    $count++;
+                }
             }
-        }
-
-        if (!($obj instanceof User) or ($obj instanceof User and !$obj->isViewmaster())) {
-            $qb->orWhere('categories is null');
         }
 
         $qb->orWhere('categories is null');

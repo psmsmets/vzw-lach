@@ -56,6 +56,8 @@ class CategoryCrudController extends AbstractCrudController
 
         yield TextareaField::new('description')->hideOnIndex();
 
+        // yield Field::new('parent');
+
         yield BooleanField::new('onstage')->renderAsSwitch(true);
         //yield BooleanField::new('onstage')->renderAsSwitch(false)->hideOnForm();
         //yield BooleanField::new('onstage')->renderAsSwitch(true)->onlyOnForms();
