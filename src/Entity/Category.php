@@ -39,6 +39,9 @@ class Category
     private ?bool $hidden = null;
 
     #[ORM\Column]
+    private ?bool $viewmaster = null;
+
+    #[ORM\Column]
     private ?bool $onstage = null;
 
     #[ORM\ManyToMany(targetEntity: Associate::class, mappedBy: 'categories', cascade: ['persist'])]
@@ -61,6 +64,7 @@ class Category
     {
         $this->enabled = true;
         $this->hidden = false;
+        $this->viewmaster = false;
         $this->onstage = false;
         $this->associates = new ArrayCollection();
         $this->posts = new ArrayCollection();
@@ -74,15 +78,9 @@ class Category
     }
 
     #[ORM\PreUpdate]
-    public function preUpdate(): self
+    public function preUpdate(): void
     {
         $this->setUpdatedAt();
-
-        foreach ($this->associates as $associate) {
-            $associate->setOnstageFromCategories();
-        }
-
-        return $this;
     }
 
     public function getId(): ?int
@@ -170,6 +168,22 @@ class Category
     public function setHidden(bool $hidden): self
     {
         $this->hidden = $hidden;
+
+        return $this;
+    }
+
+    public function isViewmaster(): ?bool
+    {
+        return $this->viewmaster;
+    }
+
+    public function setViewmaster(bool $viewmaster): self
+    {
+        $this->viewmaster = $viewmaster;
+
+        foreach ($this->associates as $associate) {
+            $associate->setViewmasterFromCategories();
+        }
 
         return $this;
     }

@@ -62,8 +62,11 @@ class CategoryCrudController extends AbstractCrudController
         //yield BooleanField::new('onstage')->renderAsSwitch(false)->hideOnForm();
         //yield BooleanField::new('onstage')->renderAsSwitch(true)->onlyOnForms();
 
-        yield BooleanField::new('hidden')->renderAsSwitch(false)->onlyOnDetail();
-        yield BooleanField::new('hidden')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('viewmaster')->renderAsSwitch(false)->hideOnForm();
+        yield BooleanField::new('viewmaster')->renderAsSwitch(true)->onlyOnForms();
+
+        //yield BooleanField::new('hidden')->renderAsSwitch(false)->onlyOnDetail();
+        //yield BooleanField::new('hidden')->renderAsSwitch(true)->onlyOnForms();
 
         yield AssociationField::new('associates')
             ->autocomplete()

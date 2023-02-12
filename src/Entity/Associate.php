@@ -42,6 +42,9 @@ class Associate
     private ?string $lastname = null;
 
     #[ORM\Column]
+    private ?bool $viewmaster = null;
+
+    #[ORM\Column]
     private ?bool $onstage = null;
 
     #[ORM\Column]
@@ -118,6 +121,7 @@ class Associate
         $this->id = Uuid::v4();
         $this->createdAt = new \DateTimeImmutable();
         $this->enabled = false;
+        $this->viewmaster = false;
         $this->onstage = false;
         $this->singer = false;
         $this->singerSoloist = false;
@@ -131,39 +135,11 @@ class Associate
     {
         return $this->getFullName();
     }
-/*
-    public function __serialize(): array
-    {
-        return [
-            'createdAt' => $this->createdAt,
-            'updatedAt' => $this->updatedAt,
-            'enabled' => $this->enabled,
-            'id' => $this->id,
-            'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
-            'singer' => $this->singer,
-            'singerSoloist' => $this->singerSoloist,
-        ];
-    }
-
-    public function __unserialize(array $serialized): void 
-    {
-        $this->createdAt = $serialized['createdAt'];
-        $this->updatedAt = $serialized['updatedAt'];
-        $this->enabled = $serialized['enabled'];
-        $this->id = $serialized['id'];
-        $this->firstname = $serialized['firstname'];
-        $this->lastname = $serialized['lastname'];
-    }
-*/
 
     #[ORM\PreUpdate]
-    public function preUpdate(): self
+    public function preUpdate(): void 
     {
         $this->setUpdatedAt();
-        $this->setOnstageFromCategories();
-
-        return $this;
     }
 
     public function getId(): ?Uuid
@@ -203,6 +179,33 @@ class Associate
     public function hasCompletedEnrolment(): ?bool
     {
         return $this->declarePresent & $this->declareSecrecy & $this->declareTerms;
+    }
+
+    public function isViewmaster(): ?bool
+    {
+        return $this->viewmaster;
+    }
+
+/* category-based only
+    public function setViewmaster(bool $viewmaster): self
+    {
+        $this->viewmaster = $viewmaster;
+
+        return $this;
+    }
+*/
+
+    public function setViewmasterFromCategories(): self
+    {
+        $viewmaster = false;
+
+        foreach ($this->categories as $category) {
+            $viewmaster = ($viewmaster or $category->isViewmaster());
+        }
+
+        $this->viewmaster = $viewmaster;
+
+        return $this;
     }
 
     public function getFirstname(): ?string
@@ -464,6 +467,9 @@ class Associate
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
+            $this->setOnstageFromCategories();
+            $this->setViewmasterFromCategories();
+            $this->user->setViewmasterFromAssociates();
         }
 
         return $this;
@@ -473,6 +479,9 @@ class Associate
     {
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
+            $this->setOnstageFromCategories();
+            $this->setViewmasterFromCategories();
+            $this->user->setViewmasterFromAssociates();
         }
 
         return $this;
