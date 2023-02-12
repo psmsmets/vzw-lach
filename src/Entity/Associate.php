@@ -205,6 +205,8 @@ class Associate
 
         $this->viewmaster = $viewmaster;
 
+        $this->user->setViewmasterFromAssociates();
+
         return $this;
     }
 
