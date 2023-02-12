@@ -10,7 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, SlugField, TextField, TextareaField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, IdField, SlugField, TextField, TextareaField};
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class CategoryCrudController extends AbstractCrudController
@@ -45,7 +45,7 @@ class CategoryCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        // yield IdField::new('id')->onlyOnDetail();
+        yield IdField::new('id')->hideOnForm();
 
         yield BooleanField::new('enabled')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
