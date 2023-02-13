@@ -58,8 +58,8 @@ class Document
     #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'documentName')]
     #[Assert\File(
         maxSize: '16M',
-        mimeTypes: ['application/pdf'],
-        mimeTypesMessage: 'Please upload a valid document (pdf only)',
+        mimeTypes: ['application/pdf', 'audio/mpeg', 'audio/wav'],
+        mimeTypesMessage: 'Please upload a valid document',
     )]
     #[Ignore]
     private ?File $documentFile = null;
