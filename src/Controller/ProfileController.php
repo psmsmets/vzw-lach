@@ -6,7 +6,6 @@ use App\Entity\Associate;
 use App\Entity\Page;
 use App\Form\AssociateType;
 use App\Service\ProfileManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

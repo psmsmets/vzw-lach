@@ -337,7 +337,7 @@ class Category
 
     public function setParent(?Category $parent): self
     {
-        $this->parent = $parent;
+        $this->parent = $parent !== $this ? $parent : null;
 
         return $this;
     }

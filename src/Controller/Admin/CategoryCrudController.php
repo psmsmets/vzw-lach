@@ -3,9 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AssociateCrudController;
-use App\Entity\Associate;
 use App\Entity\Category;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -56,7 +56,17 @@ class CategoryCrudController extends AbstractCrudController
 
         yield TextareaField::new('description')->hideOnIndex();
 
-        // yield Field::new('parent');
+        //$categoryRepository = $this->entityManager->getRepository(Category::class);
+        yield AssociationField::new('parent')
+            ->setRequired(false)
+            ->autocomplete()
+            ->setQueryBuilder(function ($queryBuilder) {
+                return $queryBuilder
+                    ->andWhere('entity.enabled = true')
+                    ->andWhere('entity.parent is null')
+                ;
+            })
+            ;
 
         yield BooleanField::new('onstage')->renderAsSwitch(true);
         //yield BooleanField::new('onstage')->renderAsSwitch(false)->hideOnForm();
@@ -75,7 +85,9 @@ class CategoryCrudController extends AbstractCrudController
                 'by_reference' => false,
             ])
             ->setQueryBuilder(function ($queryBuilder) {
-                return $queryBuilder->andWhere('entity.enabled = true'); // your query
+                return $queryBuilder
+                    ->andWhere('entity.enabled = true')
+                ; // your query
 
             })
             ;
