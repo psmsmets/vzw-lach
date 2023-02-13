@@ -56,20 +56,37 @@ class PostRepository extends ServiceEntityRepository
         if ($obj instanceof Associate) {
             $qb->setParameter('associate', $obj->getId(), 'uuid');
             $qb->where($qb->expr()->isMemberOf(':associate', 'categories.associates'));
+            $count = 0;
+            foreach ($obj->getCategories() as $category) {
+                foreach ($category->getChildren() as $child) {
+                    $qb->setParameter(sprintf('category%d', $count), $child->getId());
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'post.categories'));
+                    $count++;
+                }
+            }
         }
 
         if ($obj instanceof Category) {
             $qb->setParameter(':category', $obj);
             $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
+            $count = 0;
+            foreach ($obj->getChildren() as $child) {
+                $qb->setParameter(sprintf('category%d', $count), $child->getId());
+                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'post.categories'));
+                $count++;
+            }
         }
 
         if ($obj instanceof User) {
-            $count = 0;
-            foreach ($obj->getEnabledAssociates() as $associate)
-            {
-                $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
-                $count++;
+            if  ($obj->isViewmaster()) {
+                $qb->orWhere('categories is not null');
+            } else {
+                $count = 0;
+                foreach ($obj->getEnabledAssociates() as $associate) {
+                    $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
+                    $count++;
+                }
             }
         }
 
@@ -105,20 +122,37 @@ class PostRepository extends ServiceEntityRepository
         if ($obj instanceof Associate) {
             $qb->setParameter('associate', $obj->getId(), 'uuid');
             $qb->where($qb->expr()->isMemberOf(':associate', 'categories.associates'));
+            $count = 0;
+            foreach ($obj->getCategories() as $category) {
+                foreach ($category->getChildren() as $child) {
+                    $qb->setParameter(sprintf('category%d', $count), $child->getId());
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'post.categories'));
+                    $count++;
+                }
+            }
         }
 
         if ($obj instanceof Category) {
             $qb->setParameter(':category', $obj);
             $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
+            $count = 0;
+            foreach ($obj->getChildren() as $child) {
+                $qb->setParameter(sprintf('category%d', $count), $child->getId());
+                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'post.categories'));
+                $count++;
+            }
         }
 
         if ($obj instanceof User) {
-            $count = 0;
-            foreach ($obj->getEnabledAssociates() as $associate)
-            {
-                $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
-                $count++;
+            if  ($obj->isViewmaster()) {
+                $qb->orWhere('categories is not null');
+            } else {
+                $count = 0;
+                foreach ($obj->getEnabledAssociates() as $associate) {
+                    $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
+                    $count++;
+                }
             }
         }
 
@@ -159,20 +193,37 @@ class PostRepository extends ServiceEntityRepository
         if ($obj instanceof Associate) {
             $qb->setParameter('associate', $obj->getId(), 'uuid');
             $qb->where($qb->expr()->isMemberOf(':associate', 'categories.associates'));
+            $count = 0;
+            foreach ($obj->getCategories() as $category) {
+                foreach ($category->getChildren() as $child) {
+                    $qb->setParameter(sprintf('category%d', $count), $child->getId());
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'post.categories'));
+                    $count++;
+                }
+            }
         }
 
         if ($obj instanceof Category) {
             $qb->setParameter(':category', $obj);
             $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
+            $count = 0;
+            foreach ($obj->getChildren() as $child) {
+                $qb->setParameter(sprintf('category%d', $count), $child->getId());
+                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'post.categories'));
+                $count++;
+            }
         }
 
         if ($obj instanceof User) {
-            $count = 0;
-            foreach ($obj->getEnabledAssociates() as $associate)
-            {
-                $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
-                $count++;
+            if  ($obj->isViewmaster()) {
+                $qb->orWhere('categories is not null');
+            } else {
+                $count = 0;
+                foreach ($obj->getEnabledAssociates() as $associate) {
+                    $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
+                    $count++;
+                }
             }
         }
 

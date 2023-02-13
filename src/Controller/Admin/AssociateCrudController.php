@@ -104,6 +104,7 @@ class AssociateCrudController extends AbstractCrudController
         yield Field::new('categoryPreferencesList', 'Voorkeur')->onlyOnDetail();
         yield TextField::new('companion')->hideOnIndex();
 
+        yield BooleanField::new('viewmaster')->renderAsSwitch(false)->hideOnForm();
         yield BooleanField::new('onstage')->renderAsSwitch(false)->hideOnForm();
 
         yield BooleanField::new('singer')->renderAsSwitch(false)->hideOnForm();

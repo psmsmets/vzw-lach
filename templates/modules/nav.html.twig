@@ -41,18 +41,18 @@
           {% if app.user.isAdmin %}
           <li class="nav-item">
             <a class="nav-link"
-               href="{{path('admin')}}">Beheer</a>
+               href="{{path('admin')}}"><i class="bi bi-lock-fill"></i> Beheer</a>
           </li>
           {% endif %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {% if viewpoint == app.user %}{{app.user.email}}{% else %}{{viewpoint}}{% endif %}
+              {% if viewpoint == app.user %}{% if app.user.viewmaster %}<i class="bi bi-magic"></i>{% else %}<i class="bi bi-people-fill"></i>{% endif %} {{app.user.email}}{% else %}<i class="bi bi-person-fill"></i> {{viewpoint}}{% endif %}
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" style="margin-top: 7px;">
-              <li><a class="dropdown-item fw-lighter" href="{{path('profile_reset')}}">{{app.user.email}}</a></li>
+              <li><a class="dropdown-item fw-lighter" href="{{path('profile_reset')}}">{% if app.user.viewmaster %}<i class="bi bi-magic"></i>{% else %}<i class="bi bi-people-fill"></i>{% endif %} {{app.user.email}}</a></li>
               <li><hr class="dropdown-divider"></li>
               {% for associate in app.user.associates %}
-              <li><a class="dropdown-item fw-lighter" href="{{path('profile_select', {'id': associate.id})}}">{{associate}}</a></li>
+              <li><a class="dropdown-item fw-lighter" href="{{path('profile_select', {'id': associate.id})}}"><i class="bi bi-person-fill"></i> {{associate}}</a></li>
               {% endfor %}
               <li><hr class="dropdown-divider"></li>
               <li><a href="{{path('security_signout')}}" class="dropdown-item fw-lighter">

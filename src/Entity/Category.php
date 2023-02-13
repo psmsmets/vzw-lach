@@ -39,6 +39,9 @@ class Category
     private ?bool $hidden = null;
 
     #[ORM\Column]
+    private ?bool $viewmaster = null;
+
+    #[ORM\Column]
     private ?bool $onstage = null;
 
     #[ORM\ManyToMany(targetEntity: Associate::class, mappedBy: 'categories', cascade: ['persist'])]
@@ -50,14 +53,23 @@ class Category
     #[ORM\ManyToMany(targetEntity: Document::class, mappedBy: 'categories')]
     private Collection $documents;
 
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent', referencedColumnName: 'id', nullable: true)]
+    private $parent;
+
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'parent')]
+    private $children;
+
     public function __construct()
     {
         $this->enabled = true;
         $this->hidden = false;
+        $this->viewmaster = false;
         $this->onstage = false;
         $this->associates = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -66,15 +78,9 @@ class Category
     }
 
     #[ORM\PreUpdate]
-    public function preUpdate(): self
+    public function preUpdate(): void
     {
         $this->setUpdatedAt();
-
-        foreach ($this->associates as $associate) {
-            $associate->setOnstageFromCategories();
-        }
-
-        return $this;
     }
 
     public function getId(): ?int
@@ -162,6 +168,22 @@ class Category
     public function setHidden(bool $hidden): self
     {
         $this->hidden = $hidden;
+
+        return $this;
+    }
+
+    public function isViewmaster(): ?bool
+    {
+        return $this->viewmaster;
+    }
+
+    public function setViewmaster(bool $viewmaster): self
+    {
+        $this->viewmaster = $viewmaster;
+
+        foreach ($this->associates as $associate) {
+            $associate->setViewmasterFromCategories();
+        }
 
         return $this;
     }
@@ -273,4 +295,56 @@ class Category
 
         return $this;
     }
+
+   /**
+    * @param Category $children
+    * @return $this
+    */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    public function addChild(Category $child): self
+    {
+        if (!$this->children->contains($child)) {
+            $this->children->add($child);
+            $child->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChild(Category $child)
+    {
+        if ($this->children->contains($child)) {
+            $this->children->removeElement($child);
+            $children->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function hasChildren(): bool
+    {
+        return count($this->children) > 0;
+    }
+
+    public function getParent(): ?Category
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?Category $parent): self
+    {
+        $this->parent = $parent !== $this ? $parent : null;
+
+        return $this;
+    }
+
+    public function hasParent(): bool
+    {
+        return !is_null($this->parent);
+    }
+
 }

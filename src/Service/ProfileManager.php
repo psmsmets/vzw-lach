@@ -279,7 +279,7 @@ class ProfileManager
                     );
                 }
             }
-            $session->set('verifyAssociatesOnstageAfter', $now->modify('+1 day'));
+            $session->set('verifyAssociatesOnstageAfter', $now->modify('+3 days'));
         }
     }
 
@@ -306,10 +306,26 @@ class ProfileManager
         if ($viewpoint instanceof Associate)
         {
             $session->set('viewpoint', $viewpoint->getId());
-            $session->getFlashBag()->add('alert-success', 'Je bekijkt vanaf nu enkel de informatie voor '.strval($viewpoint));
+            $session->getFlashBag()->add(
+                'alert-success',
+                sprintf(
+                    'Je bekijkt vanaf nu enkel de informatie voor %s <i class="bi bi-person-fill"></i>',
+                    strval($viewpoint)
+                )
+            );
         } else {
             $session->set('viewpoint', false);
-            $session->getFlashBag()->add('alert-success', 'Je bekijkt weer de informatie voor al je deelnemers');
+            if ($this->security->getUser()->isViewmaster()) {
+                $session->getFlashBag()->add(
+                    'alert-success',
+                    'Je bekijkt de informatie van alle deelnemers<br>[<i class="bi bi-magic"></i> viewmaster]'
+                );
+            } else {
+                $session->getFlashBag()->add(
+                    'alert-success',
+                    'Je bekijkt weer de informatie voor al je deelnemers <i class="bi bi-people-fill"></i>'
+                );
+            }
         }
 
         return $this;

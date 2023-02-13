@@ -19,8 +19,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-//    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-//    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -41,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $enabled = null;
+
+    #[ORM\Column]
+    private ?bool $viewmaster = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -63,6 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = null;
         $this->enabled = true;
+        $this->viewmaster = false;
         $this->passwordUpdatedAt = null;
         $this->password = bin2hex(random_bytes(64));
         $this->associates = new ArrayCollection();
@@ -70,7 +72,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(): string
     {
-//        return $this->email;
         return strval($this->getId());
     }
 
@@ -79,6 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return [
             'id' => $this->id,
             'enabled' => $this->enabled,
+            'viewmaster' => $this->viewmaster,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
             'passwordUpdatedAt' => $this->passwordUpdatedAt,
@@ -87,7 +89,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'password' => $this->password,
             'passwordUpdatedAt' => $this->passwordUpdatedAt,
             'roles' => $this->roles,
-            //'associates' => $this->associates,
         ];
     }
 
@@ -95,6 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->id = $serialized['id'];
         $this->enabled = $serialized['enabled'];
+        $this->viewmaster = $serialized['viewmaster'];
         $this->createdAt = $serialized['createdAt'];
         $this->updatedAt = $serialized['updatedAt'];
         $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
@@ -103,11 +105,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $serialized['password'];
         $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
         $this->roles = $serialized['roles'];
-        //$this->associates = $serialized['associates'];
     }
 
     #[ORM\PreUpdate]
-    public function preUpdate()
+    public function preUpdate(): void
     {
         $this->setUpdatedAt();
     }
@@ -252,6 +253,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function isViewmaster(): ?bool
+    {
+        return $this->viewmaster;
+    }
+
+/* associate-based only
+    public function setViewmaster(bool $viewmaster): self
+    {
+        $this->viewmaster = $viewmaster;
+
+        return $this;
+    }
+*/
+
+    public function setViewmasterFromAssociates(): self
+    {
+        $viewmaster = false;
+
+        foreach ($this->associates as $associate) {
+            $viewmaster = ($viewmaster or $associate->isViewmaster());
+        }
+
+        $this->viewmaster = $viewmaster;
+
+        return $this;
+    }
+
     public function getPhone(): ?string
     {
         return $this->phone;
@@ -291,6 +319,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->associates->contains($associate)) {
             $associate->setUser($this);
             $this->associates->add($associate);
+            $this->setViewmasterFromAssociates();
         }
 
         return $this;
@@ -302,6 +331,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($associate->getUser() === $this) {
                 $associate->setUser(null);
+                $this->setViewmasterFromAssociates();
             }
         }
 
