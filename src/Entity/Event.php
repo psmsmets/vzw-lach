@@ -84,7 +84,7 @@ class Event
 
     public function __toString(): string
     {
-        return $this->startTime->format('Y-m-d') . " (" . $this->getTitle() . ")";
+        return sprintf("%s (%s #%d)", $this->startTime->format('Y-m-d'), $this->getTitle(), count($this->categories));
     }
 
     #[ORM\PreUpdate]

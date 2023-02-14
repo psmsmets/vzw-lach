@@ -25,7 +25,7 @@ class AdvertCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->disable(Action::DELETE)
+            //->disable(Action::DELETE)
             ;
     }
 
