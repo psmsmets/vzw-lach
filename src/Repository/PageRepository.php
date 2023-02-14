@@ -40,21 +40,6 @@ class PageRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Page[] Returns an array of Page objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
     public function findOneBySlug($slug): ?Page
     {
         return $this->createQueryBuilder('s')

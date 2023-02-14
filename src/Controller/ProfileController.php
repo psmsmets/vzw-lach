@@ -186,12 +186,12 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('profile_documents');
         }
 
-        $pages = $this->manager->getDocumentPages($viewpoint, $folder);
+        $pages = $this->manager->getDocumentPages($viewpoint, $folder, null);
         $page = $this->manager->getRequestedPage($request, $pages);
 
         return $this->render('document/index.html.twig', [
             'folder' => $folder,
-            'documents' => $folder->getDocuments(),
+            'documents' => $this->manager->getDocuments($viewpoint, $folder, $page, null),
             'page' => $page,
             'pages' => $pages,
         ]);
@@ -223,7 +223,8 @@ class ProfileController extends AbstractController
                 $this->getParameter('app.path.documents').
                 '/'.$document->getDocumentName();
 
-        return $this->file($file, $document->getName().'.pdf');
+
+        return $this->file($file, sprintf('%s.%s', $document->getName(), $document->getExtension()));
     }
 
     #[Route('/zoekertjes', name: '_adverts', methods: ['GET'])]

@@ -151,9 +151,16 @@ class Folder
     /**
      * @return Collection<int, Document>
      */
-    public function getDocuments(): Collection
+    public function getDocuments(bool $published = null): Collection
     {
-        return $this->documents;
+        if (!is_null($published)) {
+            return $this->documents->filter(function(Document $document) {
+                $now = new \DateTimeImmutable();
+                return ($document->isPublished() === true and $document->getPublishedAt() <= $now);
+            });
+        } else {
+            return $this->documents;
+        }
     }
 
     public function addDocument(Document $document): self

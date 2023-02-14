@@ -107,7 +107,7 @@ class EventRepository extends ServiceEntityRepository
      * @return Event[] Returns an array of Event objects
      */
     public function findEvents(
-        $obj = null, ?\DateTimeInterface $periodStart = null, ?\DateTimeInterface $periodEnd = null, ?int $limit = null
+        $obj = null, ?\DateTimeInterface $periodStart = null, ?\DateTimeInterface $periodEnd = null, $limit = null
     ): array
     {
         $t0 = is_null($periodStart) ? new \DateTime('today midnight') : $periodStart;

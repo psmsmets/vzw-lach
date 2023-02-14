@@ -65,7 +65,7 @@ class AdvertRepository extends ServiceEntityRepository
     /**
      * @return Advert[] Returns an array of Advert objects
      */
-    public function findAdverts(?int $limit = null, ?int $page = 1, ?int $progress = null, ?bool $completed = null): array
+    public function findAdverts($limit = null, $page = 1, $progress = null, ?bool $completed = null): array
     {
         /* todo: optionally filter completed */
         $limit = is_null($limit) ? Advert::NUMBER_OF_ITEMS : $limit;
