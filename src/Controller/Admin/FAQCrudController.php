@@ -22,8 +22,9 @@ class FAQCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
-            ->setPermission(Action::NEW, 'ROLE_SUPER_ADMIN')
-            ->disable(Action::DELETE)
+            ->setPermission(Action::NEW, 'ROLE_ADMIN')
+            ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN')
+            //->disable(Action::DELETE)
             ;
     }
 
