@@ -211,24 +211,24 @@ class ProfileManager
         return count($errors) == 0 ? $this->documentRepository->findDocument(Uuid::fromString($uuid), $obj) : null;
     }
 
-    public function getDocuments($obj, Folder $folder = null, int $page = 1): array
+    public function getDocuments($obj, ?Folder $folder = null, int $page = 1, ?bool $pinned = false): array
     {
-        return $this->documentRepository->findDocuments($obj, null, false, $folder, Document::NUMBER_OF_ITEMS, $page);
+        return $this->documentRepository->findDocuments($folder, $obj, null, $pinned, Document::NUMBER_OF_ITEMS, $page);
     }
 
-    public function getDocumentPages($obj, ?Folder $folder = null): int 
+    public function getDocumentPages($obj, ?Folder $folder = null, ?bool $pinned = false): int 
     {
-        return (int) ceil($this->documentRepository->countDocuments($obj, null, false, $folder) / Document::NUMBER_OF_ITEMS);
+        return (int) ceil($this->documentRepository->countDocuments($folder, $obj, null, $pinned) / Document::NUMBER_OF_ITEMS);
     }
 
-    public function getSpecialDocuments($obj): array
+    public function getSpecialDocuments($obj, ?Folder $folder = null): array
     {
-        return $this->documentRepository->findDocuments($obj, true, null, null, Document::NUMBER_OF_ITEMS_SPECIAL);
+        return $this->documentRepository->findDocuments($folder, $obj, true, null, Document::NUMBER_OF_ITEMS_SPECIAL);
     }
 
-    public function getPinnedDocuments($obj): array
+    public function getPinnedDocuments($obj, ?Folder $folder = null): array
     {
-        return $this->documentRepository->findDocuments($obj, null, true, null, Document::NUMBER_OF_ITEMS_PINNED);
+        return $this->documentRepository->findDocuments($folder, $obj, null, true, Document::NUMBER_OF_ITEMS_PINNED);
     }
 
     public function getFolderPages($obj): int 

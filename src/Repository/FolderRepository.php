@@ -106,7 +106,7 @@ class FolderRepository extends ServiceEntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function findFolders($obj = null, ?int $limit = null, int $page = 1): array
+    public function findFolders($obj = null, $limit = null, $page = 1): array
     {
         $limit = is_null($limit) ? Folder::NUMBER_OF_ITEMS : $limit;
         $offset = ( $page < 1 ? 0 : $page - 1 ) * Folder::NUMBER_OF_ITEMS;

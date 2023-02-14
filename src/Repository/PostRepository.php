@@ -107,9 +107,7 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @return Post[] Returns an array of Post objects
      */
-    public function findPosts(
-        $obj = null, ?bool $special = null, ?bool $pinned = null, ?int $limit = null, int $page = 1
-    ): array
+    public function findPosts($obj = null, ?bool $special = null, ?bool $pinned = null, $limit = null, $page = 1): array
     {
         $limit = is_null($limit) ? Post::NUMBER_OF_ITEMS : $limit;
         $offset = ( $page < 1 ? 0 : $page - 1 ) * Post::NUMBER_OF_ITEMS;
@@ -181,9 +179,7 @@ class PostRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function countPosts(
-        $obj = null, ?bool $special = null, ?bool $pinned = null 
-    ): int
+    public function countPosts($obj = null, ?bool $special = null, ?bool $pinned = null): int
     {
         $qb = $this->createQueryBuilder('post');
 

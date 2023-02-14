@@ -256,4 +256,10 @@ class Document
         return $this->documentName;
     }
 
+    public function getExtension(): ?string
+    {
+        $elements = explode('.', $this->documentName);
+        return end($elements);
+    }
+
 }

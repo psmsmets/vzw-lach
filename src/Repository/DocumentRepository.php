@@ -109,7 +109,7 @@ class DocumentRepository extends ServiceEntityRepository
      * @return Document[] Returns an array of Document objects
      */
     public function findDocuments(
-        $obj = null, ?bool $special = null, ?bool $pinned = null, ?Folder $folder = null, ?int $limit = null, int $page = 1
+        $folder = null, $obj = null, ?bool $special = null, ?bool $pinned = null, $limit = null, $page = 1
     ): array
     {
         $limit = is_null($limit) ? Document::NUMBER_OF_ITEMS : $limit;
@@ -159,6 +159,13 @@ class DocumentRepository extends ServiceEntityRepository
 
         $qb->orWhere('categories is null');
 
+        if ($folder instanceof Folder) {
+            $qb->leftJoin('doc.folder','folder');
+            $qb->addSelect('folder');
+            $qb->setParameter('folder', $folder);
+            $qb->andWhere('doc.folder = :folder');
+        }
+
         $qb->setParameter('published', true);
         $qb->andWhere('doc.published = :published');
 
@@ -183,7 +190,7 @@ class DocumentRepository extends ServiceEntityRepository
     }
 
     public function countDocuments(
-        $obj = null, ?bool $special = null, ?bool $pinned = null, ?Folder $folder = null
+        $folder = null, $obj = null, ?bool $special = null, ?bool $pinned = null
     ): int
     {
         $qb = $this->createQueryBuilder('doc');
@@ -229,6 +236,13 @@ class DocumentRepository extends ServiceEntityRepository
         }
 
         $qb->orWhere('categories is null');
+
+        if ($folder instanceof Folder) {
+            $qb->leftJoin('doc.folder','folder');
+            $qb->addSelect('folder');
+            $qb->setParameter('folder', $folder);
+            $qb->andWhere('doc.folder = :folder');
+        }
 
         $qb->setParameter('published', true);
         $qb->andWhere('doc.published = :published');
