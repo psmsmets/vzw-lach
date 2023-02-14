@@ -53,6 +53,11 @@ security:
                 # checkbox in the login form (see below), uncomment the
                 # following line to always enable it.
                 always_remember_me: true
+                # logout on user change
+                signature_properties: ['password', 'passwordUpdatedAt']
+                # persistent remember me tokens: storing remember me cookies in the database
+                token_provider:
+                    doctrine: true
 
     role_hierarchy:
         ROLE_MANAGER:     ROLE_USER
