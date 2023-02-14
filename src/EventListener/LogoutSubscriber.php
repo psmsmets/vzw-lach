@@ -39,7 +39,7 @@ class LogoutSubscriber implements EventSubscriberInterface
 
         // configure a custom logout response to the homepage
         $response = new RedirectResponse(
-            $this->urlGenerator->generate('home'),
+            $this->urlGenerator->generate('security_signin_link'),
             RedirectResponse::HTTP_SEE_OTHER
         );
         $event->setResponse($response);
