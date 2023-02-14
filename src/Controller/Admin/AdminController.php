@@ -6,6 +6,7 @@ use App\Entity\Advert;
 use App\Entity\Associate;
 use App\Entity\Category;
 use App\Entity\Document;
+use App\Entity\Folder;
 use App\Entity\Event;
 use App\Entity\FAQ;
 use App\Entity\Page;
@@ -125,32 +126,33 @@ class AdminController extends AbstractDashboardController
             // MenuItem::linkToDashboard('Dashboard', 'bi bi-house-door-fill'),
             MenuItem::linkToRoute('Frontpagina', 'bi bi-house-check-fill', 'home'),
 
-            MenuItem::section('Users'),
-            MenuItem::linkToCrud('Users', 'bi bi-person-fill-gear', User::class),
+            MenuItem::section('Users')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Users', 'bi bi-person-fill-gear', User::class)->setPermission('ROLE_ADMIN'),
 
-            MenuItem::section('Associates'),
-            MenuItem::linkToCrud('Associates', 'bi bi-person-vcard', Associate::class),
+            MenuItem::section('Associates')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Associates', 'bi bi-person-vcard', Associate::class)->setPermission('ROLE_ADMIN'),
 
-            MenuItem::section('Categories'),
-            MenuItem::linkToCrud('Categories', 'bi bi-people-fill', Category::class),
+            MenuItem::section('Categories')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Categories', 'bi bi-people-fill', Category::class)->setPermission('ROLE_ADMIN'),
 
-            MenuItem::section('Posts'),
-            MenuItem::linkToCrud('Posts', 'bi bi-card-text', Post::class),
+            MenuItem::section('Posts')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Posts', 'bi bi-card-text', Post::class)->setPermission('ROLE_ADMIN'),
 
-            MenuItem::section('Events'),
-            MenuItem::linkToCrud('Events', 'bi bi-calendar-week', Event::class),
+            MenuItem::section('Events')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Events', 'bi bi-calendar-week', Event::class)->setPermission('ROLE_ADMIN'),
 
-            MenuItem::section('Documents'),
-            MenuItem::linkToCrud('Documents', 'bi bi-file-earmark-arrow-down', Document::class),
+            MenuItem::section('Documents')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Documents', 'bi bi-file-earmark-arrow-down', Document::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Folders', 'bi bi-folder2-open', Folder::class)->setPermission('ROLE_ADMIN'),
 
             MenuItem::section('Adverts'),
             MenuItem::linkToCrud('Adverts', 'bi bi-search', Advert::class),
 
-            MenuItem::section('FAQ'),
-            MenuItem::linkToCrud('FAQ', 'bi bi-question-square', FAQ::class),
+            MenuItem::section('FAQ')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('FAQ', 'bi bi-question-square', FAQ::class)->setPermission('ROLE_ADMIN'),
 
-            MenuItem::section('Pages'),
-            MenuItem::linkToCrud('Pages', 'bi bi-file-earmark-text', Page::class),
+            MenuItem::section('Pages')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Pages', 'bi bi-file-earmark-text', Page::class)->setPermission('ROLE_ADMIN'),
         ];
     }
 

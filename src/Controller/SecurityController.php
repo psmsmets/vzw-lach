@@ -96,7 +96,7 @@ class SecurityController extends AbstractController
                 // create a notification based on the login link details
                 $notification = new CustomLoginLinkNotification(
                     $loginLinkDetails,
-                    'Aanmelden bij leden-vzw-lach (HGCVHKV)' // email subject
+                    'Inloggen bij leden-vzw-lach (HGCVHKV)' // email subject
                 );
                 // create a recipient for this user
                 $recipient = new Recipient($user->getEmail());

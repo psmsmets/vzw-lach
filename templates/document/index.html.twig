@@ -4,26 +4,39 @@
 
   <h1 class="text-secondary">Documenten</h1>
 
-  {% if (pinned|length == 0) and (documents|length  == 0) %}
+  {% set empty = true %}
 
-    <div class="p-3 mb-4 bg-white shadow-sm">
-      <p class="my-2"><i class="bi bi-exclamation-circle-fill"></i> Geen documenten gevonden.</p>
-    </div>
-
-  {% else %}
-
+  {% if pinned is defined %}
     {% for document in pinned %}
       {% include 'document/template.html.twig' with {'item': document, 'pinned': true, 'extend': false} %}
+      {% set empty = false %}
     {% endfor %}
+  {% endif %}
+
+  {% if folders is defined %}
+    {% for folder in folders %}
+      {% include 'document/folder.html.twig' with {'item': folder} %}
+      {% set empty = false %}
+    {% endfor %}
+  {% endif %}
  
+  {% if documents is defined %}
     {% for document in documents %}
       {% include 'document/template.html.twig' with {'item': document, 'pinned': false, 'extend': false} %}
+      {% set empty = false %}
     {% endfor %}
+  {% endif %}
 
+  {% if pages is defined %}
     {% if pages > 1 %}
       {% include 'modules/pagination.html.twig' %}
     {% endif %}
+  {% endif %}
 
+  {% if empty %}
+    <div class="p-3 mb-4 bg-white shadow-sm">
+      <p class="my-2"><i class="bi bi-exclamation-circle-fill"></i> Geen documenten gevonden.</p>
+    </div>
   {% endif %}
 
 {% endblock %}

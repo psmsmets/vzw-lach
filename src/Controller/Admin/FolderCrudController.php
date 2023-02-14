@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Document;
+use App\Entity\Folder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -10,13 +10,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, IdField, BooleanField, DateTimeField, SlugField, TextField, TextareaField, TextEditorField};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Vich\UploaderBundle\Form\Type\VichFileType;
 
-class DocumentCrudController extends AbstractCrudController
+class FolderCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Document::class;
+        return Folder::class;
     }
 
     public function configureActions(Actions $actions): Actions
@@ -50,23 +49,14 @@ class DocumentCrudController extends AbstractCrudController
         yield IdField::new('id')->onlyOnDetail();
 
         yield TextField::new('name');
-
-        yield TextField::new('documentFile')
-            ->setFormType(VichFileType::class)
-            ->setFormTypeOptions(
-               [
-                 'download_label' => false,
-                 'download_uri' => false,
-               ])
-            ->onlyOnForms()
-            ;
+        yield SlugField::new('slug')->setTargetFieldName('name')->hideOnIndex();
 
         yield TextareaField::new('description')
             ->setNumOfRows(6)
             ->onlyOnForms()
             ;
 
-        yield AssociationField::new('folder')
+        yield AssociationField::new('documents')
             ->autocomplete()
             ->setRequired(false)
             ;
@@ -74,9 +64,7 @@ class DocumentCrudController extends AbstractCrudController
         yield FormField::addTab('Who');
         yield FormField::addPanel('Who');
 
-        yield AssociationField::new('categories')
-            ->autocomplete()
-            ;
+        yield AssociationField::new('categories')->autocomplete(); //->hideOnIndex();
 
         yield FormField::addTab('Options');
         yield FormField::addPanel('Options');
@@ -87,9 +75,5 @@ class DocumentCrudController extends AbstractCrudController
 
         yield DateTimeField::new('createdAt')->onlyOnDetail();
         yield DateTimeField::new('updatedAt')->hideOnForm();
-
-        yield BooleanField::new('special')->renderAsSwitch(true);
-        yield BooleanField::new('pinned')->renderAsSwitch(true);
-
     }
 }

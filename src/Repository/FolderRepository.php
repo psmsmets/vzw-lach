@@ -2,31 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Associate;
-use App\Entity\Category;
-use App\Entity\Document;
 use App\Entity\Folder;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Uid\Uuid;
 
 /**
- * @extends ServiceEntityRepository<Document>
+ * @extends ServiceEntityRepository<Folder>
  *
- * @method Document|null find($id, $lockMode = null, $lockVersion = null)
- * @method Document|null findOneBy(array $criteria, array $orderBy = null)
- * @method Document[]    findAll()
- * @method Document[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Folder|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Folder|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Folder[]    findAll()
+ * @method Folder[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DocumentRepository extends ServiceEntityRepository
+class FolderRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Document::class);
+        parent::__construct($registry, Folder::class);
     }
 
-    public function save(Document $entity, bool $flush = false): void
+    public function save(Folder $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -35,7 +30,7 @@ class DocumentRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Document $entity, bool $flush = false): void
+    public function remove(Folder $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -45,13 +40,16 @@ class DocumentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Document[] Returns a Document objects
+     * @return Folder[] Returns an array of Folder objects
      */
-    public function findDocument(Uuid $uuid, $obj = null): ?Document
+    public function findFolder(string $slug, $obj = null): ?Folder
     {
-        $qb = $this->createQueryBuilder('doc');
+        $qb = $this->createQueryBuilder('folder');
 
-        $qb->leftJoin('doc.categories','categories');
+        $qb->leftJoin('folder.documents','documents');
+        $qb->addSelect('documents');
+
+        $qb->leftJoin('folder.categories','categories');
         $qb->addSelect('categories');
 
         if ($obj instanceof Associate) {
@@ -61,7 +59,7 @@ class DocumentRepository extends ServiceEntityRepository
             foreach ($obj->getCategories() as $category) {
                 foreach ($category->getChildren() as $child) {
                     $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'folder.categories'));
                     $count++;
                 }
             }
@@ -73,7 +71,7 @@ class DocumentRepository extends ServiceEntityRepository
             $count = 0;
             foreach ($obj->getChildren() as $child) {
                 $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
+                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'folder.categories'));
                 $count++;
             }
         }
@@ -93,31 +91,26 @@ class DocumentRepository extends ServiceEntityRepository
 
         $qb->orWhere('categories is null');
 
+        $qb->setParameter('slug', $slug);
+        $qb->andWhere('folder.slug = :slug');
+
         $qb->setParameter('published', true);
-        $qb->andWhere('doc.published = :published');
+        $qb->andWhere('folder.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('doc.publishedAt <= :now');
-
-        $qb->setParameter('uuid', $uuid, 'uuid');
-        $qb->andWhere('doc.id = :uuid');
+        $qb->andWhere('folder.publishedAt <= :now');
 
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * @return Document[] Returns an array of Document objects
-     */
-    public function findDocuments(
-        $obj = null, ?bool $special = null, ?bool $pinned = null, ?Folder $folder = null, ?int $limit = null, int $page = 1
-    ): array
+    public function findFolders($obj = null, ?int $limit = null, int $page = 1): array
     {
-        $limit = is_null($limit) ? Document::NUMBER_OF_ITEMS : $limit;
-        $offset = ( $page < 1 ? 0 : $page - 1 ) * Document::NUMBER_OF_ITEMS;
+        $limit = is_null($limit) ? Folder::NUMBER_OF_ITEMS : $limit;
+        $offset = ( $page < 1 ? 0 : $page - 1 ) * Folder::NUMBER_OF_ITEMS;
 
-        $qb = $this->createQueryBuilder('doc');
+        $qb = $this->createQueryBuilder('folder');
 
-        $qb->leftJoin('doc.categories','categories');
+        $qb->leftJoin('folder.categories','categories');
         $qb->addSelect('categories');
 
         if ($obj instanceof Associate) {
@@ -127,7 +120,7 @@ class DocumentRepository extends ServiceEntityRepository
             foreach ($obj->getCategories() as $category) {
                 foreach ($category->getChildren() as $child) {
                     $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'folder.categories'));
                     $count++;
                 }
             }
@@ -139,7 +132,7 @@ class DocumentRepository extends ServiceEntityRepository
             $count = 0;
             foreach ($obj->getChildren() as $child) {
                 $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
+                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'folder.categories'));
                 $count++;
             }
         }
@@ -160,35 +153,23 @@ class DocumentRepository extends ServiceEntityRepository
         $qb->orWhere('categories is null');
 
         $qb->setParameter('published', true);
-        $qb->andWhere('doc.published = :published');
+        $qb->andWhere('folder.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('doc.publishedAt <= :now');
+        $qb->andWhere('folder.publishedAt <= :now');
 
-        if (!is_null($special)) {
-            $qb->setParameter('special', $special);
-            $qb->andWhere('doc.special = :special');
-        }
-
-        if (!is_null($pinned)) {
-            $qb->setParameter('pinned', $pinned);
-            $qb->andWhere('doc.pinned = :pinned');
-        }
-
-        $qb->orderBy('doc.publishedAt', 'DESC');
+        $qb->orderBy('folder.name', 'ASC');
         $qb->setFirstResult($offset);
         $qb->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
     }
 
-    public function countDocuments(
-        $obj = null, ?bool $special = null, ?bool $pinned = null, ?Folder $folder = null
-    ): int
+    public function countFolders($obj = null): int
     {
-        $qb = $this->createQueryBuilder('doc');
+        $qb = $this->createQueryBuilder('folder');
 
-        $qb->leftJoin('doc.categories','categories');
+        $qb->leftJoin('folder.categories','categories');
         $qb->addSelect('categories');
 
         if ($obj instanceof Associate) {
@@ -198,7 +179,7 @@ class DocumentRepository extends ServiceEntityRepository
             foreach ($obj->getCategories() as $category) {
                 foreach ($category->getChildren() as $child) {
                     $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'folder.categories'));
                     $count++;
                 }
             }
@@ -210,7 +191,7 @@ class DocumentRepository extends ServiceEntityRepository
             $count = 0;
             foreach ($obj->getChildren() as $child) {
                 $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
+                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'folder.categories'));
                 $count++;
             }
         }
@@ -231,20 +212,10 @@ class DocumentRepository extends ServiceEntityRepository
         $qb->orWhere('categories is null');
 
         $qb->setParameter('published', true);
-        $qb->andWhere('doc.published = :published');
+        $qb->andWhere('folder.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('doc.publishedAt <= :now');
-
-        if (!is_null($special)) {
-            $qb->setParameter('special', $special);
-            $qb->andWhere('doc.special = :special');
-        }
-
-        if (!is_null($pinned)) {
-            $qb->setParameter('pinned', $pinned);
-            $qb->andWhere('doc.pinned = :pinned');
-        }
+        $qb->andWhere('folder.publishedAt <= :now');
 
         return count($qb->getQuery()->getResult());
     }

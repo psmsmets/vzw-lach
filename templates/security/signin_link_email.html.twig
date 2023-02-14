@@ -1,7 +1,7 @@
 {% apply inline_css(source('@assets/email.css')) %}
-    <h1>Aanmelden bij HGCVHKV</h1>
-    <p class="lead">Klik op de onderstaande link om te bevestigen dat u zich wilt aanmelden. Deze link verloopt over 10 minuten (de link is geldig tot {{date('+10minutes')|format_datetime('long', 'medium')}}).</p>
-    <p class="lead text-center"><a href="{{ action_url }}" class="btn lead">aanmelden</a></p>
+    <h1>Inloggen bij HGCVHKV</h1>
+    <p class="lead">Klik op de onderstaande link om te bevestigen dat u wilt inloggen op <a href="https://leden-vzw-lach.be">leden-vzw-lach.be</a>. Deze link verloopt over 10 minuten (de link is geldig tot {{date('+10minutes')|format_datetime('long', 'medium')}}).</p>
+    <p class="lead text-center"><a href="{{ action_url }}" class="btn lead">inloggen</a></p>
     <p>&nbsp;</p>
     <small>
       <p>---</p>

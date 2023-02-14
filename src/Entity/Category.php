@@ -47,11 +47,17 @@ class Category
     #[ORM\ManyToMany(targetEntity: Associate::class, mappedBy: 'categories', cascade: ['persist'])]
     private Collection $associates;
 
+    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'categories')]
+    private Collection $events;
+
     #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'categories')]
     private Collection $posts;
 
     #[ORM\ManyToMany(targetEntity: Document::class, mappedBy: 'categories')]
     private Collection $documents;
+
+    #[ORM\ManyToMany(targetEntity: Folder::class, mappedBy: 'categories')]
+    private Collection $folders;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'children')]
     #[ORM\JoinColumn(name: 'parent', referencedColumnName: 'id', nullable: true)]
@@ -243,6 +249,33 @@ class Category
     }
 
     /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->posts->add($event);
+            $event->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            $post->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection<int, Post>
      */
     public function getPosts(): Collection
@@ -291,6 +324,33 @@ class Category
     {
         if ($this->files->removeElement($document)) {
             $document->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Folder>
+     */
+    public function getFolders(): Collection
+    {
+        return $this->folders;
+    }
+
+    public function addFolder(Folder $folder): self
+    {
+        if (!$this->folders->contains($folder)) {
+            $this->folders->add($folder);
+            $folder->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFolder(Folder $folder): self
+    {
+        if ($this->folders->removeElement($folder)) {
+            $folder->removeCategory($this);
         }
 
         return $this;
