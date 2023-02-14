@@ -1,6 +1,6 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 
-{% set events = manager.getUpcomingEvents(viewpoint) %}
+{% set events = manager.getUpcomingEvents(viewpoint, 5) %}
 
 {% if path('profile_events') not in currentPath %}
   {% if path('profile_index') != currentPath %}<div class="d-none d-md-block">{% endif %}

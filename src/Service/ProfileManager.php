@@ -83,17 +83,17 @@ class ProfileManager
         return $this->categoryRepository->findByAssociate($associate);
     }
 
-    public function associateEvents(Associate $associate, ?int $limit = null): array
+    public function associateEvents(Associate $associate, int $limit = null): array
     {
         return $this->eventRepository->findEvents($associate, null, null, $limit);
     }
 
-    public function associatePosts(Associate $associate, ?int $limit = null): array
+    public function associatePosts(Associate $associate, int $limit = null): array
     {
         return $this->postRepository->findPosts($associate, null, null, $limit);
     }
 
-    public function categoryPosts(Category $category, ?int $limit = null): array
+    public function categoryPosts(Category $category, int $limit = null): array
     {
         return $this->postRepository->findPosts($category, null, null, $limit);
     }
@@ -103,12 +103,12 @@ class ProfileManager
         return $this->categoryRepository->findByUser($user);
     }
 
-    public function userEvents(User $user, ?int $limit = null): array
+    public function userEvents(User $user, int $limit = null): array
     {
         return $this->eventRepository->findEvents($user, null, null, $limit);
     }
 
-    public function userPosts(User $user, ?int $limit = null): array
+    public function userPosts(User $user, int $limit = null): array
     {
         return $this->postRepository->findPosts($user, null, null, $limit);
     }
@@ -118,7 +118,7 @@ class ProfileManager
         return $this->associateRepository->find($uuid);
     }
 
-    public function getUpcomingEvents($obj, ?int $limit = null): array
+    public function getUpcomingEvents($obj, int $limit = 7): array
     {
         return $this->eventRepository->findEvents($obj, null, null, $limit);
     }
@@ -211,7 +211,7 @@ class ProfileManager
         return count($errors) == 0 ? $this->documentRepository->findDocument(Uuid::fromString($uuid), $obj) : null;
     }
 
-    public function getDocuments($obj, ?Folder $folder = null, int $page = 1): array
+    public function getDocuments($obj, Folder $folder = null, int $page = 1): array
     {
         return $this->documentRepository->findDocuments($obj, null, false, $folder, Document::NUMBER_OF_ITEMS, $page);
     }
