@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Associate;
+use App\Entity\Category;
 use App\Entity\Folder;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

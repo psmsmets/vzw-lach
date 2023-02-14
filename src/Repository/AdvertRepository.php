@@ -3,6 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Advert;
+use App\Entity\Associate;
+use App\Entity\Category;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
