@@ -96,9 +96,9 @@ class PostRepository extends ServiceEntityRepository
 
         $qb->orderBy('post.publishedAt', 'DESC');
         $qb->setFirstResult($offset);
-        $qb->setMaxResults($limit);
+        //$qb->setMaxResults($limit);
 
-        return $qb->getQuery()->getResult();
+        return array_slice($qb->getQuery()->getResult(), 0, $limit);
     }
 
     public function countPosts($obj = null, ?bool $special = null, ?bool $pinned = null): int

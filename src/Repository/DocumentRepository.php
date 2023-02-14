@@ -69,7 +69,7 @@ class DocumentRepository extends ServiceEntityRepository
      * @return Document[] Returns an array of Document objects
      */
     public function findDocuments(
-        $folder = null, $obj = null, ?bool $special = null, ?bool $pinned = null, $limit = null, $page = 1
+        $folder = null, $obj = null, $special = null, $pinned = null, $limit = null, $page = 1
     ): array
     {
         $limit = is_null($limit) ? Document::NUMBER_OF_ITEMS : $limit;
@@ -106,13 +106,13 @@ class DocumentRepository extends ServiceEntityRepository
 
         $qb->orderBy('doc.name', 'ASC');
         $qb->setFirstResult($offset);
-        $qb->setMaxResults($limit);
+        //$qb->setMaxResults($limit);
 
-        return $qb->getQuery()->getResult();
+        return array_slice($qb->getQuery()->getResult(), 0, $limit);
     }
 
     public function countDocuments(
-        $folder = null, $obj = null, ?bool $special = null, ?bool $pinned = null
+        $folder = null, $obj = null, $special = null, $pinned = null
     ): int
     {
         $qb = $this->createQueryBuilder('doc');
