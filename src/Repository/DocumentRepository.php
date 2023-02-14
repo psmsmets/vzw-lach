@@ -2,11 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\Associate;
-use App\Entity\Category;
 use App\Entity\Document;
 use App\Entity\Folder;
-use App\Entity\User;
+use App\Service\ProfileViewpoint;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
@@ -53,45 +51,7 @@ class DocumentRepository extends ServiceEntityRepository
 
         $qb->leftJoin('doc.categories','categories');
         $qb->addSelect('categories');
-
-        if ($obj instanceof Associate) {
-            $qb->setParameter('associate', $obj->getId(), 'uuid');
-            $qb->where($qb->expr()->isMemberOf(':associate', 'categories.associates'));
-            $count = 0;
-            foreach ($obj->getCategories() as $category) {
-                foreach ($category->getChildren() as $child) {
-                    $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
-                    $count++;
-                }
-            }
-        }
-
-        if ($obj instanceof Category) {
-            $qb->setParameter(':category', $obj);
-            $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
-            $count = 0;
-            foreach ($obj->getChildren() as $child) {
-                $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
-                $count++;
-            }
-        }
-
-        if ($obj instanceof User) {
-            if ($obj->isViewmaster()) {
-                $qb->orWhere('categories is not null');
-            } else {
-                $count = 0;
-                foreach ($obj->getEnabledAssociates() as $associate) {
-                    $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
-                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
-                    $count++;
-                }
-            }
-        }
-
-        $qb->orWhere('categories is null');
+        ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
         $qb->andWhere('doc.published = :published');
@@ -119,45 +79,7 @@ class DocumentRepository extends ServiceEntityRepository
 
         $qb->leftJoin('doc.categories','categories');
         $qb->addSelect('categories');
-
-        if ($obj instanceof Associate) {
-            $qb->setParameter('associate', $obj->getId(), 'uuid');
-            $qb->where($qb->expr()->isMemberOf(':associate', 'categories.associates'));
-            $count = 0;
-            foreach ($obj->getCategories() as $category) {
-                foreach ($category->getChildren() as $child) {
-                    $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
-                    $count++;
-                }
-            }
-        }
-
-        if ($obj instanceof Category) {
-            $qb->setParameter(':category', $obj);
-            $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
-            $count = 0;
-            foreach ($obj->getChildren() as $child) {
-                $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
-                $count++;
-            }
-        }
-
-        if ($obj instanceof User) {
-            if ($obj->isViewmaster()) {
-                $qb->orWhere('categories is not null');
-            } else {
-                $count = 0;
-                foreach ($obj->getEnabledAssociates() as $associate) {
-                    $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
-                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
-                    $count++;
-                }
-            }
-        }
-
-        $qb->orWhere('categories is null');
+        ProfileViewpoint::categoriesFilter($qb, $obj);
 
         if ($folder instanceof Folder) {
             $qb->leftJoin('doc.folder','folder');
@@ -197,45 +119,7 @@ class DocumentRepository extends ServiceEntityRepository
 
         $qb->leftJoin('doc.categories','categories');
         $qb->addSelect('categories');
-
-        if ($obj instanceof Associate) {
-            $qb->setParameter('associate', $obj->getId(), 'uuid');
-            $qb->where($qb->expr()->isMemberOf(':associate', 'categories.associates'));
-            $count = 0;
-            foreach ($obj->getCategories() as $category) {
-                foreach ($category->getChildren() as $child) {
-                    $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
-                    $count++;
-                }
-            }
-        }
-
-        if ($obj instanceof Category) {
-            $qb->setParameter(':category', $obj);
-            $qb->where($qb->expr()->isMemberOf(':category', 'categories'));
-            $count = 0;
-            foreach ($obj->getChildren() as $child) {
-                $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
-                $count++;
-            }
-        }
-
-        if ($obj instanceof User) {
-            if ($obj->isViewmaster()) {
-                $qb->orWhere('categories is not null');
-            } else {
-                $count = 0;
-                foreach ($obj->getEnabledAssociates() as $associate) {
-                    $qb->setParameter(sprintf('associate%d', $count), $associate->getId(), 'uuid');
-                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':associate%d', $count), 'categories.associates'));
-                    $count++;
-                }
-            }
-        }
-
-        $qb->orWhere('categories is null');
+        ProfileViewpoint::categoriesFilter($qb, $obj);
 
         if ($folder instanceof Folder) {
             $qb->leftJoin('doc.folder','folder');
