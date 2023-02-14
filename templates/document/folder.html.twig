@@ -1,8 +1,14 @@
+{% if opened is not defined %}{% set opened = false %}{% endif %}
+
+{% if opened %}
+<div class="p-3 mb-4 shadow-sm bg-white">
+{% else %}
 <div class="p-3 mb-4 shadow-sm document-link"
      onclick="window.open('{{ path('profile_folder', {'slug': folder.slug}) }}', '_self');">
+{% endif %}
 
   <h4 class="text-primary d-flex justify-content-between my-2">
-    <span><i class="bi bi-folder-fill"></i> {{ folder.name|capitalize }}</span>
+    <span><i class="bi bi-folder2{% if opened %}-open{% endif %}"></i> {{ folder.name|capitalize }} {% if opened %}/{% endif %}</span>
   </h4>
 
   {% if folder.description %}<p>{{folder.description}}<p>{% endif %}
