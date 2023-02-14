@@ -175,7 +175,7 @@ class DocumentRepository extends ServiceEntityRepository
             $qb->andWhere('doc.pinned = :pinned');
         }
 
-        $qb->orderBy('doc.publishedAt', 'DESC');
+        $qb->orderBy('doc.name', 'ASC');
         $qb->setFirstResult($offset);
         $qb->setMaxResults($limit);
 
