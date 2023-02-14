@@ -97,9 +97,9 @@ class EventRepository extends ServiceEntityRepository
         }
 
         $qb->orderBy('event.startTime', 'ASC');
-        $qb->setMaxResults($limit);
+        //$qb->setMaxResults($limit);
 
-        return $qb->getQuery()->getResult();
+        return array_slice($qb->getQuery()->getResult(), 0, $limit);
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
