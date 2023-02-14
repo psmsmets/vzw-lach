@@ -48,7 +48,7 @@ security:
 
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 1728000 # 20 days in seconds
+                lifetime: 2592000 # 30 days in seconds
                 # by default, the feature is enabled by checking a
                 # checkbox in the login form (see below), uncomment the
                 # following line to always enable it.
