@@ -6,17 +6,19 @@ use App\Entity\Advert;
 use App\Entity\Associate;
 use App\Entity\AssociateAddress;
 use App\Entity\Category;
+use App\Entity\Document;
 use App\Entity\Event;
 use App\Entity\FAQ;
-use App\Entity\Document;
+use App\Entity\Folder;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Repository\AdvertRepository;
 use App\Repository\AssociateRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\DocumentRepository;
 use App\Repository\EventRepository;
 use App\Repository\FAQRepository;
-use App\Repository\DocumentRepository;
+use App\Repository\FolderRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,9 +36,10 @@ class ProfileManager
     public $advertRepository;
     public $associateRepository;
     public $categoryRepository;
+    public $documentRepository;
     public $eventRepository;
     public $faqRepository;
-    public $documentRepository;
+    public $folderRepository;
     public $postRepository;
     public $userRepository;
     public $requestStack;
@@ -48,9 +51,10 @@ class ProfileManager
         AdvertRepository $advertRepository,
         AssociateRepository $associateRepository,
         CategoryRepository $categoryRepository,
+        DocumentRepository $documentRepository,
         EventRepository $eventRepository,
         FAQRepository $faqRepository,
-        DocumentRepository $documentRepository,
+        FolderRepository $folderRepository,
         PostRepository $postRepository,
         UserRepository $userRepository,
         RequestStack $requestStack,
@@ -62,9 +66,10 @@ class ProfileManager
         $this->advertRepository = $advertRepository;
         $this->associateRepository = $associateRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->documentRepository = $documentRepository;
         $this->eventRepository = $eventRepository;
         $this->faqRepository = $faqRepository;
-        $this->documentRepository = $documentRepository;
+        $this->folderRepository = $folderRepository;
         $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
         $this->requestStack = $requestStack;
@@ -206,24 +211,39 @@ class ProfileManager
         return count($errors) == 0 ? $this->documentRepository->findDocument(Uuid::fromString($uuid), $obj) : null;
     }
 
-    public function getDocuments($obj, int $page = 1): array
+    public function getDocuments($obj, ?Folder $folder = null, int $page = 1): array
     {
-        return $this->documentRepository->findDocuments($obj, null, false, Document::NUMBER_OF_ITEMS, $page);
+        return $this->documentRepository->findDocuments($obj, null, false, $folder, Document::NUMBER_OF_ITEMS, $page);
     }
 
-    public function getDocumentPages($obj): int 
+    public function getDocumentPages($obj, ?Folder $folder = null): int 
     {
-        return (int) ceil($this->documentRepository->countDocuments($obj, null, false) / Document::NUMBER_OF_ITEMS);
+        return (int) ceil($this->documentRepository->countDocuments($obj, null, false, $folder) / Document::NUMBER_OF_ITEMS);
     }
 
     public function getSpecialDocuments($obj): array
     {
-        return $this->documentRepository->findDocuments($obj, true, null, Document::NUMBER_OF_ITEMS_SPECIAL);
+        return $this->documentRepository->findDocuments($obj, true, null, null, Document::NUMBER_OF_ITEMS_SPECIAL);
     }
 
     public function getPinnedDocuments($obj): array
     {
-        return $this->documentRepository->findDocuments($obj, null, true, Document::NUMBER_OF_ITEMS_PINNED);
+        return $this->documentRepository->findDocuments($obj, null, true, null, Document::NUMBER_OF_ITEMS_PINNED);
+    }
+
+    public function getFolderPages($obj): int 
+    {
+        return (int) ceil($this->folderRepository->countFolders($obj, null, false) / Folder::NUMBER_OF_ITEMS);
+    }
+
+    public function getFolders($obj, int $page = 1): array
+    {
+        return $this->folderRepository->findFolders($obj, Folder::NUMBER_OF_ITEMS, $page);
+    }
+
+    public function getFolder($obj, string $slug): ?Folder 
+    {
+        return $this->folderRepository->findFolder($slug, $obj);
     }
 
     public function getRequestedPage(Request $request, int $pages): int

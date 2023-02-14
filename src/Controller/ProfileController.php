@@ -165,12 +165,33 @@ class ProfileController extends AbstractController
     {
         $viewpoint = $this->manager->getViewpoint();
 
-        $pages = $this->manager->getDocumentPages($viewpoint);
+        $pages = $this->manager->getFolderPages($viewpoint);
         $page = $this->manager->getRequestedPage($request, $pages); 
 
         return $this->render('document/index.html.twig', [
             'pinned' => $this->manager->getPinnedDocuments($viewpoint),
-            'documents' => $this->manager->getDocuments($viewpoint, $page),
+            'folders' => $this->manager->getFolders($viewpoint),
+            'documents' => [],
+            'page' => $page,
+            'pages' => $pages,
+        ]);
+    }
+
+    #[Route('/documenten/{slug}', name: '_folder', methods: ['GET'])]
+    public function folder(string $slug, Request $request): Response
+    {
+        $viewpoint = $this->manager->getViewpoint();
+
+        if (!($folder = $this->manager->getFolder($viewpoint, $slug))) {
+            return $this->redirectToRoute('profile_documents');
+        }
+
+        $pages = $this->manager->getDocumentPages($viewpoint, $folder);
+        $page = $this->manager->getRequestedPage($request, $pages);
+
+        return $this->render('document/index.html.twig', [
+            'folder' => $folder,
+            'documents' => $folder->getDocuments(),
             'page' => $page,
             'pages' => $pages,
         ]);
@@ -182,7 +203,7 @@ class ProfileController extends AbstractController
         $viewpoint = $this->manager->getViewpoint();
 
         if (!($document = $this->manager->getDocument($viewpoint, $id))) {
-            return $this->redirectToRoute('profile_index');
+            return $this->redirectToRoute('profile_documents');
         }
 
         return $this->render('document/item.html.twig', [
@@ -202,7 +223,7 @@ class ProfileController extends AbstractController
                 $this->getParameter('app.path.documents').
                 '/'.$document->getDocumentName();
 
-        return $this->file($file, $document->getTitle().'.pdf');
+        return $this->file($file, $document->getName().'.pdf');
     }
 
     #[Route('/zoekertjes', name: '_adverts', methods: ['GET'])]

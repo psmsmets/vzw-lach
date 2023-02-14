@@ -9,7 +9,7 @@
      onclick="window.open('{{ path('profile_download', {'id': document.id}) }}', '_self');">
 
   <h4 class="text-primary d-flex justify-content-between mb-3">
-    <span><i class="bi bi-cloud-download"></i> {{ document.title|capitalize }}</span>
+    <span><i class="bi bi-cloud-download"></i> {{ document.name|capitalize }}</span>
     {% if pinned %}<i class="bi bi-pin-fill"></i>{% endif %}
     {% if document.publishedAt > date()%}
       <small>
@@ -24,7 +24,7 @@
     {% endif %}
   </h4>
 
-  <p>{{document.description}}<p>
+  {% if document.description %}<p>{{document.description}}<p>{% endif %}
 
   {% if extend %}
     <a href="{{ path('profile_download', {'id': document.id}) }}" target="_blank" class="btn btn-outline-secondary fw-light rounded-1"><i class="bi bi-cloud-download"></i> Download</a>

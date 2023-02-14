@@ -46,10 +46,13 @@ class Document
     private ?\DateTimeImmutable $publishedAt = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\ManyToOne(inversedBy: 'documents')]
+    private ?Folder $folder = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'documents')]
     private Collection $categories;
@@ -78,7 +81,7 @@ class Document
 
     public function __toString(): string
     {
-        return $this->getTitle();
+        return $this->getName();
     }
 
     #[ORM\PreUpdate]
@@ -157,14 +160,14 @@ class Document
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): self
+    public function setName(string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -177,6 +180,18 @@ class Document
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getFolder(): ?Folder
+    {
+        return $this->folder;
+    }
+
+    public function setFolder(?Folder $folder): self
+    {
+        $this->folder = $folder;
 
         return $this;
     }
