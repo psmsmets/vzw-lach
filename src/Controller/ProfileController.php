@@ -32,19 +32,11 @@ class ProfileController extends AbstractController
         $this->manager = $profileManager;
         $this->requestStack = $requestStack;
         $this->security = $security;
-
-        // Accessing the session in the constructor is *NOT* recommended, since
-        // it might not be accessible yet or lead to unwanted side-effects
-        // $this->session = $requestStack->getSession();
     }
 
     #[Route('/', name: '_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        // usually you'll want to make sure the user is authenticated first,
-        // see "Authorization" below
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         $viewpoint = $this->manager->getViewpoint();
 
         $this->manager->verifyAssociates();
@@ -58,10 +50,6 @@ class ProfileController extends AbstractController
     #[Route('/gebruiker', name: '_reset', methods: ['GET'])]
     public function reset(Request $request): Response
     {
-        // usually you'll want to make sure the user is authenticated first,
-        // see "Authorization" below
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         $this->manager->setViewpoint(false);
 
         return $this->redirect($request->headers->get('referer'));
@@ -70,10 +58,6 @@ class ProfileController extends AbstractController
     #[Route('/deelnemer/{id}', name: '_select', methods: ['GET'])]
     public function select(Associate $associate, Request $request): Response
     {
-        // usually you'll want to make sure the user is authenticated first,
-        // see "Authorization" below
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
         $this->manager->setViewpoint($associate);
 
