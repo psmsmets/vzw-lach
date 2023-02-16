@@ -37,6 +37,10 @@ class ProfileController extends AbstractController
     #[Route('/', name: '_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
+        // usually you'll want to make sure the user is authenticated first,
+        // see "Authorization" below
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
         $viewpoint = $this->manager->getViewpoint();
 
         $this->manager->verifyAssociates();
