@@ -78,9 +78,6 @@ class ApiController extends AbstractController
         foreach ($events as $event){
 
             $vevent = $vcalendar->newVevent()
-                //->setTransp(Vcalendar::OPAQUE)
-                //->setClass(Vcalendar::P_BLIC)
-                //->setSequence($count)
                 ->setUid($event->getId()->toRfc4122())
                 ->setDtstart(
                     new \DateTime(
@@ -98,12 +95,14 @@ class ApiController extends AbstractController
                 ->setLocation($event->getLocation())
                 ->setDescription($event->getDescription())
                 ->setComment($event->getBody())
+                ->setUrl($event->getUrl())
                 ->setOrganizer(
                     'noreply@leden-vzw-lach.be',
                     [Vcalendar::CN => 'HGCVHKV']
                 )
                 ;
 
+            // set attendees
             $categories = $event->getCategories();
 
             if (count($categories) > 0) {
@@ -121,6 +120,16 @@ class ApiController extends AbstractController
                     $this->setVcalendarAttendee($vevent, $obj);
                 }
             }
+
+            // add alarm 1 day before 
+            $alarm = $vevent->newValarm()
+                ->setAction(Vcalendar::DISPLAY)
+                // copy summary and description from event
+                ->setSummary($vevent->getSummary())
+                ->setDescription($vevent->getDescription())
+                // fire off the alarm one day before
+                ->setTrigger('-P1D')
+                ;
         }
 
         // create the calendar string
