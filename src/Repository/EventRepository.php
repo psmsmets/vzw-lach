@@ -50,6 +50,10 @@ class EventRepository extends ServiceEntityRepository
 
         $qb->leftJoin('event.categories','categories');
         $qb->addSelect('categories');
+
+        $qb->leftJoin('categories.associates','associates');
+        $qb->addSelect('associates');
+
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
@@ -78,6 +82,10 @@ class EventRepository extends ServiceEntityRepository
 
         $qb->leftJoin('event.categories','categories');
         $qb->addSelect('categories');
+
+        $qb->leftJoin('categories.associates','associates');
+        $qb->addSelect('associates');
+
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
