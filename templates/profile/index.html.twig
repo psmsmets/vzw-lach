@@ -49,6 +49,7 @@
                 <td>
                     <a href="{{ path('profile_show', {'id': associate.id}) }}">toon</a>
                     <a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a>
+                    {% if app.user.isadmin %}<a href="{{ url('home')|trim('/', 'right')|replace({'http': 'webcal', 'https': 'webcal'}) }}{{ path('api_events_associate', {'id': associate.id})}}">ical</a>{% endif %}
                 </td>
             </tr>
           {% else %}
