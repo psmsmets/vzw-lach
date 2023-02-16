@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\Category;
 use App\Entity\Event;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
@@ -52,6 +51,7 @@ class ImportEvents extends Command
                 * [3] : title
                 * [4] : category
                 * [5] : location
+                * [6] : body
 
 A new event is created only if it does not yet exist (given the starttime and endtime and the title).
 
@@ -92,6 +92,7 @@ By default no data is persisted to the database.
                 * [3] : title
                 * [4] : category
                 * [5] : location
+                * [6] : body
         */
 
         $cnt = -abs( (int) $input->getOption('skip') );
@@ -142,6 +143,7 @@ By default no data is persisted to the database.
                 $event->setTitle($data[3]);
                 $event->setSlug($this->slugger->slug($data[3]));
                 if ($data[5]) $event->setLocation($data[5]);
+                if ($data[6]) $event->setBody($data[6]);
 
                 foreach (explode(',', $data[4]) as $cat) {
 
