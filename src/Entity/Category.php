@@ -218,6 +218,13 @@ class Category
         return $this->associates;
     }
 
+    public function getEnabledAssociates(): Collection
+    {
+        return $this->associates->filter(function(Associate $associate) {
+            return $associate->isEnabled() == true;
+        });
+    }
+
     public function addAssociate(Associate $associate): self
     {
         if (!$this->associates->contains($associate)) {
