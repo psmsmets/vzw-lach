@@ -21,7 +21,7 @@ class DefaultController extends AbstractController
     public function index(): Response
     {
         //return $this->redirectToRoute('enrol_index');
-        if ($this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->security->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return $this->redirectToRoute('profile_index');
         }
         return $this->render('default/index_login.html.twig', []);
