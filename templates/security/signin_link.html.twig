@@ -21,7 +21,7 @@
          placeholder="name@example.com">
         <label for="floatingInput">E-mailadres</label>
       </div>
-      <button class="w-100 btn btn-lg btn-primary" type="submit">Verzend login link</button>
+      <button class="w-100 btn btn-lg btn-primary" type="submit" id="submit">Verzend login link</button>
 
       <p class="mt-4"><a href="{{ path('security_signin') }}" class="text-muted">Inloggen met wachtwoord (beheerders)</a></p>
 
@@ -29,4 +29,9 @@
 
   </main>
 
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('vzw-lach-form-submit') }}
 {% endblock %}
