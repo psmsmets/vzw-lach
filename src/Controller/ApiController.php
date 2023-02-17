@@ -79,8 +79,9 @@ class ApiController extends AbstractController
         // add Event to the Vcalendar
         foreach ($events as $event){
 
-            $url = sprintf("%s%s",
-                rtrim($_SERVER['SYMFONY_DEFAULT_ROUTE_URL'], '/'),
+            $url = sprintf("%s://%s%s",
+                isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http",
+                rtrim($_SERVER['HTTP_HOST'], '/'),
                 $this->generateUrl('profile_event', ['id' => $event->getId()])
             );
 
@@ -107,7 +108,7 @@ class ApiController extends AbstractController
                 ->setLocation($event->getLocation())
                 ->setDescription(
                     trim(sprintf("Url: %s\n\n%s\n\n%s",
-                        $url, strip_tags($event->getBody()), ($event->getUrl() ? "Meer informatie: ".$event->getUrl() : "")
+                        $url, $event->getBody(), ($event->getUrl() ? "Meer informatie: ".$event->getUrl() : "")
                     ))
                 )
                 //->setUrl($url)
@@ -118,21 +119,27 @@ class ApiController extends AbstractController
                 ;
 
             // set attendees
-            $categories = $event->getCategories();
+            if ($obj instanceof Associate) {
 
-            if (count($categories) > 0) {
-                foreach ($categories as $category) {
-                    foreach ($category->getEnabledAssociates() as $associate) {
-                        $this->setVcalendarAttendee($vevent, $associate);
-                    }
-                }
+                $this->setVcalendarAttendee($vevent, $obj);
+
             } else {
-                if ($obj instanceof User) {
+
+                $categories = $event->getCategories();
+
+                if (count($categories) > 0) {
+                    // evaluate all category associates
+                    foreach ($categories as $category) {
+                        foreach ($category->getEnabledAssociates() as $associate) {
+                            // let only associates that match the user attend
+                            if ($associate->getUser() === $obj) $this->setVcalendarAttendee($vevent, $associate);
+                        }
+                    }
+                } else {
+                    // all user associates attend
                     foreach ($obj->getEnabledAssociates() as $associate) {
                         $this->setVcalendarAttendee($vevent, $associate);
                     }
-                } else {
-                    $this->setVcalendarAttendee($vevent, $obj);
                 }
             }
 
