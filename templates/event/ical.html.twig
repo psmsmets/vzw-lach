@@ -1,0 +1,23 @@
+<div class="alert alert-secondary mt-5 small" role="alert">
+
+  <h5 class="mt-2 text-secondary">Ical integratie</h5>
+
+  <p>Integreer de kalender in jouw kalender app (Google Agenda, Apple Calendar, Microfsoft Outlook, ...)!</p>
+
+  {% set base = url('home')|trim('/', 'right')|replace({'http': 'webcal', 'https': 'webcal'}) %}
+
+  <h6 class="text-secondary">1 kalender voor al jouw deelnemers</h6>
+  <ul class="list-unstyled">
+    <li><a href="{{ base~path('api_events_user', {'id': app.user.id}) }}" class="text-decoration-none">{{ app.user.email }} <i class="bi bi-box-arrow-up-right"></i></a></li>
+  </ul>
+
+  <h6 class="text-secondary">1 kalender per deelnemer</h6>
+  <ul class="list-unstyled">
+  {% for associate in app.user.enabledAssociates %}
+    <li>
+      <a href="{{ base~path('api_events_associate', {'id': associate.id}) }}" class="text-decoration-none">{{ associate }} <i class="bi bi-box-arrow-up-right"></i></a>
+    </li>
+  {% endfor %}
+  </ul>
+
+</div>
