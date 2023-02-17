@@ -46,7 +46,7 @@
 
           <div class="media-body ms-3 pb-0 mb-0 lh-125 w-100">
 
-            <h5 class="pb-0 mb-1 d-flex justify-content-between">{{event.title|capitalize}}
+            <h5 class="pb-0 mb-1 d-flex justify-content-between">{{event.title}}
               <small>
                 {% if event.cancelled %}
                   <span class="badge rounded-1 text-bg-danger ml-1">Geannuleerd</span>
@@ -58,11 +58,11 @@
 
             <h6 class="mb-2">{{event.getFormattedPeriod|lower}}</h6>
 
-            <div class="small text-secondary d-flex justify-content-between mt-3 mb-0">
+            <div class="small text-secondary d-flex justify-content-between mb-1">
               <ul class="list-inline mb-0">
                 {% if event.location %}
                 <li class="list-inline-item small"><i class="bi bi-pin-map"></i>
-                  {{ event.location|capitalize }}
+                  {{ event.location }}
                 </li>
                 {% endif %}
                 <li class="list-inline-item small"><i class="bi bi-people-fill"></i>
@@ -89,6 +89,13 @@
 
   </div>
 
+{% endblock %}
+
+{% block side %}
+  {{ parent() }}
+  {% if app.user.admin %}
+  {% include 'event/ical.html.twig' %}
+  {% endif %}
 {% endblock %}
 
 {% block javascripts %}

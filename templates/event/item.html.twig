@@ -18,7 +18,7 @@
 
      <div class="media-body ms-3 pb-0 mb-0 lh-125 w-100">
 
-       <h5 class="pb-0 mb-1 d-flex justify-content-between text-primary">{{event.title|capitalize}}
+       <h5 class="pb-0 mb-1 d-flex justify-content-between text-{% if past %}secondary{% else %}primary{% endif %}">{{event.title}}
          <small>
            {% if event.cancelled %}
              <span class="badge rounded-1 text-bg-danger ml-1">Geannuleerd</span>
@@ -32,7 +32,7 @@
          <ul class="list-inline mb-0">
            {% if event.location %}
            <li class="list-inline-item small"><i class="bi bi-pin-map"></i>
-             {{ event.location|capitalize }}
+             {{ event.location }}
            </li>
            {% endif %}
            <li class="list-inline-item small"><i class="bi bi-people-fill"></i>
@@ -56,7 +56,7 @@
 
        <div class="small text-muted d-flex justify-content-between mt-2 mb-0">
          <ul class="list-inline mb-0">
-           <li class="list-inline-item small fw-lighter"><i class="bi bi-clock-history"></i> gepubliceerd
+           <li class="list-inline-item small fw-lighter"><i class="bi bi-clock"></i> gepubliceerd
              {{ event.publishedAt|format_datetime('medium', 'none') }}
            </li>
            {% if event.updatedAt %}

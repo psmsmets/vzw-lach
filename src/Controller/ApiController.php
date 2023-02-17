@@ -10,6 +10,7 @@ use Kigkonsult\Icalcreator\Vevent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
@@ -21,10 +22,11 @@ class ApiController extends AbstractController
     private $manager;
     private $security;
 
-    public function __construct(ProfileManager $profileManager, Security $security)
+    public function __construct(ProfileManager $profileManager, Security $security, RequestStack $requestStack)
     {
         $this->manager = $profileManager;
         $this->security = $security;
+        $this->requestStack = $requestStack;
     }
 
     #[Route('/ical/a/{id}.ics', name: '_events_associate', methods: ['GET'])]
@@ -77,6 +79,11 @@ class ApiController extends AbstractController
         // add Event to the Vcalendar
         foreach ($events as $event){
 
+            $url = sprintf("%s%s",
+                rtrim($_SERVER['SYMFONY_DEFAULT_ROUTE_URL'], '/'),
+                $this->generateUrl('profile_event', ['id' => $event->getId()])
+            );
+
             $vevent = $vcalendar->newVevent()
                 ->setUid($event->getId()->toRfc4122())
                 ->setDtstart(
@@ -91,11 +98,19 @@ class ApiController extends AbstractController
                         new \DateTimeZone($tz)
                     )
                 )
-                ->setSummary($event->getTitle())
+                ->setSummary(
+                    trim(sprintf("%s %s",
+                        $event->isCancelled() ? '[GEANNULEERD]' : '',
+                        $event->getTitle()
+                    ))
+                )
                 ->setLocation($event->getLocation())
-                ->setDescription($event->getDescription())
-                ->setComment($event->getBody())
-                ->setUrl($event->getUrl())
+                ->setDescription(
+                    trim(sprintf("Url: %s\n\n%s\n\n%s",
+                        $url, strip_tags($event->getBody()), ($event->getUrl() ? "Meer informatie: ".$event->getUrl() : "")
+                    ))
+                )
+                //->setUrl($url)
                 ->setOrganizer(
                     'noreply@leden-vzw-lach.be',
                     [Vcalendar::CN => 'HGCVHKV']
