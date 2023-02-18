@@ -83,7 +83,7 @@ class SecurityController extends AbstractController
             );
 
             // load the user in some way (e.g. using the form input)
-            $email = $request->request->get('email');
+            $email = strtolower($request->request->get('email'));
             $user = $userRepository->findOneBy(['email' => $email]);
 
             if ($user && $user->isEnabled()) {
@@ -99,7 +99,7 @@ class SecurityController extends AbstractController
                     'Inloggen bij leden-vzw-lach (HGCVHKV)' // email subject
                 );
                 // create a recipient for this user
-                $recipient = new Recipient($user->getEmail());
+                $recipient = new Recipient($email);
 
                 // send the notification to the user
                 $notifier->send($notification, $recipient);
