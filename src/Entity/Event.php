@@ -73,7 +73,7 @@ class Event
     {
         $this->id = Uuid::v6();
         $this->createdAt = new \DateTimeImmutable();
-        $this->publishedAt = $this->createdAt;
+        $this->publishedAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', date('Y-m-d H:i'));
         $this->published = true;
         $this->cancelled = false;
         $this->archived = false;
@@ -92,11 +92,7 @@ class Event
     public function preUpdate()
     {
         $this->setUpdatedAt();
-    }
 
-    #[ORM\PostUpdate]
-    public function postUpdate()
-    {
         $this->setTrueStartTime();
         $this->setTrueEndTime();
     }
@@ -171,7 +167,8 @@ class Event
 
     public function getPublishedAt(): \DateTimeImmutable
     {
-        return $this->publishedAt;
+        // remove seconds
+        return $this->publishedAt->setTime((int) $this->publishedAt->format('H'), (int) $this->publishedAt->format('i'));
     }
 
     public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
@@ -222,7 +219,7 @@ class Event
         return $this;
     }
 
-    public function trueEndTime(): \DateTimeImmutable
+    public function trueEndTime(bool $seconds = false): \DateTimeImmutable
     {
         if ( !is_null($this->endTime) and !$this->allDay ) {
 
@@ -240,7 +237,7 @@ class Event
 
             }
 
-            return $end->setTime(23, 59, 59);
+            return $end->setTime(23, 59, $seconds ? 59 : 00);
 
         }
     }
