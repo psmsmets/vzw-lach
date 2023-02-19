@@ -34,7 +34,7 @@ class EventCrudController extends AbstractCrudController
             ->setDateFormat('d MMM yy')
             ->setTimeFormat('short')
             ->setDateTimeFormat('medium', 'short')
-            ->setTimezone('Europe/Brussels')
+            //->setTimezone('Europe/Brussels')
             ->setNumberFormat('%.2d')
             ->setPaginatorPageSize(50)
             ;

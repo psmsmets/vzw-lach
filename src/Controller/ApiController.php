@@ -108,7 +108,7 @@ class ApiController extends AbstractController
                 ->setLocation($event->getLocation())
                 ->setDescription(
                     trim(sprintf("Url: %s\n\n%s\n\n%s",
-                        $url, $event->getBody(), ($event->getUrl() ? "Meer informatie: ".$event->getUrl() : "")
+                        $url, $event->getText(), ($event->getUrl() ? "Meer informatie: ".$event->getUrl() : "")
                     ))
                 )
                 //->setUrl($url)
