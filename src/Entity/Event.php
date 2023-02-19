@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Html2Text\Html2Text;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -91,6 +92,13 @@ class Event
     public function preUpdate()
     {
         $this->setUpdatedAt();
+    }
+
+    #[ORM\PostUpdate]
+    public function postUpdate()
+    {
+        $this->setTrueStartTime();
+        $this->setTrueEndTime();
     }
 
     public function getId(): ?Uuid
@@ -190,6 +198,18 @@ class Event
         return $this->allDay ? $this->startTime->setTime(0, 0, 0) : $this->startTime;
     }
 
+    public function calcStartTime(): \DateTimeImmutable
+    {
+        return $this->trueStartTime();
+    }
+
+    private function setTrueStartTime(): self
+    {
+        $this->startTime = $this->trueStartTime();
+
+        return $this;
+    }
+
     public function getEndTime(): ?\DateTimeImmutable
     {
         return $this->endTime;
@@ -228,6 +248,13 @@ class Event
     public function calcEndTime(): \DateTimeImmutable
     {
         return $this->trueEndTime();
+    }
+
+    private function setTrueEndTime(): self
+    {
+        $this->endTime = $this->trueEndTime();
+
+        return $this;
     }
 
     public function isFuture(): ?bool
@@ -363,6 +390,18 @@ class Event
         $this->body = $body;
 
         return $this;
+    }
+
+    public function getHtml(): ?string
+    {
+        return $this->body;
+    }
+
+    public function getText(): ?string
+    {
+        $html = new \Html2Text\Html2Text($this->body);
+
+        return $html->getText();
     }
 
     public function getDescription(): ?string
