@@ -11,10 +11,11 @@ import * as bootstrap from 'bootstrap'
 //require('bootstrap');
 
 // or you can include specific pieces
-// require('bootstrap/js/dist/tooltip');
-// require('bootstrap/js/dist/popover');
+//require('bootstrap/js/dist/tooltip');
+//require('bootstrap/js/dist/popover');
+//require('bootstrap/js/dist/toast');
 
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipTriggerList = document.querySelectorAll('[data-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
 const toastElList = document.querySelectorAll('.toast')

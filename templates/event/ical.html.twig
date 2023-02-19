@@ -2,23 +2,29 @@
 
   <h5 class="mt-2 text-secondary">Ical integratie</h5>
 
-  <p>Integreer de kalender in jouw kalender app (Google Agenda, Apple Calendar, Microfsoft Outlook, ...)!</p>
+  <p>Integreer de kalender in jouw kalender app (Apple Calendar, Google Agenda, Microfsoft Outlook, Yahoo!, ...).</p>
+  <p><u>Tip 1:</u> Voeg de kalender toe als url/abonnement om gesynchroniseerd te blijven met de website. Je kalender app update dit vanzelf (minstens 1x per dag, afhankelijk van je gebruikte app).</p>
+  <p><u>Tip 2:</u> Gebruikers van Google Calendar voegen de kalender eerst toe via de browser. Nadien kan je kalender aanvinken in de app.</p>
 
   {% set base = url('home')|trim('/', 'right')|replace({'http': 'webcal', 'https': 'webcal'}) %}
-  {% set class = 'text-decoration-none ms-1 small' %}
+  {% set class = 'text-decoration-none ms-1' %}
 
   <h6 class="text-secondary">1 kalender voor al jouw deelnemers</h6>
   <ul class="list-unstyled">
     {% set url = base~path('api_events_user', {'id': app.user.id}) %}
+    {% set msg = "De kalender voor al je deelnemers in" %}
     <li>
       {{app.user.email}}
-      <a href="{{url}}" class="{{class}}" alt="Apple Calendar">
+      <a href="{{url}}" class="{{class}}" alt="Apple Calendar"
+         data-toggle="tooltip" data-placement="bottom" title="{{msg}} Apple Calendar">
         <i class="bi bi-apple"></i>
       </a>
-      <a href="https://calendar.google.com/calendar/render?title=HGCVHKV&cid={{url}}" class="{{class}}" alt="Google Calendar">
+      <a href="https://calendar.google.com/calendar/render?cid={{url}}" class="{{class}}" alt="Google Calendar"
+         data-toggle="tooltip" data-placement="bottom" title="{{msg}} Google Calendar">
         <i class="bi bi-google"></i>
       </a>
-      <a href="https://outlook.live.com/?rru=addsubscription&url={{url}}" class="{{class}}" alt="Outlook">
+      <a href="https://outlook.live.com/?rru=addsubscription&url={{url}}" class="{{class}}" alt="Microsoft Outlook"
+         data-toggle="tooltip" data-placement="bottom" title="{{msg}} Microsoft Outlook">
         <i class="bi bi-microsoft"></i>
       </a>
     </li>
@@ -28,15 +34,19 @@
   <ul class="list-unstyled">
   {% for associate in app.user.enabledAssociates %}
     {% set url = base~path('api_events_associate', {'id': associate.id}) %}
+    {% set msg = "De kalender van %s in"|format(associate) %}
     <li>
       {{associate}}
-      <a href="{{url}}" class="{{class}}" alt="Apple Calendar">
+      <a href="{{url}}" class="{{class}}" alt="Apple Calendar"
+         data-toggle="tooltip" data-placement="bottom" title="{{msg}} Apple Calendar">
         <i class="bi bi-apple"></i>
       </a>
-      <a href="https://calendar.google.com/calendar/render?title=HGCVHKV&cid={{url}}" class="{{class}}" alt="Google Calendar">
+      <a href="https://calendar.google.com/calendar/render?title=HGCVHKV&cid={{url}}" class="{{class}}" alt="Google Calendar"
+         data-toggle="tooltip" data-placement="bottom" title="{{msg}} Google Calendar">
         <i class="bi bi-google"></i>
       </a>
-      <a href="https://outlook.live.com/?rru=addsubscription&url={{url}}" class="{{class}}" alt="Outlook">
+      <a href="https://outlook.live.com/?rru=addsubscription&url={{url}}" class="{{class}}" alt="Microsoft Outlook"
+         data-toggle="tooltip" data-placement="bottom" title="{{msg}} Microsoft Outlook">
         <i class="bi bi-microsoft"></i>
       </a>
     </li>
