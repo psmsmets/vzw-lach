@@ -50,6 +50,8 @@ class DocumentCrudController extends AbstractCrudController
 
         yield TextField::new('name');
 
+        yield TextField::new('documentName', 'Bestand')->setDisabled(true);
+
         yield TextField::new('documentFile')
             ->setFormType(VichFileType::class)
             ->setFormTypeOptions(

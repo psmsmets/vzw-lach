@@ -18,7 +18,7 @@
 
      <div class="media-body ms-3 pb-0 mb-0 lh-125 w-100">
 
-       <h5 class="pb-0 mb-1 d-flex justify-content-between text-{% if past %}secondary{% else %}primary{% endif %}">{{event.title}}
+       <h5 class="pb-0 mb-1 d-flex justify-content-between text-{% if past %}secondary{% else %}primary{% endif %}">{% if event.cancelled %}<s>{{event.title}}</s>{% else %}{{event.title}}{% endif %}
          <small>
            {% if event.cancelled %}
              <span class="badge rounded-1 text-bg-danger ml-1">Geannuleerd</span>
@@ -47,6 +47,12 @@
        </div>
 
        <div class="my-4">{{event.body|raw}}</div>
+
+       {% if event.cancelled %}
+       <div class="alert alert-secondary" role="alert">
+         <i class="bi bi-exclamation-diamond-fill"></i> Dit event is <strong>geannuleerd</strong> op {{ event.cancelledAt|format_datetime('medium', 'short') }}
+       </div>
+       {% endif %}
 
        {% if event.url %}
        <div class="my-4">

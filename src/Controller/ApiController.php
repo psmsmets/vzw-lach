@@ -7,37 +7,51 @@ use App\Entity\User;
 use App\Service\ProfileManager;
 use Kigkonsult\Icalcreator\Vcalendar;
 use Kigkonsult\Icalcreator\Vevent;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
+//use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Security\Core\Security;
+//use Symfony\Component\Security\Core\Security;
 
 #[Route('/api', name: 'api')]
 class ApiController extends AbstractController
 {
     private $manager;
-    private $security;
 
-    public function __construct(ProfileManager $profileManager, Security $security, RequestStack $requestStack)
+    public function __construct(
+        private LoggerInterface $logger,
+        private ProfileManager $profileManager,
+        //private Security $security,
+        //private RequestStack $requestStack,
+    )
     {
         $this->manager = $profileManager;
-        $this->security = $security;
-        $this->requestStack = $requestStack;
+        setlocale(LC_ALL, 'nl_BE');
     }
 
-    #[Route('/ical/a/{id}.ics', name: '_events_associate', methods: ['GET'])]
+    #[Route('/ical/a/{id}/hgcvhkv.ics', name: '_events_associate', methods: ['GET'])]
     public function events_associate(Associate $associate, Request $request): Response
     {
+        $token = $request->query->get('token');
+        if ($associate->getUser()->getIcalToken() !== $token) throw $this->createAccessDeniedException();
+
+        $this->logger->info(sprintf("Associate-id %s succesfully requested the ical object.", $associate));
+
         return $this->createVcalendarResponse($associate);
     }
 
-    #[Route('/ical/u/{id}.ics', name: '_events_user', methods: ['GET'])]
+    #[Route('/ical/u/{id}/hgcvhkv.ics', name: '_events_user', methods: ['GET'])]
     public function events_user(User $user, Request $request): Response
     {
+        $token = $request->query->get('token');
+        if ($user->getIcalToken() !== $token) throw $this->createAccessDeniedException();
+
+        $this->logger->info(sprintf("User-id %s succesfully requested the ical object.", $user));
+
         return $this->createVcalendarResponse($user);
     }
 
@@ -65,7 +79,7 @@ class ApiController extends AbstractController
         $calid .= $obj->getId()->toRfc4122();
 
         // create a new calendar with calendaring info
-        $vcalendar = Vcalendar::factory( [ Vcalendar::UNIQUE_ID => "leden-vzw-lach.be", ] )
+        $vcalendar = Vcalendar::factory([Vcalendar::UNIQUE_ID => "leden-vzw-lach.be"])
             ->setMethod(Vcalendar::PUBLISH)
             ->setXprop(Vcalendar::X_WR_CALNAME, $calname)
             ->setXprop(Vcalendar::X_WR_CALDESC, $caldesc)
@@ -84,6 +98,13 @@ class ApiController extends AbstractController
                 rtrim($_SERVER['HTTP_HOST'], '/'),
                 $this->generateUrl('profile_event', ['id' => $event->getId()])
             );
+
+            $desc = [sprintf("Url: %s", $url)];
+            if ($event->isCancelled()) $desc[] = sprintf(
+                "!!! GEANNULEERD !!!\nDit event is geannuleerd op %s.", $event->getCancelledAt()->format("D, d M y H:i")
+            );
+            $desc[] = sprintf("%s", $event->getText());
+            if ($event->getUrl()) $desc[] = sprintf("Meer informatie: %s", $event->getUrl());
 
             $vevent = $vcalendar->newVevent()
                 ->setUid($event->getId()->toRfc4122())
@@ -106,11 +127,7 @@ class ApiController extends AbstractController
                     ))
                 )
                 ->setLocation($event->getLocation())
-                ->setDescription(
-                    trim(sprintf("Url: %s\n\n%s\n\n%s",
-                        $url, $event->getText(), ($event->getUrl() ? "Meer informatie: ".$event->getUrl() : "")
-                    ))
-                )
+                ->setDescription(implode("\n\n", $desc))
                 //->setUrl($url)
                 ->setOrganizer(
                     'noreply@leden-vzw-lach.be',

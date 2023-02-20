@@ -46,9 +46,9 @@ class EventRepository extends ServiceEntityRepository
      */
     public function findEvent(Uuid $uuid, $obj = null): ?Event
     {
-        $qb = $this->createQueryBuilder('event');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('event.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
 
         $qb->leftJoin('categories.associates','associates');
@@ -57,13 +57,13 @@ class EventRepository extends ServiceEntityRepository
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
-        $qb->andWhere('event.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('event.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
         $qb->setParameter('uuid', $uuid, 'uuid');
-        $qb->andWhere('event.id = :uuid');
+        $qb->andWhere('entity.id = :uuid');
 
         return $qb->getQuery()->getOneOrNullResult();
     }
@@ -78,9 +78,9 @@ class EventRepository extends ServiceEntityRepository
         $t0 = is_null($periodStart) ? new \DateTime('today midnight') : $periodStart;
         $t1 = $periodEnd;
 
-        $qb = $this->createQueryBuilder('event');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('event.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
 
         $qb->leftJoin('categories.associates','associates');
@@ -89,22 +89,22 @@ class EventRepository extends ServiceEntityRepository
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
-        $qb->andWhere('event.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('event.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
         if (is_null($t1)) {
             $qb->setParameter('t0', $t0);
-            $qb->andWhere('( event.endTime >= :t0 or (event.startTime >= :t0 and event.endTime is null) )');
+            $qb->andWhere('( entity.endTime >= :t0 or (entity.startTime >= :t0 and entity.endTime is null) )');
         } else {
             $qb->setParameter('t0', $t0);
             $qb->setParameter('t1', $t1);
-            $qb->andWhere('event.startTime >= :t0');
-            $qb->andWhere('(event.endTime < :t1 or (event.endTime is null and event.startTime < :t1))');
+            $qb->andWhere('entity.startTime >= :t0');
+            $qb->andWhere('(entity.endTime < :t1 or (entity.endTime is null and entity.startTime < :t1))');
         }
 
-        $qb->orderBy('event.startTime', 'ASC');
+        $qb->orderBy('entity.startTime', 'ASC');
         //$qb->setMaxResults($limit);
 
         return array_slice($qb->getQuery()->getResult(), 0, $limit);

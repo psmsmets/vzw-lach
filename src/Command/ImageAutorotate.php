@@ -49,6 +49,8 @@ class ImageAutorotate extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        $io->title('Associate Image Autorotate');
+
         $exec = !($input->getOption('dry-run'));
         if (!$exec) $io->note('Dry mode enabled');
 
@@ -65,14 +67,14 @@ class ImageAutorotate extends Command
             $name = $associate->getFullName();
 
             if (($img = $associate->getImagePortrait())) {
-                $io->writeln(sprintf("%s, portrait, %s", $name, $img));
+                $io->text(sprintf("%s, portrait, %s", $name, $img));
                 if ($exec) $this->imageOptimizer->autorotate($dirPortrait.$img);
                 if ($exec) $this->imageOptimizer->autorotate($dirPortrait.'thumbs/'.$img);
                 $count++;
             }
 
             if (($img = $associate->getImageEntire())) {
-                $io->writeln(sprintf("%s, entire, %s", $name, $img));
+                $io->text(sprintf("%s, entire, %s", $name, $img));
                 if ($exec) $this->imageOptimizer->autorotate($dirEntire.$img);
                 if ($exec) $this->imageOptimizer->autorotate($dirEntire.'thumbs/'.$img);
                 $count++;

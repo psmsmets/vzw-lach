@@ -26,7 +26,7 @@
       {% set prev_year  = date(events[0].trueEndTime)|date_modify('last day of december this year noon') %}
       {% set prev_month = date(events[0].trueEndTime)|date_modify('last day of this month noon') %}
 
-      <h3 class="mt-4 pt-4 pl-2 border-top border-gray {% if prev_year<this_year %} past{% endif %}">{{prev_year|date('Y')}}</h3>
+      <h3 class="mt-5 pt-5 pl-2 border-top border-gray {% if prev_year<this_year %} past{% endif %}">{{prev_year|date('Y')}}</h3>
       <h4 class="p-2 mb-2 mt-4 bg-light {% if prev_month<this_month %} past{% endif %}">{{prev_month|format_date(pattern='MMMM', locale='nl')|capitalize}}</h4>
 
       {% for event in events %}
@@ -35,18 +35,18 @@
         {% set year  = date(event.trueEndTime)|date_modify('last day of december this year noon') %}
         {% set month = date(event.trueEndTime)|date_modify('last day of this month noon') %}
       
-        {% if year > prev_year %}<h3 class="mt-4 pt-4 pl-2 border-top border-gray  {% if year < this_year %} past{% endif %}">{{year|date('Y')}}</h3>{% endif %}
-        {% if month > prev_month %}<h4 class="p-2 mb-2 mt-4 bg-light {% if month < this_month %} past{% endif %}">{{month|format_date(pattern='MMMM', locale='nl')|capitalize}}</h4>{% endif %}
+        {% if year > prev_year %}<h3 class="mt-5 pt-4 pl-2 border-top border-gray  {% if year < this_year %} past{% endif %}">{{year|date('Y')}}</h3>{% endif %}
+        {% if month > prev_month %}<h4 class="p-2 mt-5 mb-4 bg-light {% if month < this_month %} past{% endif %}">{{month|format_date(pattern='MMMM', locale='nl')|capitalize}}</h4>{% endif %}
 
-        <div class="media align-top mt-3 event event-link {% if past %} past{% endif %}{% if event.cancelled %} alert-danger{% endif %}" onclick="window.location='{{ path('profile_event', {'id': event.id}) }}';">
+        <div class="media align-top mt-3 py-2 event event-link {% if past %} past{% endif %}{% if event.cancelled %} alert-danger{% endif %}" onclick="window.location='{{ path('profile_event', {'id': event.id}) }}';">
 
           <span class="badge rounded-1 mr-3 event text-bg-{% if past %}secondary{% else %}primary{% endif %} d-flex">
               <span class="m-auto">{% if past %}<s>{% endif %}{{event.startTime|date('d')}}{% if past %}</s>{% endif %}</span>
           </span>
 
-          <div class="media-body ms-3 pb-0 mb-0 lh-125 w-100">
+          <div class="media-body ms-3 lh-125 w-100">
 
-            <h5 class="pb-0 mb-1 d-flex justify-content-between">{{event.title}}
+            <h5 class="pb-0 mb-1 d-flex justify-content-between">{% if event.cancelled %}<s>{{event.title}}</s>{% else %}{{event.title}}{% endif %}
               <small>
                 {% if event.cancelled %}
                   <span class="badge rounded-1 text-bg-danger ml-1">Geannuleerd</span>
@@ -93,9 +93,7 @@
 
 {% block side %}
   {{ parent() }}
-  {% if app.user.admin %}
   {% include 'event/ical.html.twig' %}
-  {% endif %}
 {% endblock %}
 
 {% block javascripts %}

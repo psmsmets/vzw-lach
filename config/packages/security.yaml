@@ -54,7 +54,7 @@ security:
                 # following line to always enable it.
                 always_remember_me: true
                 # logout on user change
-                signature_properties: ['password', 'passwordUpdatedAt']
+                signature_properties: ['password', 'passwordUpdatedAt', 'forcedReloginAt']
                 # persistent remember me tokens: storing remember me cookies in the database
                 token_provider:
                     doctrine: true

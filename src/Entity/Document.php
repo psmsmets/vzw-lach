@@ -262,4 +262,14 @@ class Document
         return end($elements);
     }
 
+    public function getFullName(): ?string
+    {
+        return sprintf('%s.%s', $this->getName(), $this->getExtension());
+    }
+
+    public function getFullDocumentName(): ?string
+    {
+        return $this->getFullName();
+    }
+
 }

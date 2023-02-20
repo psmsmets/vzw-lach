@@ -22,6 +22,7 @@ use App\Repository\FolderRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -32,7 +33,6 @@ use Symfony\Component\Uid\Uuid;
 
 class ProfileManager 
 {
-    public $em;
     public $advertRepository;
     public $associateRepository;
     public $categoryRepository;
@@ -42,12 +42,8 @@ class ProfileManager
     public $folderRepository;
     public $postRepository;
     public $userRepository;
-    public $requestStack;
-    public $router;
-    public $security;
 
     public function __construct(
-        EntityManagerInterface $em,
         AdvertRepository $advertRepository,
         AssociateRepository $associateRepository,
         CategoryRepository $categoryRepository,
@@ -57,12 +53,13 @@ class ProfileManager
         FolderRepository $folderRepository,
         PostRepository $postRepository,
         UserRepository $userRepository,
-        RequestStack $requestStack,
-        UrlGeneratorInterface $router,
-        Security $security,
+        public EntityManagerInterface $em,
+        public RequestStack $requestStack,
+        public UrlGeneratorInterface $router,
+        public Security $security,
+        public ParameterBagInterface $params,
     )
     {
-        $this->em = $em;
         $this->advertRepository = $advertRepository;
         $this->associateRepository = $associateRepository;
         $this->categoryRepository = $categoryRepository;
@@ -72,9 +69,6 @@ class ProfileManager
         $this->folderRepository = $folderRepository;
         $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
-        $this->requestStack = $requestStack;
-        $this->router = $router;
-        $this->security = $security;
         setlocale(LC_ALL, 'nl_BE');
     }
 
@@ -255,6 +249,12 @@ class ProfileManager
         return $page;
     }
 
+    public function toast(string $type, string $message): void
+    {
+        $session = $this->requestStack->getSession();
+        $session->getFlashBag()->add($type, $message);
+    }
+
     public function getBirthdays(): array
     {
         $birthdays = [];
@@ -349,5 +349,26 @@ class ProfileManager
         }
 
         return $this;
+    }
+
+    public function documentSize(Document $document): string
+    {
+        $file = $this->params->get('kernel.project_dir').
+                $this->params->get('app.path.private').
+                $this->params->get('app.path.documents').
+                '/'.$document->getDocumentName();
+
+        return $this->humanFileSize(filesize($file));
+    }
+
+    public function humanFileSize($size, $unit=""): string
+    {
+        if ((!$unit && $size >= 1<<30) || $unit == "GB")
+            return number_format($size/(1<<30),2)."GB";
+        if ((!$unit && $size >= 1<<20) || $unit == "MB")
+            return number_format($size/(1<<20),2)."MB";
+        if ((!$unit && $size >= 1<<10) || $unit == "KB")
+            return number_format($size/(1<<10),2)."KB";
+        return number_format($size)." bytes";
     }
 }

@@ -46,20 +46,20 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findPost(Uuid $uuid, $obj = null): ?Post
     {
-        $qb = $this->createQueryBuilder('post');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('post.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
-        $qb->andWhere('post.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('post.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
         $qb->setParameter('uuid', $uuid, 'uuid');
-        $qb->andWhere('post.id = :uuid');
+        $qb->andWhere('entity.id = :uuid');
 
         return $qb->getQuery()->getOneOrNullResult();
     }
@@ -72,29 +72,29 @@ class PostRepository extends ServiceEntityRepository
         $limit = is_null($limit) ? Post::NUMBER_OF_ITEMS : $limit;
         $offset = ( $page < 1 ? 0 : $page - 1 ) * Post::NUMBER_OF_ITEMS;
 
-        $qb = $this->createQueryBuilder('post');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('post.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
-        $qb->andWhere('post.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('post.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
         if (!is_null($special)) {
             $qb->setParameter('special', $special);
-            $qb->andWhere('post.special = :special');
+            $qb->andWhere('entity.special = :special');
         }
 
         if (!is_null($pinned)) {
             $qb->setParameter('pinned', $pinned);
-            $qb->andWhere('post.pinned = :pinned');
+            $qb->andWhere('entity.pinned = :pinned');
         }
 
-        $qb->orderBy('post.publishedAt', 'DESC');
+        $qb->orderBy('entity.publishedAt', 'DESC');
         $qb->setFirstResult($offset);
         //$qb->setMaxResults($limit);
 
@@ -103,26 +103,26 @@ class PostRepository extends ServiceEntityRepository
 
     public function countPosts($obj = null, ?bool $special = null, ?bool $pinned = null): int
     {
-        $qb = $this->createQueryBuilder('post');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('post.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
-        $qb->andWhere('post.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('post.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
         if (!is_null($special)) {
             $qb->setParameter('special', $special);
-            $qb->andWhere('post.special = :special');
+            $qb->andWhere('entity.special = :special');
         }
 
         if (!is_null($pinned)) {
             $qb->setParameter('pinned', $pinned);
-            $qb->andWhere('post.pinned = :pinned');
+            $qb->andWhere('entity.pinned = :pinned');
         }
 
         return count($qb->getQuery()->getResult());

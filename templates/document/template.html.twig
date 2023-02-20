@@ -1,6 +1,8 @@
 {% if pinned is not defined %}{% set pinned = false %}{% endif %}
 {% if extend is not defined %}{% set extend = false %}{% endif %}
 
+{% set documentSize = manager.documentSize(document) %}
+
 {#
 <div class="p-3 mb-4 shadow-sm {% if not extend %}document-link{% else%}bg-white{% endif %}" {% if not extend %}onclick="window.open('{{ path('profile_download', {'id': document.id}) }}', '_self');"{% endif %}>
 #}
@@ -9,7 +11,7 @@
      onclick="window.open('{{ path('profile_download', {'id': document.id}) }}', '_self');">
 
   <h4 class="text-primary d-flex justify-content-between mb-3">
-    <span><i class="bi bi-cloud-download"></i> {{ document.name|capitalize }}</span>
+    <span><i class="bi bi-cloud-download"></i> {{ document.name|capitalize }} ({{documentSize}})</span>
     {% if pinned %}<i class="bi bi-pin-fill"></i>{% endif %}
     {% if document.publishedAt > date()%}
       <small>
@@ -40,6 +42,7 @@
           {{ document.updatedAt|format_datetime('medium', 'none') }}
         </li>
       {% endif %}
+      <li class="list-inline-item small fw-lighter"><i class="bi bi-file-earmark-arrow-down"></i> {{documentSize}}</li>
       <li class="list-inline-item small"><i class="bi bi-people-fill"></i>
         {% for category in document.categories %}
           {{ category|lower }}{% if not loop.last%} | {% endif %}

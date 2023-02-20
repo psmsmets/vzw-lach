@@ -47,20 +47,20 @@ class DocumentRepository extends ServiceEntityRepository
      */
     public function findDocument(Uuid $uuid, $obj = null): ?Document
     {
-        $qb = $this->createQueryBuilder('doc');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('doc.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
-        $qb->andWhere('doc.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('doc.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
         $qb->setParameter('uuid', $uuid, 'uuid');
-        $qb->andWhere('doc.id = :uuid');
+        $qb->andWhere('entity.id = :uuid');
 
         return $qb->getQuery()->getOneOrNullResult();
     }
@@ -75,36 +75,36 @@ class DocumentRepository extends ServiceEntityRepository
         $limit = is_null($limit) ? Document::NUMBER_OF_ITEMS : $limit;
         $offset = ( $page < 1 ? 0 : $page - 1 ) * Document::NUMBER_OF_ITEMS;
 
-        $qb = $this->createQueryBuilder('doc');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('doc.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         if ($folder instanceof Folder) {
-            $qb->leftJoin('doc.folder','folder');
+            $qb->leftJoin('entity.folder','folder');
             $qb->addSelect('folder');
             $qb->setParameter('folder', $folder);
-            $qb->andWhere('doc.folder = :folder');
+            $qb->andWhere('entity.folder = :folder');
         }
 
         $qb->setParameter('published', true);
-        $qb->andWhere('doc.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('doc.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
         if (!is_null($special)) {
             $qb->setParameter('special', $special);
-            $qb->andWhere('doc.special = :special');
+            $qb->andWhere('entity.special = :special');
         }
 
         if (!is_null($pinned)) {
             $qb->setParameter('pinned', $pinned);
-            $qb->andWhere('doc.pinned = :pinned');
+            $qb->andWhere('entity.pinned = :pinned');
         }
 
-        $qb->orderBy('doc.name', 'ASC');
+        $qb->orderBy('entity.name', 'ASC');
         $qb->setFirstResult($offset);
         //$qb->setMaxResults($limit);
 
@@ -115,33 +115,33 @@ class DocumentRepository extends ServiceEntityRepository
         $folder = null, $obj = null, $special = null, $pinned = null
     ): int
     {
-        $qb = $this->createQueryBuilder('doc');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('doc.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         if ($folder instanceof Folder) {
-            $qb->leftJoin('doc.folder','folder');
+            $qb->leftJoin('entity.folder','folder');
             $qb->addSelect('folder');
             $qb->setParameter('folder', $folder);
-            $qb->andWhere('doc.folder = :folder');
+            $qb->andWhere('entity.folder = :folder');
         }
 
         $qb->setParameter('published', true);
-        $qb->andWhere('doc.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('doc.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
         if (!is_null($special)) {
             $qb->setParameter('special', $special);
-            $qb->andWhere('doc.special = :special');
+            $qb->andWhere('entity.special = :special');
         }
 
         if (!is_null($pinned)) {
             $qb->setParameter('pinned', $pinned);
-            $qb->andWhere('doc.pinned = :pinned');
+            $qb->andWhere('entity.pinned = :pinned');
         }
 
         return count($qb->getQuery()->getResult());

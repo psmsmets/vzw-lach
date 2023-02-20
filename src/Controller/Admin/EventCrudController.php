@@ -3,18 +3,35 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Event;
-use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, KeyValueStore};
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, Filters, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, IdField, BooleanField, DateTimeField, SlugField, TextField, TextareaField, TextEditorField};
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, IdField, BooleanField, DateTimeField, TextField, TextareaField, TextEditorField};
+use EasyCorp\Bundle\EasyAdminBundle\Filter\{DateTimeFilter, BooleanFilter};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 
 class EventCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return Event::class;
+    }
+
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters
+    ): QueryBuilder
+    {
+        $qb = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        $qb->andWhere('entity.startTime >= :ref');
+        $qb->setParameter('ref', (new \DateTimeImmutable('today midnight'))->modify('-3 days'));
+
+        return $qb;
     }
 
     public function configureActions(Actions $actions): Actions
@@ -36,6 +53,7 @@ class EventCrudController extends AbstractCrudController
             ->setDateTimeFormat('medium', 'short')
             //->setTimezone('Europe/Brussels')
             ->setNumberFormat('%.2d')
+            ->setDefaultSort(['startTime' => 'ASC'])
             ->setPaginatorPageSize(50)
             ;
     }
@@ -48,7 +66,6 @@ class EventCrudController extends AbstractCrudController
         yield IdField::new('id')->onlyOnDetail();
 
         yield TextField::new('title');
-        yield SlugField::new('slug')->setTargetFieldName('title')->hideOnIndex();
 
         yield TextEditorField::new('body')
             ->setTrixEditorConfig([
@@ -85,15 +102,42 @@ class EventCrudController extends AbstractCrudController
         yield FormField::addTab('Options');
         yield FormField::addPanel('Options');
 
+        yield BooleanField::new('overruled')
+            ->renderAsSwitch(true)
+            ->onlyOnForms()
+            ->setHelp('Een SUPER ADMIN kan onderstaande opties overrulen via deze switch!')
+            ->setPermission('ROLE_SUPER_ADMIN')
+            ;
+
         yield DateTimeField::new('publishedAt')->setRequired(false);
-        yield BooleanField::new('published')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('published')
+            ->renderAsSwitch(true)
+            ->onlyOnForms()
+            ->setHelp('Opgelet: dit kan niet ongedaan worden!')
+            ;
         yield BooleanField::new('published')->renderAsSwitch(false)->hideOnForm();
 
-        yield BooleanField::new('cancelled')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('cancelled')
+            ->renderAsSwitch(true)
+            ->onlyOnForms()
+            ->setHelp('Opgelet: dit kan niet ongedaan worden!')
+            ;
         yield BooleanField::new('cancelled')->renderAsSwitch(false)->hideOnForm();
 
         yield DateTimeField::new('createdAt')->onlyOnDetail();
 
         yield DateTimeField::new('updatedAt')->hideOnForm();
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+//dd(DateTimeFilter::new('startTime'));
+        return $filters
+            ->add('published')
+            ->add(DateTimeFilter::new('startTime'))
+            ->add('endTime')
+            ->add('allDay')
+            ->add('cancelled')
+        ;
     }
 }

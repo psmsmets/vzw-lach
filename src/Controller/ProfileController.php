@@ -6,6 +6,7 @@ use App\Entity\Associate;
 use App\Entity\Page;
 use App\Form\AssociateType;
 use App\Service\ProfileManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,18 +21,15 @@ use Symfony\Component\Uid\Uuid;
 class ProfileController extends AbstractController
 {
     private $manager;
-    private $requestStack;
-    private $security;
 
     public function __construct(
         ProfileManager $profileManager,
-        RequestStack $requestStack,
-        Security $security,
+        private LoggerInterface $logger,
+        private RequestStack $requestStack,
+        private Security $security,
     )
     {
         $this->manager = $profileManager;
-        $this->requestStack = $requestStack;
-        $this->security = $security;
     }
 
     #[Route('/', name: '_index', methods: ['GET'])]
@@ -120,7 +118,9 @@ class ProfileController extends AbstractController
         $viewpoint = $this->manager->getViewpoint();
 
         if (!($post = $this->manager->getPost($viewpoint, $id))) {
-            return $this->redirectToRoute('profile_index');
+            $this->manager->toast('alert-warning',
+                'Het gevraagde bericht bestaat niet, of is niet verbonden met je geselecteerde deelnemer.');
+            return $this->redirectToRoute('profile_posts');
         }
 
         return $this->render('post/item.html.twig', [
@@ -143,8 +143,14 @@ class ProfileController extends AbstractController
     {
         $viewpoint = $this->manager->getViewpoint();
 
+        if (!($event = $this->manager->getEvent($viewpoint, $id))) {
+            $this->manager->toast('alert-warning',
+                'Het gevraagde event bestaat niet, of is niet verbonden met je geselecteerde deelnemer.');
+            return $this->redirectToRoute('profile_events');
+        }
+
         return $this->render('event/item.html.twig', [
-            'event' => $this->manager->getEvent($viewpoint, $id),
+            'event' => $event,
         ]);
     }
 
@@ -171,6 +177,8 @@ class ProfileController extends AbstractController
         $viewpoint = $this->manager->getViewpoint();
 
         if (!($folder = $this->manager->getFolder($viewpoint, $slug))) {
+            $this->manager->toast('alert-warning',
+                'De gevraagde bestandsmap bestaat niet, of is niet verbonden met je geselecteerde deelnemer.');
             return $this->redirectToRoute('profile_documents');
         }
 
@@ -191,6 +199,8 @@ class ProfileController extends AbstractController
         $viewpoint = $this->manager->getViewpoint();
 
         if (!($document = $this->manager->getDocument($viewpoint, $id))) {
+            $this->manager->toast('alert-warning',
+                'Het gevraagde bestand bestaat niet, of is niet verbonden met je geselecteerde deelnemer.');
             return $this->redirectToRoute('profile_documents');
         }
 
@@ -206,13 +216,17 @@ class ProfileController extends AbstractController
 
         if (!($document = $this->manager->getDocument($viewpoint, $id))) throw $this->createAccessDeniedException();
 
+        $this->logger->info(sprintf(
+            "User-id %s for viewpoint %s requested to download the file \"%s\".",
+            $this->security->getUser(), $viewpoint, $document->getFullName()
+        ));
+
         $file = $this->getParameter('kernel.project_dir').
                 $this->getParameter('app.path.private').
                 $this->getParameter('app.path.documents').
                 '/'.$document->getDocumentName();
 
-
-        return $this->file($file, sprintf('%s.%s', $document->getName(), $document->getExtension()));
+        return $this->file($file, $document->getFullName());
     }
 
     #[Route('/zoekertjes', name: '_adverts', methods: ['GET'])]
