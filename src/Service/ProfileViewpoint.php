@@ -17,7 +17,7 @@ class ProfileViewpoint
             foreach ($viewpoint->getCategories() as $category) {
                 foreach ($category->getChildren() as $child) {
                     $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
+                    $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'entity.categories'));
                     $count++;
                 }
             }
@@ -30,7 +30,7 @@ class ProfileViewpoint
             $count = 0;
             foreach ($viewpoint->getChildren() as $child) {
                 $qb->setParameter(sprintf('category%d', $count), $child->getId());
-                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'doc.categories'));
+                $qb->orWhere($qb->expr()->isMemberOf(sprintf(':category%d', $count), 'entity.categories'));
                 $count++;
             }
             $qb->orWhere('categories is null');

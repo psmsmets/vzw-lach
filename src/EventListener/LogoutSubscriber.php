@@ -12,14 +12,8 @@ class LogoutSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-        RequestStack $requestStack
-    ) {
-        $this->requestStack = $requestStack;
-
-        // Accessing the session in the constructor is *NOT* recommended, since
-        // it might not be accessible yet or lead to unwanted side-effects
-        // $this->session = $requestStack->getSession();
-    }
+        private RequestStack $requestStack
+    ) {}
 
     public static function getSubscribedEvents(): array
     {

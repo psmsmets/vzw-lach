@@ -21,12 +21,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'uuid', unique: true)]
     private ?Uuid $id = null;
 
+    #[ORM\Column]
+    private ?bool $enabled = null;
+
+    #[ORM\Column]
+    private ?bool $viewmaster = null;
+
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
         mode: 'strict',
     )]
     private ?string $email = null;
+
+    #[ORM\Column(length: 15, nullable: true)]
+    private ?string $phone = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -37,23 +46,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column]
-    private ?bool $enabled = null;
-
-    #[ORM\Column]
-    private ?bool $viewmaster = null;
+    #[ORM\Column(length: 64)]
+    private ?string $icalToken = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?\DateTimeInterface $passwordUpdatedAt = null;
+    private ?\DateTimeImmutable $passwordUpdatedAt = null;
 
-    #[ORM\Column(length: 15, nullable: true)]
-    private ?string $phone = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $icalTokenUpdatedAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $lastLoginAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $forcedReloginAt = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Associate::class)]
     private Collection $associates;
@@ -61,12 +73,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->id = Uuid::v4();
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = null;
         $this->enabled = true;
         $this->viewmaster = false;
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = null;
+        $this->password = bin2hex(random_bytes(64)); // null ??
         $this->passwordUpdatedAt = null;
-        $this->password = bin2hex(random_bytes(64));
+        $this->icalToken = $this->generateToken();
+        $this->icalTokenUpdatedAt = null;
+        $this->lastLoginAt = null;
+        $this->forcedReloginAt = null;
         $this->associates = new ArrayCollection();
     }
 
@@ -83,11 +99,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'viewmaster' => $this->viewmaster,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
-            'passwordUpdatedAt' => $this->passwordUpdatedAt,
             'email' => $this->email,
             'phone' => $this->phone,
             'password' => $this->password,
             'passwordUpdatedAt' => $this->passwordUpdatedAt,
+            'icalToken' => $this->icalToken,
+            'icalTokenUpdatedAt' => $this->icalTokenUpdatedAt,
+            'lastLoginAt' => $this->lastLoginAt,
+            'forcedReloginAt' => $this->forcedReloginAt,
             'roles' => $this->roles,
         ];
     }
@@ -99,11 +118,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->viewmaster = $serialized['viewmaster'];
         $this->createdAt = $serialized['createdAt'];
         $this->updatedAt = $serialized['updatedAt'];
-        $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
         $this->email = $serialized['email'];
         $this->phone = $serialized['phone'];
         $this->password = $serialized['password'];
         $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
+        $this->icalToken = $serialized['icalToken'];
+        $this->icalTokenUpdatedAt = $serialized['icalTokenUpdatedAt'];
+        $this->lastLoginAt = $serialized['lastLoginAt'];
+        $this->forcedReloginAt = $serialized['forcedReloginAt'];
         $this->roles = $serialized['roles'];
     }
 
@@ -118,6 +140,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
+    public function isEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function isViewmaster(): ?bool
+    {
+        return $this->viewmaster;
+    }
+
+/* associate-based only
+    public function setViewmaster(bool $viewmaster): self
+    {
+        $this->viewmaster = $viewmaster;
+
+        return $this;
+    }
+*/
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -126,6 +174,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = strtolower($email);
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
 
         return $this;
     }
@@ -219,12 +279,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    private function generateToken(): string 
+    {
+        return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
+    }
+
+    public function getIcalToken(): ?string
+    {
+        return $this->icalToken;
+    }
+
+    public function setIcalToken(): self
+    {
+        $this->icalTokenUpdatedAt = new \DateTimeImmutable();
+        $this->icalToken = $this->generateToken();
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -236,36 +314,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPasswordUpdatedAt(): ?\DateTimeInterface
+    public function getPasswordUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->passwordUpdatedAt;
     }
 
-    public function isEnabled(): ?bool
+    public function getIcalTokenUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->enabled;
+        return $this->icalTokenUpdatedAt;
     }
 
-    public function setEnabled(bool $enabled): self
+    public function getLastLoginAt(): ?\DateTimeImmutable
     {
-        $this->enabled = $enabled;
+        return $this->lastLoginAt;
+    }
+
+    public function setLastLoginAt(): self
+    {
+        $this->lastLoginAt = new \DateTimeImmutable();
 
         return $this;
     }
 
-    public function isViewmaster(): ?bool
+    public function getForcedReloginAt(): ?\DateTimeImmutable
     {
-        return $this->viewmaster;
+        return $this->forcedReloginAt;
     }
 
-/* associate-based only
-    public function setViewmaster(bool $viewmaster): self
+    public function setForcedReloginAt(): self
     {
-        $this->viewmaster = $viewmaster;
+        $this->forcedReloginAt = new \DateTimeImmutable();
 
         return $this;
     }
-*/
+
+    public function forceRelogin(): self
+    {
+        $this->setForcedReloginAt();
+
+        return $this;
+    }
 
     public function setViewmasterFromAssociates(): self
     {
@@ -276,18 +364,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->viewmaster = $viewmaster;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): self
-    {
-        $this->phone = $phone;
 
         return $this;
     }
@@ -348,7 +424,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $associateNames = [];
         foreach ($this->associates as $associate) {
-            $associateNames[] = $length > 0 ? mb_substr($associate->getFirstName(), 0, $length) . '. ' . mb_substr($associate->getLastName(), 0, $length) . '.'  : $associate->getFirstName();
+            $associateNames[] = $length > 0 ?
+                sprintf("%s. %s.",
+                    mb_substr($associate->getFirstName(), 0, $length),
+                    mb_substr($associate->getLastName(), 0, $length)
+                ) : $associate->getFirstName();
         }
         return implode($separator, $associateNames);
     }

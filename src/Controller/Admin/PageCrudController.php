@@ -48,7 +48,7 @@ class PageCrudController extends AbstractCrudController
         yield TextField::new('title');
 
         yield SlugField::new('slug')->setTargetFieldName('title')->onlyWhenCreating();
-        yield TextField::new('slug')->hideOnForm();
+        yield TextField::new('slug')->setDisabled(true);
 
         yield TextEditorField::new('body')
             ->setTrixEditorConfig([

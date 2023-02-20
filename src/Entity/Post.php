@@ -46,9 +46,6 @@ class Post
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
-
     #[ORM\Column(type: Types::TEXT)]
     private ?string $body = null;
 
@@ -170,18 +167,6 @@ class Post
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     public function getBody(): ?string
     {
         return $this->body;
@@ -201,6 +186,8 @@ class Post
 
     public function getText(): ?string
     {
+        if (is_null($this->body) or $this->body === "") return "";
+
         $html = new \Html2Text\Html2Text($this->body);
 
         return $html->getText();

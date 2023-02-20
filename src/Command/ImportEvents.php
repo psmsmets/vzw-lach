@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -71,18 +72,15 @@ By default no data is persisted to the database.
             ->addOption('persist', 'p', InputOption::VALUE_NONE, 'Persist events, disables test run.' )
             ->addOption('debug', 'd', InputOption::VALUE_NONE, 'Output csv lines to stdout.' )
             ->addOption('publish', 'u', InputOption::VALUE_NONE, 'Publish events.' )
-    ;
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // outputs multiple lines to the console (adding "\n" at the end of each line)
-        $output->writeln([
-            '================',
-            'Events :: Import',
-            '================',
-            '',
-        ]);
+
+        $io = new SymfonyStyle($input, $output);
+
+        $io->title('Events :: Import');
 
         /*
             Columns:
@@ -101,10 +99,9 @@ By default no data is persisted to the database.
         $persist = $input->getOption('persist');
         $debug = $input->getOption('debug');
         $publish = $input->getOption('publish');
-
         
-        $output->writeln(sprintf("Persist = %s", $persist ? 'true' : 'false (test mode)'));
-        $output->writeln(sprintf("Publish = %s\n", $publish ? 'true' : 'false'));
+        $io->note(sprintf("Persist = %s", $persist ? 'true' : 'false (test mode)'));
+        $io->note(sprintf("Publish = %s\n", $publish ? 'true' : 'false'));
 
         // Open the file for reading
         if ( ($h = fopen($input->getArgument('csv_file'), "r")) !== false ) 
@@ -115,7 +112,7 @@ By default no data is persisted to the database.
                 $cnt++;
                 if ($cnt <= 0 ) continue;
 
-                if ($debug) $output->writeln(print_r($data));
+                if ($debug) $io->info(print_r($data));
 
                 // extract and convert?
                 $allDay = ($data[1] === '' and $data[2] === '');
@@ -152,7 +149,7 @@ By default no data is persisted to the database.
 
                 }
 
-                if ($debug) $output->writeln($event);
+                if ($debug) $io->info($event);
 
                 if ($persist) {
 
@@ -160,7 +157,7 @@ By default no data is persisted to the database.
                     $this->em->flush();
                 }
 
-                $output->writeln(sprintf('%s created with id:%s.', $event, $event->getId()));
+                $io->text(sprintf('%s created with id:%s.', $event, $event->getId()));
 
                 $new++;
 
@@ -170,8 +167,7 @@ By default no data is persisted to the database.
             fclose($h);
         }
 
-        $output->writeln('');
-        $output->writeln(sprintf('%d events found of which %d imported.', $cnt, $new));
+        $io->success(sprintf('%d events found of which %d imported.', $cnt, $new));
 
         return 0;
 

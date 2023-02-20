@@ -15,7 +15,10 @@
         <div class="d-flex justify-content-between align-items-center w-100">
           <strong class="text-gray-dark">{{document.name|length > 30 ? document.name[:30]|trim~' ...' : document.name}}</strong>
         </div>
-        <span class="d-block small fw-lighter"><i class="bi bi-clock"></i> versie {{document.updatedAt|format_datetime('medium', 'none')}}</span>
+        <span class="d-block small fw-lighter">
+          <i class="bi bi-clock"></i> versie {{document.updatedAt|format_datetime('medium', 'none')}}
+          <i class="bi bi-file-earmark-arrow-down ms-2"></i> {{manager.documentSize(document)}}
+        </span>
       </div>
     </div>
   {% else %}

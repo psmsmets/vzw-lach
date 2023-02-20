@@ -45,23 +45,23 @@ class FolderRepository extends ServiceEntityRepository
      */
     public function findFolder(string $slug, $obj = null): ?Folder
     {
-        $qb = $this->createQueryBuilder('folder');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('folder.documents','documents');
+        $qb->leftJoin('entity.documents','documents');
         $qb->addSelect('documents');
 
-        $qb->leftJoin('folder.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('slug', $slug);
-        $qb->andWhere('folder.slug = :slug');
+        $qb->andWhere('entity.slug = :slug');
 
         $qb->setParameter('published', true);
-        $qb->andWhere('folder.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('folder.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
         return $qb->getQuery()->getOneOrNullResult();
     }
@@ -71,19 +71,19 @@ class FolderRepository extends ServiceEntityRepository
         $limit = is_null($limit) ? Folder::NUMBER_OF_ITEMS : $limit;
         $offset = ( $page < 1 ? 0 : $page - 1 ) * Folder::NUMBER_OF_ITEMS;
 
-        $qb = $this->createQueryBuilder('folder');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('folder.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
-        $qb->andWhere('folder.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('folder.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
-        $qb->orderBy('folder.name', 'ASC');
+        $qb->orderBy('entity.name', 'ASC');
         $qb->setFirstResult($offset);
         //$qb->setMaxResults($limit);
 
@@ -92,17 +92,17 @@ class FolderRepository extends ServiceEntityRepository
 
     public function countFolders($obj = null): int
     {
-        $qb = $this->createQueryBuilder('folder');
+        $qb = $this->createQueryBuilder('entity');
 
-        $qb->leftJoin('folder.categories','categories');
+        $qb->leftJoin('entity.categories','categories');
         $qb->addSelect('categories');
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
         $qb->setParameter('published', true);
-        $qb->andWhere('folder.published = :published');
+        $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());
-        $qb->andWhere('folder.publishedAt <= :now');
+        $qb->andWhere('entity.publishedAt <= :now');
 
         return count($qb->getQuery()->getResult());
     }

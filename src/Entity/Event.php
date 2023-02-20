@@ -51,9 +51,6 @@ class Event
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $body = null;
 
@@ -69,12 +66,14 @@ class Event
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'events')]
     private Collection $categories;
 
+    private $overrule = false;
+
     public function __construct()
     {
         $this->id = Uuid::v6();
         $this->createdAt = new \DateTimeImmutable();
         $this->publishedAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', date('Y-m-d H:i'));
-        $this->published = true;
+        $this->published = false;
         $this->cancelled = false;
         $this->archived = false;
         $this->startTime = new \DateTimeImmutable("today noon"); 
@@ -109,7 +108,7 @@ class Event
 
     public function setPublished(bool $published): self
     {
-        $this->published = $published;
+        $this->published = $this->overrule ? $published : ($published or $this->published);
 
         return $this;
     }
@@ -126,14 +125,22 @@ class Event
 
     public function setCancelled(bool $cancelled): self
     {
-        if (!$this->cancelled && $cancelled === true) {
+        if ($this->overrule) {
+            $this->cancelled = $cancelled;
+        } else {
+            if (!$this->cancelled && $cancelled === true) {
 
-            $this->cancelled = true;
-            $this->cancelledAt = new \DateTimeImmutable();
-
+                $this->cancelled = true;
+                $this->cancelledAt = new \DateTimeImmutable();
+            }
         }
 
         return $this;
+    }
+
+    public function getCancelledAt(): \DateTimeImmutable
+    {
+        return $this->cancelledAt;
     }
 
     public function isArchived(): ?bool
@@ -365,18 +372,6 @@ class Event
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     public function getBody(): ?string
     {
         return $this->body;
@@ -396,6 +391,8 @@ class Event
 
     public function getText(): ?string
     {
+        if (is_null($this->body) or $this->body === "") return "";
+
         $html = new \Html2Text\Html2Text($this->body);
 
         return $html->getText();
@@ -457,6 +454,18 @@ class Event
     public function removeCategory(Category $category): self
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function isOverruled(): ?bool
+    {
+        return $this->overrule;
+    }
+
+    public function setOverruled(bool $overrule): self
+    {
+        $this->overrule = $overrule;
 
         return $this;
     }

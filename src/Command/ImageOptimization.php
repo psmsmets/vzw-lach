@@ -49,6 +49,8 @@ class ImageOptimization extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        $io->title('Associate Image Optimizer');
+
         $exec = !($input->getOption('dry-run'));
         if (!$exec) $io->note('Dry mode enabled');
 
