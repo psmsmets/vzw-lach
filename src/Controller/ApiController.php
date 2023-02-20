@@ -41,6 +41,11 @@ class ApiController extends AbstractController
             $this->manager->em->flush();
 
             $this->manager->toast('alert-warning', 'Je wordt op alle toestellen uitgelogd.');
+
+            $this->logger->debug(sprintf(
+                "User-id %s requested to force relogin at %s from %s.",
+                $user, $user->getForcedReloginAt()->format('r'), $request->getClientIp()
+            ));
         }
 
         return $this->redirectToRoute('profile_index');
@@ -53,7 +58,7 @@ class ApiController extends AbstractController
         $token = $request->query->get('token');
         if ($associate->getUser()->getIcalToken() !== $token) throw $this->createAccessDeniedException();
 
-        $this->logger->info(sprintf("Associate-id %s succesfully requested the ical object.", $associate));
+        $this->logger->debug(sprintf("Associate-id %s succesfully requested the ical object.", $associate));
 
         return $this->createVcalendarResponse($associate);
     }
@@ -64,7 +69,7 @@ class ApiController extends AbstractController
         $token = $request->query->get('token');
         if ($user->getIcalToken() !== $token) throw $this->createAccessDeniedException();
 
-        $this->logger->info(sprintf("User-id %s succesfully requested the ical object.", $user));
+        $this->logger->debug(sprintf("User-id %s succesfully requested the ical object.", $user));
 
         return $this->createVcalendarResponse($user);
     }

@@ -6,10 +6,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class LoginSubscriber implements EventSubscriberInterface
 {
@@ -29,8 +29,6 @@ class LoginSubscriber implements EventSubscriberInterface
     {
         $user = $event->getPassport()->getUser();
 
-        // $this->logger->info(sprintf("User-id %s has requested to login.", $user));
-
         if (!$user->isEnabled() or count($user->getEnabledAssociates()) == 0)
         {
             $session = $this->requestStack->getSession();
@@ -38,7 +36,10 @@ class LoginSubscriber implements EventSubscriberInterface
             throw new AccessDeniedHttpException('Je profiel is niet actief!');
 
             // log
-            $this->logger->info(sprintf("User-id %s attempted to login but is is not granted.", $user));
+            $this->logger->info(sprintf(
+                "User-id %s attempted to login from %s but is not granted.",
+                $user, $event->getRequest()->getClientIp()
+            ));
         }
     }
 
@@ -55,6 +56,9 @@ class LoginSubscriber implements EventSubscriberInterface
         $this->em->flush();
 
         // log
-        $this->logger->info(sprintf("User-id %s successfully logged in.", $user));
+        $this->logger->info(sprintf(
+            "User-id %s successfully logged in from %s.",
+            $user, $event->getRequest()->getClientIp()
+        ));
     }
 }
