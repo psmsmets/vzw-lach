@@ -11,11 +11,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-//use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
-//use Symfony\Component\Security\Core\Security;
 
 #[Route('/api', name: 'api')]
 class ApiController extends AbstractController
@@ -25,12 +23,28 @@ class ApiController extends AbstractController
     public function __construct(
         private LoggerInterface $logger,
         private ProfileManager $profileManager,
-        //private Security $security,
-        //private RequestStack $requestStack,
     )
     {
         $this->manager = $profileManager;
-        setlocale(LC_ALL, 'nl_BE');
+    }
+
+    #[Route('/force-relogin', name: '_force_relogin', methods: ['GET'])]
+    public function force_relogin(Request $request): Response
+    {
+        $proceed = $request->query->get('proceed');
+
+        if ($proceed) {
+            $user = $this->manager->security->getUser();
+            $user->forceRelogin();
+
+            $this->manager->em->persist($user);
+            $this->manager->em->flush();
+
+            $this->manager->toast('alert-warning', 'Je wordt op alle toestellen uitgelogd.');
+        }
+
+        return $this->redirectToRoute('profile_index');
+
     }
 
     #[Route('/ical/a/{id}/hgcvhkv.ics', name: '_events_associate', methods: ['GET'])]
@@ -59,6 +73,7 @@ class ApiController extends AbstractController
     {
         // https://github.com/iCalcreator/iCalcreator
         $tz = "Europe/Brussels";
+        setlocale(LC_ALL, 'nl_BE');
 
         if ($obj instanceof User) {
             $name = $obj->getEmail();
@@ -101,7 +116,7 @@ class ApiController extends AbstractController
 
             $desc = [sprintf("Url: %s", $url)];
             if ($event->isCancelled()) $desc[] = sprintf(
-                "!!! GEANNULEERD !!!\nDit event is geannuleerd op %s.", $event->getCancelledAt()->format("D, d M y H:i")
+                "[GEANNULEERD]\nDit event is geannuleerd op %s.", $event->getCancelledAt()->format("D, d M y H:i")
             );
             $desc[] = sprintf("%s", $event->getText());
             if ($event->getUrl()) $desc[] = sprintf("Meer informatie: %s", $event->getUrl());
