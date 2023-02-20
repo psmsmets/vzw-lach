@@ -81,6 +81,8 @@ class ProfileController extends AbstractController
     {
         if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
 
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(AssociateType::class, $associate);
         $form->handleRequest($request);
 
