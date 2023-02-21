@@ -288,27 +288,50 @@ class Event
         return is_null($this->endTime)? true : $this->startTime->format('Y-m-d') == $this->endTime->format('Y-m-d');
     }
 
-    public function getFormattedPeriod(): ?string
+    public function getFormattedPeriod(string $locale = 'nl_BE'): ?string
     {
-        $fmt = "%A %e %B %Y";
+        $fmtD = new \IntlDateFormatter($locale, \IntlDateFormatter::FULL, \IntlDateFormatter::NONE);
+        $fmtT = new \IntlDateFormatter($locale, \IntlDateFormatter::NONE, \IntlDateFormatter::SHORT);
 
         if (is_null($this->endTime)) {
 
-            return strftime($this->allDay ? $fmt : $fmt.' vanaf %H:%M', $this->trueStartTime()->getTimestamp());
+            if ($this->allDay) return $fmtD->format($this->startTime);
+
+            return sprintf(
+                "%s vanaf %s",
+                $fmtD->format($this->startTime),
+                $fmtT->format($this->startTime),
+            );
 
         } else {
 
             if ($this->isSameDay()) {
-                if ($this->allDay) {
-                    return strftime($fmt, $this->trueStartTime()->getTimestamp());
-                } else {
-                    return strftime($fmt.' van %H:%M', $this->trueStartTime()->getTimestamp()).
-                           strftime(' tot %H:%M', $this->trueEndTime()->getTimestamp());
-                }
+
+                if ($this->allDay) return $fmtD->format($this->startTime);
+
+                return sprintf(
+                    "%s van %s tot %s",
+                    $fmtD->format($this->startTime),
+                    $fmtT->format($this->startTime),
+                    $fmtT->format($this->endTime),
+                );
+
             } else {
-                $fmt = $this->allDay ? $fmt : $fmt . ' %H:%M';
-                return strftime($fmt, $this->trueStartTime()->getTimestamp()).
-                       strftime(' tot '.$fmt, $this->trueEndTime()->getTimestamp());
+
+                if ($this->allDay) return sprintf(
+                    "%s tot %s",
+                    $fmtD->format($this->startTime),
+                    $fmtD->format($this->endTime)
+                );
+
+                return sprintf(
+                    "%s %s tot %s %s",
+                    $fmtD->format($this->startTime),
+                    $fmtT->format($this->startTime),
+                    $fmtD->format($this->endTime),
+                    $fmtT->format($this->endTime),
+                );
+
             }
 
         }
