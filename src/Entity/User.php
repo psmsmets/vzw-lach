@@ -49,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 64)]
     private ?string $icalToken = null;
 
+    #[ORM\Column(length: 64)]
+    private ?string $csrfToken = null;
+
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -60,6 +63,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $icalTokenUpdatedAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $csrfTokenUpdatedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $lastLoginAt = null;
@@ -81,6 +87,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->passwordUpdatedAt = null;
         $this->icalToken = $this->generateToken();
         $this->icalTokenUpdatedAt = null;
+        $this->csrfToken = $this->generateToken();
+        $this->csrfTokenUpdatedAt = null;
         $this->lastLoginAt = null;
         $this->forcedReloginAt = null;
         $this->associates = new ArrayCollection();
@@ -105,6 +113,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'passwordUpdatedAt' => $this->passwordUpdatedAt,
             'icalToken' => $this->icalToken,
             'icalTokenUpdatedAt' => $this->icalTokenUpdatedAt,
+            'csrfToken' => $this->csrfToken,
+            'csrfTokenUpdatedAt' => $this->csrfTokenUpdatedAt,
             'lastLoginAt' => $this->lastLoginAt,
             'forcedReloginAt' => $this->forcedReloginAt,
             'roles' => $this->roles,
@@ -124,6 +134,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->passwordUpdatedAt = $serialized['passwordUpdatedAt'];
         $this->icalToken = $serialized['icalToken'];
         $this->icalTokenUpdatedAt = $serialized['icalTokenUpdatedAt'];
+        $this->csrfToken = $serialized['csrfToken'];
+        $this->csrfTokenUpdatedAt = $serialized['csrfTokenUpdatedAt'];
         $this->lastLoginAt = $serialized['lastLoginAt'];
         $this->forcedReloginAt = $serialized['forcedReloginAt'];
         $this->roles = $serialized['roles'];
@@ -297,6 +309,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getCsrfToken(): ?string
+    {
+        return $this->csrfToken;
+    }
+
+    public function setCsrfToken(): self
+    {
+        $this->csrfTokenUpdatedAt = new \DateTimeImmutable();
+        $this->csrfToken = $this->generateToken();
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -351,6 +376,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function forceRelogin(): self
     {
         $this->setForcedReloginAt();
+        $this->setCsrfToken();
 
         return $this;
     }

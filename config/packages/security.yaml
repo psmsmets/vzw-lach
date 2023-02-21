@@ -1,3 +1,26 @@
+framework:
+    rate_limiter:
+        # define 2 rate limiters (one for username+IP, the other for IP)
+        username_ip_login:
+            policy: token_bucket
+            limit: 5
+            rate: { interval: '5 minutes' }
+
+        ip_login:
+            policy: sliding_window
+            limit: 50
+            interval: '15 minutes'
+
+services:
+    # our custom login rate limiter
+    app.login_rate_limiter:
+        class: Symfony\Component\Security\Http\RateLimiter\DefaultLoginRateLimiter
+        arguments:
+            # globalFactory is the limiter for IP
+            $globalFactory: '@limiter.ip_login'
+            # localFactory is the limiter for username+IP
+            $localFactory: '@limiter.username_ip_login'
+
 security:
     enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
@@ -45,10 +68,15 @@ security:
 
             logout:
                 path: security_signout
+                invalidate_session: false
+
+            # use a custom rate limiter via its service ID
+            login_throttling:
+                limiter: app.login_rate_limiter
 
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 2592000 # 30 days in seconds
+                lifetime: 2592000 # 30 days in seconds [2592000s]
                 # by default, the feature is enabled by checking a
                 # checkbox in the login form (see below), uncomment the
                 # following line to always enable it.
@@ -70,7 +98,7 @@ security:
          - { path: ^/admin, roles: ROLE_MANAGER }
          - { path: ^/beheer, roles: ROLE_MANAGER }
          - { path: ^/mijn-profiel, roles: ROLE_USER }
-         - { path: ^/uploads/documents, roles: ROLE_USER }
+         - { path: ^/mijn-profiel/deelnemer/\s/bewerk, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

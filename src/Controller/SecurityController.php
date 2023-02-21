@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use App\Notifier\CustomLoginLinkNotification;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -17,22 +19,18 @@ use Symfony\Component\Security\Http\LoginLink\LoginLinkNotification;
 
 class SecurityController extends AbstractController
 {
-    private $requestStack;
-
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
-
-        // Accessing the session in the constructor is *NOT* recommended, since
-        // it might not be accessible yet or lead to unwanted side-effects
-        // $this->session = $requestStack->getSession();
-    }
+    public function __construct(
+        private EntityManagerInterface $em,
+        private LoggerInterface $logger,
+        private RequestStack $requestStack,
+    )
+    {}
 
     #[Route('/login', name: 'security_signin')]
     public function signin(AuthenticationUtils $authenticationUtils): Response
     {
         // redirect if user is already logged in
-        if ($this->getUser() !== null) return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -72,13 +70,14 @@ class SecurityController extends AbstractController
     )
     {
         // redirect if user is already logged in
-        if ($this->getUser() !== null) return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
 
         // check if login form is submitted
         if ($request->isMethod('POST')) {
 
             $session = $this->requestStack->getSession();
-            $session->getFlashBag()->add('alert-success',
+            $session->getFlashBag()->add(
+                'alert-success',
                 'Er is een e-mail met de login link verzonden indien het adres bij ons gekend is.'
             );
 
@@ -119,5 +118,33 @@ class SecurityController extends AbstractController
     {
         // controller can be blank: it will never be called!
         throw new \LogicException('Don\'t forget to activate logout in security.yaml');
+    }
+
+    #[Route('/force-relogin', name: 'security_force_relogin', methods: ['GET'])]
+    public function force_relogin(Request $request): Response
+    {
+        $proceed = $request->query->get('proceed');
+
+        if ($proceed) {
+
+            $user = $this->getUser();
+            $user->forceRelogin();
+
+            $this->em->persist($user);
+            $this->em->flush();
+
+            $session = $this->requestStack->getSession();
+            $session->getFlashBag()->add(
+                'alert-warning',
+                'Je wordt overal uitgelogd.'
+            );
+
+            $this->logger->debug(sprintf(
+                "User-id %s requested to force relogin at %s from %s.",
+                $user, $user->getForcedReloginAt()->format('r'), $request->getClientIp()
+            ));
+        }
+
+        return $this->redirectToRoute('profile_index');
     }
 }

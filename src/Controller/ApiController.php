@@ -28,30 +28,6 @@ class ApiController extends AbstractController
         $this->manager = $profileManager;
     }
 
-    #[Route('/force-relogin', name: '_force_relogin', methods: ['GET'])]
-    public function force_relogin(Request $request): Response
-    {
-        $proceed = $request->query->get('proceed');
-
-        if ($proceed) {
-            $user = $this->manager->security->getUser();
-            $user->forceRelogin();
-
-            $this->manager->em->persist($user);
-            $this->manager->em->flush();
-
-            $this->manager->toast('alert-warning', 'Je wordt op alle toestellen uitgelogd.');
-
-            $this->logger->debug(sprintf(
-                "User-id %s requested to force relogin at %s from %s.",
-                $user, $user->getForcedReloginAt()->format('r'), $request->getClientIp()
-            ));
-        }
-
-        return $this->redirectToRoute('profile_index');
-
-    }
-
     #[Route('/ical/a/{id}/hgcvhkv.ics', name: '_events_associate', methods: ['GET'])]
     public function events_associate(Associate $associate, Request $request): Response
     {
