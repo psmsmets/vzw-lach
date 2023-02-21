@@ -21,7 +21,7 @@ class SecurityController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private LoggerInterface $logger,
+        //private LoggerInterface $logger,
         private RequestStack $requestStack,
     )
     {}
@@ -143,10 +143,10 @@ class SecurityController extends AbstractController
                     'Je wordt overal uitgelogd.'
                 );
 
-                $this->logger->debug(sprintf(
-                    "User-id %s requested to force relogin at %s from %s.",
-                    $user, $user->getForcedReloginAt()->format('r'), $request->getClientIp()
-                ));
+                //$this->logger->debug(sprintf(
+                //    "User-id %s requested to force relogin at %s from %s.",
+                //    $user, $user->getForcedReloginAt()->format('r'), $request->getClientIp()
+                //));
             } else {
                 $session->getFlashBag()->add(
                     'alert-warning',

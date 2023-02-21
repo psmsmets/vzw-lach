@@ -15,7 +15,7 @@ class LoginSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private LoggerInterface $logger,
+        //private LoggerInterface $logger,
         private RequestStack $requestStack,
     ) {}
 

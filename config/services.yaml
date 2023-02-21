@@ -64,6 +64,6 @@ services:
             - { name: kernel.event_listener, event: vich_uploader.pre_upload }
             - { name: kernel.event_listener, event: vich_uploader.post_upload }
 
-    App\EventListener\RequestListener:
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+#    App\EventListener\RequestListener:
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
