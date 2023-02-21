@@ -2,6 +2,8 @@ framework:
     messenger:
         failure_transport: failed
 
+        reset_on_message: true
+
         transports:
 #            # https://symfony.com/doc/current/messenger.html#transport-configuration
             async:
@@ -22,3 +24,4 @@ framework:
 
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
+
