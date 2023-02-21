@@ -56,7 +56,10 @@
               {% endfor %}
               <li><hr class="dropdown-divider"></li>
               <li><a href="{{path('security_signout')}}" class="dropdown-item fw-lighter">
-                <i class="bi bi-power"></i> afmelden</a>
+                <i class="bi bi-power"></i> uitloggen</a>
+              </li>
+              <li><a href="" onclick="let check = confirm('Bent u zeker dat u op alle toestellen wilt uitloggen?'); if (check) { let email = prompt('Wat is jouw e-mailadres?'); if (email) { window.location.href = '{{ path('security_force_relogin', {'proceed': true}) }}&email=' + email } }; return false;" class="dropdown-item fw-lighter">
+                <i class="bi bi-power"></i> uitloggen op alle toestellen</a>
               </li>
             </ul>
           </li>

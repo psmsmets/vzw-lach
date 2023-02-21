@@ -45,17 +45,23 @@ class LoginSubscriber implements EventSubscriberInterface
 
     public function onLogin(LoginSuccessEvent $event): void
     {
-        // provide user feedback
+        // get user
+        $user = $event->getPassport()->getUser();
+
+        // provide feedback
         $session = $this->requestStack->getSession();
         $session->getFlashBag()->add('alert-success', 'Inloggen succesvol. Je bent nu ingelogd.');
 
-        // update lastLoginAt
-        $user = $event->getPassport()->getUser();
+        // set user csrf token and store in the session
+        if (!$user->getCsrfToken()) $user->setCsrfToken();
+        $session->set('csrf_token', $user->getCsrfToken());
+
+        // update last login at
         $user->setLastloginAt();
         $this->em->persist($user);
         $this->em->flush();
 
-        // log
+        // add to logs
         $this->logger->info(sprintf(
             "User-id %s successfully logged in from %s.",
             $user, $event->getRequest()->getClientIp()

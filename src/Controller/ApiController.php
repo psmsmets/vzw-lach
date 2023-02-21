@@ -28,32 +28,8 @@ class ApiController extends AbstractController
         $this->manager = $profileManager;
     }
 
-    #[Route('/force-relogin', name: '_force_relogin', methods: ['GET'])]
-    public function force_relogin(Request $request): Response
-    {
-        $proceed = $request->query->get('proceed');
-
-        if ($proceed) {
-            $user = $this->manager->security->getUser();
-            $user->forceRelogin();
-
-            $this->manager->em->persist($user);
-            $this->manager->em->flush();
-
-            $this->manager->toast('alert-warning', 'Je wordt op alle toestellen uitgelogd.');
-
-            $this->logger->debug(sprintf(
-                "User-id %s requested to force relogin at %s from %s.",
-                $user, $user->getForcedReloginAt()->format('r'), $request->getClientIp()
-            ));
-        }
-
-        return $this->redirectToRoute('profile_index');
-
-    }
-
-    #[Route('/ical/a/{id}/hgcvhkv.ics', name: '_events_associate', methods: ['GET'])]
-    public function events_associate(Associate $associate, Request $request): Response
+    #[Route('/ical/a/{id}/hgcvhkv.ics', name: '_ical_events_associate', methods: ['GET'])]
+    public function ical_events_associate(Associate $associate, Request $request): Response
     {
         $token = $request->query->get('token');
         if ($associate->getUser()->getIcalToken() !== $token) throw $this->createAccessDeniedException();
@@ -63,8 +39,8 @@ class ApiController extends AbstractController
         return $this->createVcalendarResponse($associate);
     }
 
-    #[Route('/ical/u/{id}/hgcvhkv.ics', name: '_events_user', methods: ['GET'])]
-    public function events_user(User $user, Request $request): Response
+    #[Route('/ical/u/{id}/hgcvhkv.ics', name: '_ical_events_user', methods: ['GET'])]
+    public function ical_events_user(User $user, Request $request): Response
     {
         $token = $request->query->get('token');
         if ($user->getIcalToken() !== $token) throw $this->createAccessDeniedException();
@@ -217,4 +193,44 @@ class ApiController extends AbstractController
             ]
         );
     }
+
+    #[Route('/private/adverts', name: '_adverts', methods: ['GET'])]
+    public function load_adverts(Request $request): Response
+    {
+        $viewpoint = $this->manager->getViewpoint();
+
+        return $this->json([
+            'success' => true,
+            'html' => $this->render('document/module.html.twig', [
+                'documents' => $this->manager->getSpecialDocuments($viewpoint),
+            ])->getContent(),
+        ]);
+    }
+
+    #[Route('/private/documents', name: '_documents', methods: ['GET'])]
+    public function load_documents(Request $request): Response
+    {
+        $viewpoint = $this->manager->getViewpoint();
+
+        return $this->json([
+            'success' => true,
+            'html' => $this->render('advert/module.html.twig', [
+                'adverts' => $this->manager->getSpecialAdverts($viewpoint),
+            ])->getContent(),
+        ]);
+    }
+
+    #[Route('/private/upcoming-events', name: '_upcoming_events', methods: ['GET'])]
+    public function load_upcoming_events(Request $request): Response
+    {
+        $viewpoint = $this->manager->getViewpoint();
+
+        return $this->json([
+            'success' => true,
+            'html' => $this->render('event/module.html.twig', [
+                'events' => $this->manager->getUpcomingEvents($viewpoint, 5),
+            ])->getContent(),
+        ]);
+    }
+
 }

@@ -79,9 +79,9 @@ class ProfileController extends AbstractController
     #[Route('/deelnemer/{id}/bewerk', name: '_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Associate $associate): Response
     {
-        if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
-
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
 
         $form = $this->createForm(AssociateType::class, $associate);
         $form->handleRequest($request);
