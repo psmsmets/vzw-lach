@@ -69,7 +69,6 @@ class ProfileManager
         $this->folderRepository = $folderRepository;
         $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
-        setlocale(LC_ALL, 'nl_BE');
     }
 
     public function associateCategories(Associate $associate): array
