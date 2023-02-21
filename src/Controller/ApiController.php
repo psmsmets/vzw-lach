@@ -77,6 +77,7 @@ class ApiController extends AbstractController
         // create a new calendar with calendaring info
         $vcalendar = Vcalendar::factory([Vcalendar::UNIQUE_ID => "leden-vzw-lach.be"])
             ->setMethod(Vcalendar::PUBLISH)
+            ->setRefreshinterval('PT1H')
             ->setXprop(Vcalendar::X_WR_CALNAME, $calname)
             ->setXprop(Vcalendar::X_WR_CALDESC, $caldesc)
             ->setXprop(Vcalendar::X_WR_RELCALID, $obj->getId()->toRfc4122())
