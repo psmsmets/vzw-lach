@@ -17,7 +17,7 @@ class UserTokens extends Command
     private $doctrine;
     private $entityManager;
 
-    protected static $defaultName = 'app:user:icaltoken';
+    protected static $defaultName = 'app:user:tokens';
 
     public function __construct(
         ManagerRegistry $doctrine,

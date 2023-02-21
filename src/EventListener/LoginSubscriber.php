@@ -36,10 +36,10 @@ class LoginSubscriber implements EventSubscriberInterface
             throw new AccessDeniedHttpException('Je profiel is niet actief!');
 
             // log
-            $this->logger->info(sprintf(
-                "User-id %s attempted to login from %s but is not granted.",
-                $user, $event->getRequest()->getClientIp()
-            ));
+            //$this->logger->info(sprintf(
+            //    "User-id %s attempted to login from %s but is not granted.",
+            //    $user, $event->getRequest()->getClientIp()
+            //));
         }
     }
 
@@ -62,9 +62,9 @@ class LoginSubscriber implements EventSubscriberInterface
         $this->em->flush();
 
         // add to logs
-        $this->logger->info(sprintf(
-            "User-id %s successfully logged in from %s.",
-            $user, $event->getRequest()->getClientIp()
-        ));
+        //$this->logger->info(sprintf(
+        //    "User-id %s successfully logged in from %s.",
+        //    $user, $event->getRequest()->getClientIp()
+        //));
     }
 }
