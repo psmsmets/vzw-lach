@@ -40,6 +40,7 @@ function api_load_async(element) {
     .done(function(data) {
         if (data.success) {
             element.innerHTML = data.html;
+            $('.past').hide();
         }
     });
 
