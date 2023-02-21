@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% set viewpoint = manager.getViewpoint() %}
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 
 {% block title %}Mijn profiel{% endblock %}
 
@@ -9,7 +10,15 @@
 {% endblock %}
 
 {% block side %}
-  {% include 'event/module.html.twig' %}
+  {% if path('profile_events') not in currentPath %}
+  <div data-provider="upcoming-events">
+    <div class="text-center mt-5 pt-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 {% endblock %}
 
 {% block stylesheets %}

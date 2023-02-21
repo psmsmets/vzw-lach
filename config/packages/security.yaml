@@ -97,6 +97,7 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_MANAGER }
          - { path: ^/beheer, roles: ROLE_MANAGER }
+         - { path: ^/api/private, roles: ROLE_USER }
          - { path: ^/mijn-profiel, roles: ROLE_USER }
          - { path: ^/mijn-profiel/deelnemer/\s/bewerk, roles: IS_AUTHENTICATED_FULLY }
 

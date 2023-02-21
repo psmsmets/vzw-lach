@@ -21,5 +21,24 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 const toastElList = document.querySelectorAll('.toast')
 const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
 Array.prototype.filter.call(toastList, function(toast, {delay = 7500}) {
-   toast.show();
+    toast.show();
 });
+
+
+$(window).on( "load", function() {
+    const asyncElList = document.querySelectorAll('[data-provider]')
+    const asyncList = [...asyncElList].map(asyncEl => api_load_async(asyncEl))
+});
+
+function api_load_async(element) {
+
+    $.getJSON( "/api/private/" + element.dataset.provider, {
+        format: "json"
+    })
+    .done(function(data) {
+        if (data.success) {
+            element.innerHTML = data.html;
+        }
+    });
+
+}

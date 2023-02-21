@@ -1,37 +1,30 @@
-{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+<h5 class="mt-5 text-secondary">Zoekertjes</h5>
 
-{% set adverts = manager.getSpecialAdverts() %}
-
-{% if path('profile_adverts') not in currentPath and adverts|length > 0  %}
-  <h5 class="mt-5 text-secondary">Zoekertjes</h5>
-
-  {% for advert in adverts %}
-    <div class="media shadow-sm event event-link p-2 text-secondary {% if not loop.last %}mb-3{% endif %}"
-         onclick="window.location='{{ path('profile_advert', {'id': advert.id}) }}';">
-      <span class="badge mr-2 event event-sm bg-secondary rounded-1 d-flex">
-        <i class="bi bi-search m-auto"></i> 
-      </span>
-      <div class="media-body ms-2 mb-0 small lh-125" style="width:85%">
-        <div class="d-flex justify-content-between align-items-center w-100">
-          <strong class="text-gray-dark">{{advert.title|length > 30 ? advert.title[:30]|trim~' ...' : advert.title}}</strong>
-        </div>
-        <div class="progress my-2" role="progressbar" aria-label="{{advert.title}}"
-             aria-valuenow="{{advert.progress}}" aria-valuemin="0" aria-valuemax="100" style="height: 3px">
-          <div class="progress-bar bg-{% if advert.completed %}secondary{% else %}primary{% endif %}"
-               style="width: {{advert.progress}}%"></div>
-        </div>
+{% for advert in adverts %}
+  <div class="media shadow-sm event event-link p-2 text-secondary {% if not loop.last %}mb-3{% endif %}"
+       onclick="window.location='{{ path('profile_advert', {'id': advert.id}) }}';">
+    <span class="badge mr-2 event event-sm bg-secondary rounded-1 d-flex">
+      <i class="bi bi-search m-auto"></i> 
+    </span>
+    <div class="media-body ms-2 mb-0 small lh-125" style="width:85%">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <strong class="text-gray-dark">{{advert.title|length > 30 ? advert.title[:30]|trim~' ...' : advert.title}}</strong>
+      </div>
+      <div class="progress my-2" role="progressbar" aria-label="{{advert.title}}"
+           aria-valuenow="{{advert.progress}}" aria-valuemin="0" aria-valuemax="100" style="height: 3px">
+        <div class="progress-bar bg-{% if advert.completed %}secondary{% else %}primary{% endif %}"
+             style="width: {{advert.progress}}%"></div>
       </div>
     </div>
-  {% else %}
-    <div class="media shadow-sm document p-2 text-secondary">
-      <div class="media-body ms-2 mb-0 small lh-125 text-gray-dark">Niets gevonden.</div>
-    </div>
-  {% endfor %}
-
-  <div class="mt-2 text-end">
-    <a href="{{path('profile_adverts')}}" class="small fw-lighter text-secondary text-decoration-none">
-      <i class="bi bi-chevron-double-right"></i> naar alle zoekertjes
-    </a>
   </div>
+{% else %}
+  <div class="media shadow-sm document p-2 text-secondary">
+    <div class="media-body ms-2 mb-0 small lh-125 text-gray-dark">Niets gevonden.</div>
+  </div>
+{% endfor %}
 
-{% endif %}
+<div class="mt-2 text-end">
+  <a href="{{path('profile_adverts')}}" class="small fw-lighter text-secondary text-decoration-none">
+    <i class="bi bi-chevron-double-right"></i> naar alle zoekertjes
+  </a>
+</div>

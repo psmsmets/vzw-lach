@@ -11,7 +11,7 @@
 
   <h6 class="text-secondary">1 kalender voor al jouw deelnemers</h6>
   <ul class="list-unstyled">
-    {% set url = base~path('api_events_user', {'id': app.user.id, 'token': app.user.icaltoken}) %}
+    {% set url = base~path('api_ical_events_user', {'id': app.user.id, 'token': app.user.icaltoken}) %}
     {% set msg = "De kalender voor al je deelnemers in" %}
     <li>
       {{app.user.email}}
@@ -33,7 +33,7 @@
   <h6 class="text-secondary">1 kalender per deelnemer</h6>
   <ul class="list-unstyled">
   {% for associate in app.user.enabledAssociates %}
-    {% set url = base~path('api_events_associate', {'id': associate.id, 'token': app.user.icaltoken}) %}
+    {% set url = base~path('api_ical_events_associate', {'id': associate.id, 'token': app.user.icaltoken}) %}
     {% set msg = "De kalender van %s in"|format(associate) %}
     <li>
       {{associate}}
