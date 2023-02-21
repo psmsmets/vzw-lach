@@ -61,6 +61,7 @@ class AdminController extends AbstractDashboardController
         return Assets::new()
             ->addCssFile('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css')
             ->addWebpackEncoreEntry('ea-lightbox-prevent-scroll')
+            //->addWebpackEncoreEntry('bootstrap')
         ;
     }
 
