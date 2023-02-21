@@ -1,26 +1,3 @@
-framework:
-    rate_limiter:
-        # define 2 rate limiters (one for username+IP, the other for IP)
-        username_ip_login:
-            policy: token_bucket
-            limit: 5
-            rate: { interval: '5 minutes' }
-
-        ip_login:
-            policy: sliding_window
-            limit: 50
-            interval: '15 minutes'
-
-services:
-    # our custom login rate limiter
-    app.login_rate_limiter:
-        class: Symfony\Component\Security\Http\RateLimiter\DefaultLoginRateLimiter
-        arguments:
-            # globalFactory is the limiter for IP
-            $globalFactory: '@limiter.ip_login'
-            # localFactory is the limiter for username+IP
-            $localFactory: '@limiter.username_ip_login'
-
 security:
     enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
@@ -69,10 +46,6 @@ security:
             logout:
                 path: security_signout
                 invalidate_session: false
-
-            # use a custom rate limiter via its service ID
-            login_throttling:
-                limiter: app.login_rate_limiter
 
             remember_me:
                 secret: '%kernel.secret%'

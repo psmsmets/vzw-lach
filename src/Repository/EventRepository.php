@@ -110,7 +110,7 @@ class EventRepository extends ServiceEntityRepository
         return array_slice($qb->getQuery()->getResult(), 0, $limit);
     }
 
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
         if (isset($criteria['id']) && is_array($criteria['id'])) {
             $ids = [];
