@@ -75,7 +75,7 @@ By default no data is persisted to the database.
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
         $io = new SymfonyStyle($input, $output);
