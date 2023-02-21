@@ -1,80 +1,71 @@
-    {% if events|length  == 0 %}
+{% if events|length  == 0 %}
 
-      <p class="my-2"><i class="bi bi-exclamation-circle-fill"></i> Geen items gevonden.</p>
+  <p class="my-2"><i class="bi bi-exclamation-circle-fill"></i> Geen items gevonden.</p>
 
-    {% else %}
+{% else %}
 
-      <div class="mt-2 d-flex justify-content-between text-secondary">
-        <div><i class="bi bi-info-square-fill"></i> Klik op een event voor meer informatie.</div>
-        <div>
-          <a href="javascript:;" class="badge rounded-1 text-bg-secondary text-decoration-none" id="toggle-past-events">
-            <i class="bi bi-eye-slash-fill"></i> voorbije events
-          </a>
-        </div>
+  {% set this_year  = date('first day of january this year 23:59') %}
+  {% set this_month = date('first day of this month 00:00') %}
+  {% set prev_year  = date(events[0].trueEndTime)|date_modify('last day of december this year noon') %}
+  {% set prev_month = date(events[0].trueEndTime)|date_modify('last day of this month noon') %}
+
+  <h3 class="mt-4 pt-4 pl-2 border-top border-gray {% if prev_year<this_year %} past{% endif %}">{{prev_year|date('Y')}}</h3>
+  <h4 class="p-2 mb-2 mt-4 bg-light {% if prev_month<this_month %} past{% endif %}">{{prev_month|format_date(pattern='MMMM', locale='nl')|capitalize}}</h4>
+
+  {% for event in events %}
+
+    {% set past  = date(event.trueEndTime) < date() %}
+    {% set year  = date(event.trueEndTime)|date_modify('last day of december this year noon') %}
+    {% set month = date(event.trueEndTime)|date_modify('last day of this month noon') %}
+  
+    {% if year > prev_year %}<h3 class="mt-4 pt-4 pl-2 border-top border-gray  {% if year < this_year %} past{% endif %}">{{year|date('Y')}}</h3>{% endif %}
+    {% if month > prev_month %}<h4 class="p-2 my-4 bg-light {% if month < this_month %} past{% endif %}">{{month|format_date(pattern='MMMM', locale='nl')|capitalize}}</h4>{% endif %}
+
+    <div class="media align-top mt-3 py-2 event event-link {% if past %} past{% endif %}{% if event.cancelled %} alert-danger{% endif %}" onclick="window.location='{{ path('profile_event', {'id': event.id}) }}';">
+
+      <span class="badge rounded-1 mr-3 event text-bg-{% if past %}secondary{% else %}primary{% endif %} d-flex">
+          <span class="m-auto">{% if past %}<s>{% endif %}{{event.startTime|date('d')}}{% if past %}</s>{% endif %}</span>
+      </span>
+
+      <div class="media-body ms-3 lh-125 w-100">
+
+        <h5 class="pb-0 mb-1 d-flex justify-content-between">{% if event.cancelled %}<s>{{event.title}}</s>{% else %}{{event.title}}{% endif %}
+          <small>
+            {% if event.cancelled %}
+              <span class="badge rounded-1 text-bg-danger ml-1">Geannuleerd</span>
+            {% else %}
+              {% if event.body is not empty %}<span class="text-{% if past %}secondary{% else %}primary{% endif %}">&nbsp;<i class="bi bi-info-square-fill"></i>&nbsp;</span>{% endif %}
+            {% endif %}
+          </small>
+        </h5>
+
+        <h6 class="mb-2">{{event.getFormattedPeriod|lower}}</h6>
+
+        <div class="small text-secondary d-flex justify-content-between mb-1">
+          <ul class="list-inline mb-0">
+            {% if event.location %}
+            <li class="list-inline-item small"><i class="bi bi-pin-map"></i>
+              {{ event.location }}
+            </li>
+            {% endif %}
+            <li class="list-inline-item small"><i class="bi bi-people-fill"></i>
+              {% for category in event.categories %}
+                {{ category|lower }}{% if not loop.last%} | {% endif %}
+              {% else %}
+                iedereen
+              {% endfor %}
+            </li>
+          </ul>
+          <ul class="list-inline mb-0">
+          </ul>
+        </div>            
+
       </div>
 
-      {% set this_year  = date('first day of january this year 23:59') %}
-      {% set this_month = date('first day of this month 00:00') %}
-      {% set prev_year  = date(events[0].trueEndTime)|date_modify('last day of december this year noon') %}
-      {% set prev_month = date(events[0].trueEndTime)|date_modify('last day of this month noon') %}
+    </div>
 
-      <h3 class="mt-4 pt-4 pl-2 border-top border-gray {% if prev_year<this_year %} past{% endif %}">{{prev_year|date('Y')}}</h3>
-      <h4 class="p-2 mb-2 mt-4 bg-light {% if prev_month<this_month %} past{% endif %}">{{prev_month|format_date(pattern='MMMM', locale='nl')|capitalize}}</h4>
+    {% set prev_year = year %}
+    {% set prev_month = month %}
 
-      {% for event in events %}
-
-        {% set past  = date(event.trueEndTime) < date() %}
-        {% set year  = date(event.trueEndTime)|date_modify('last day of december this year noon') %}
-        {% set month = date(event.trueEndTime)|date_modify('last day of this month noon') %}
-      
-        {% if year > prev_year %}<h3 class="mt-4 pt-4 pl-2 border-top border-gray  {% if year < this_year %} past{% endif %}">{{year|date('Y')}}</h3>{% endif %}
-        {% if month > prev_month %}<h4 class="p-2 my-4 bg-light {% if month < this_month %} past{% endif %}">{{month|format_date(pattern='MMMM', locale='nl')|capitalize}}</h4>{% endif %}
-
-        <div class="media align-top mt-3 py-2 event event-link {% if past %} past{% endif %}{% if event.cancelled %} alert-danger{% endif %}" onclick="window.location='{{ path('profile_event', {'id': event.id}) }}';">
-
-          <span class="badge rounded-1 mr-3 event text-bg-{% if past %}secondary{% else %}primary{% endif %} d-flex">
-              <span class="m-auto">{% if past %}<s>{% endif %}{{event.startTime|date('d')}}{% if past %}</s>{% endif %}</span>
-          </span>
-
-          <div class="media-body ms-3 lh-125 w-100">
-
-            <h5 class="pb-0 mb-1 d-flex justify-content-between">{% if event.cancelled %}<s>{{event.title}}</s>{% else %}{{event.title}}{% endif %}
-              <small>
-                {% if event.cancelled %}
-                  <span class="badge rounded-1 text-bg-danger ml-1">Geannuleerd</span>
-                {% else %}
-                  {% if event.body is not empty %}<span class="text-{% if past %}secondary{% else %}primary{% endif %}">&nbsp;<i class="bi bi-info-square-fill"></i>&nbsp;</span>{% endif %}
-                {% endif %}
-              </small>
-            </h5>
-
-            <h6 class="mb-2">{{event.getFormattedPeriod|lower}}</h6>
-
-            <div class="small text-secondary d-flex justify-content-between mb-1">
-              <ul class="list-inline mb-0">
-                {% if event.location %}
-                <li class="list-inline-item small"><i class="bi bi-pin-map"></i>
-                  {{ event.location }}
-                </li>
-                {% endif %}
-                <li class="list-inline-item small"><i class="bi bi-people-fill"></i>
-                  {% for category in event.categories %}
-                    {{ category|lower }}{% if not loop.last%} | {% endif %}
-                  {% else %}
-                    iedereen
-                  {% endfor %}
-                </li>
-              </ul>
-              <ul class="list-inline mb-0">
-              </ul>
-            </div>            
-
-          </div>
-
-        </div>
-
-        {% set prev_year = year %}
-        {% set prev_month = month %}
-
-      {% endfor %}
-    {% endif %}
+  {% endfor %}
+{% endif %}
