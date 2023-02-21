@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Security;
 class RequestListener
 {
     public function __construct(
-        //private LoggerInterface $logger,
+        private LoggerInterface $logger,
         private RequestStack $requestStack,
         private RouterInterface $router,
         private Security $security,
@@ -38,10 +38,10 @@ class RequestListener
                 );
 
                 // add to logs
-                // $this->logger->info(sprintf(
-                //    "User-id %s from %s was forced to logout due to a csfr token mismatch.",
-                //    $user, $event->getRequest()->getClientIp()
-                //));
+                $this->logger->info(sprintf(
+                    "User-id %s from %s was forced to logout due to a csfr token mismatch.",
+                    $user, $event->getRequest()->getClientIp()
+                ));
 
                 // redirect
                 $response = new RedirectResponse(

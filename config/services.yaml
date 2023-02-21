@@ -8,11 +8,11 @@ parameters:
     app.timezone: 'Europe/Brussels'
     app.locales: ['nl', 'en']
     app.default_locale: 'nl'
-    app.session_max_idle_time: 1500
+    # app.session_max_idle_time: 1500
     app.about.name: 'Leden vzw LA:CH'
     app.about.abbr: 'vzw LA:CH'
     app.about.url: 'leden-vzw-lach'
-    app.mailer.from: 'leden@vzw-lach.be'
+    app.mailer.from: 'noreply@leden-vzw-lach.be'
     app.mailer.name: '%app.about.name%'
     app.path.project: '%kernel.project_dir%'
     app.path.public: /public_html
@@ -64,6 +64,6 @@ services:
             - { name: kernel.event_listener, event: vich_uploader.pre_upload }
             - { name: kernel.event_listener, event: vich_uploader.post_upload }
 
-#    App\EventListener\RequestListener:
-#        tags:
-#            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+    App\EventListener\RequestListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
