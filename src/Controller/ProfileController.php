@@ -135,8 +135,8 @@ class ProfileController extends AbstractController
     {
         $viewpoint = $this->manager->getViewpoint();
 
-        return $this->render('event/index.html.twig', [
-            'events' => $this->manager->getPeriodEvents($viewpoint),
+        return $this->render('event/index2.html.twig', [
+            //'events' => $this->manager->getPeriodEvents($viewpoint),
         ]);
     }
 

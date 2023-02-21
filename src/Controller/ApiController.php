@@ -201,10 +201,11 @@ class ApiController extends AbstractController
 
         return $this->json([
             'success' => true,
-            'html' => $this->render('document/module.html.twig', [
-                'documents' => $this->manager->getSpecialDocuments($viewpoint),
+            'html' => $this->render('advert/module_content.html.twig', [
+                'adverts' => $this->manager->getSpecialAdverts($viewpoint),
             ])->getContent(),
         ]);
+
     }
 
     #[Route('/private/documents', name: '_documents', methods: ['GET'])]
@@ -214,8 +215,8 @@ class ApiController extends AbstractController
 
         return $this->json([
             'success' => true,
-            'html' => $this->render('advert/module.html.twig', [
-                'adverts' => $this->manager->getSpecialAdverts($viewpoint),
+            'html' => $this->render('document/module_content.html.twig', [
+                'documents' => $this->manager->getSpecialDocuments($viewpoint),
             ])->getContent(),
         ]);
     }
@@ -227,8 +228,21 @@ class ApiController extends AbstractController
 
         return $this->json([
             'success' => true,
-            'html' => $this->render('event/module.html.twig', [
+            'html' => $this->render('event/module_content.html.twig', [
                 'events' => $this->manager->getUpcomingEvents($viewpoint, 5),
+            ])->getContent(),
+        ]);
+    }
+
+    #[Route('/private/period-events', name: '_period_events', methods: ['GET'])]
+    public function load_period_events(Request $request): Response
+    {
+        $viewpoint = $this->manager->getViewpoint();
+
+        return $this->json([
+            'success' => true,
+            'html' => $this->render('event/index2_content.html.twig', [
+                'events' => $this->manager->getPeriodEvents($viewpoint),
             ])->getContent(),
         ]);
     }
