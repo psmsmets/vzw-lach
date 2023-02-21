@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class UserIcalToken extends Command
+class UserTokens extends Command
 {
     private $doctrine;
     private $entityManager;
@@ -33,8 +33,8 @@ class UserIcalToken extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Generate user ical token if missing.')
-            ->setHelp("This command generates a user ical token if no token is currently set.")
+            ->setDescription('Generate user tokens if missing.')
+            ->setHelp("This command generates a user ical and/or csrf token if any is missing.")
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
         ;
     }
@@ -43,12 +43,13 @@ class UserIcalToken extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $io->title('User :: Ical Token');
+        $io->title('User :: Tokens');
 
         $exec = !($input->getOption('dry-run'));
         if (!$exec) $io->note('Dry mode enabled');
 
-        $count = 0;
+        $countIcal = 0;
+        $countCsrf = 0;
 
         $users = $this->doctrine->getRepository(User::class)->findAll();
 
@@ -56,15 +57,21 @@ class UserIcalToken extends Command
         {
             if (is_null($user->getIcalToken()) or $user->getIcalToken() === "")
             {
-                $io->text(sprintf("Generate token for user %s", $user));
+                $io->text(sprintf("Generate ical token for user %s", $user));
                 if ($exec) $user->setIcalToken();
-                $count++;
+                $countIcal++;
+            }
+            if (is_null($user->getCsrfToken()) or $user->getCsrfToken() === "")
+            {
+                $io->text(sprintf("Generate csrf token for user %s", $user));
+                if ($exec) $user->setCsrfToken();
+                $countCsrf++;
             }
         }
 
         if ($exec) $this->entityManager->flush();
 
-        $io->success(sprintf('Generated "%d" ical tokens.', $count));
+        $io->success(sprintf('Generated "%d" ical and %d csrf tokens.', $countIcal, $countCsrf));
 
         return 0;
 
