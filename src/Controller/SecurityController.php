@@ -127,22 +127,32 @@ class SecurityController extends AbstractController
 
         if ($proceed) {
 
-            $user = $this->getUser();
-            $user->forceRelogin();
-
-            $this->em->persist($user);
-            $this->em->flush();
-
             $session = $this->requestStack->getSession();
-            $session->getFlashBag()->add(
-                'alert-warning',
-                'Je wordt overal uitgelogd.'
-            );
+            $email = $request->query->get('email');
+            $user = $this->getUser();
 
-            $this->logger->debug(sprintf(
-                "User-id %s requested to force relogin at %s from %s.",
-                $user, $user->getForcedReloginAt()->format('r'), $request->getClientIp()
-            ));
+            if ($email === $user->getEmail()) {
+
+                $user->forceRelogin();
+
+                $this->em->persist($user);
+                $this->em->flush();
+
+                $session->getFlashBag()->add(
+                    'alert-success',
+                    'Je wordt overal uitgelogd.'
+                );
+
+                $this->logger->debug(sprintf(
+                    "User-id %s requested to force relogin at %s from %s.",
+                    $user, $user->getForcedReloginAt()->format('r'), $request->getClientIp()
+                ));
+            } else {
+                $session->getFlashBag()->add(
+                    'alert-warning',
+                    'Het e-mailadres komt niet overeen.'
+                );
+            }
         }
 
         return $this->redirectToRoute('profile_index');
