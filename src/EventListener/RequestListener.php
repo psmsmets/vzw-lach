@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Security;
 class RequestListener
 {
     public function __construct(
-        private LoggerInterface $logger,
+        //private LoggerInterface $logger,
         private RequestStack $requestStack,
         private RouterInterface $router,
         private Security $security,
