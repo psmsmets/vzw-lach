@@ -56,7 +56,7 @@ class CategoryRepository extends ServiceEntityRepository
 
     }
 
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
         if (isset($criteria['id']) && is_array($criteria['id'])) {
             $ids = [];
