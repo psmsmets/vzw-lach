@@ -2,9 +2,10 @@
 
   <h5 class="mt-2 text-secondary">Ical integratie</h5>
 
-  <p>Integreer de kalender in jouw kalender app (Apple Calendar, Google Agenda, Microfsoft Outlook, Yahoo!, ...).</p>
-  <p><u>Tip 1:</u> Voeg de kalender toe als url/abonnement om gesynchroniseerd te blijven met de website. Je kalender app update dit vanzelf (minstens 1x per dag, afhankelijk van je gebruikte app).</p>
-  <p><u>Tip 2:</u> Gebruikers van Google Calendar voegen de kalender eerst toe via de browser. Nadien kan je kalender aanvinken in de app.</p>
+  <p>Integreer de kalender in jouw favoriete applicatie naar keuze (Apple Calendar, Google Agenda, Microsoft Outlook, Yahoo!, ...). Gewoon klikken op het juiste icoontje.</p>
+  <p>Voeg de kalender toe als url/abonnement om gesynchroniseerd te blijven met de website. Je applicatie update de kalender vanzelf (minstens 1x per dag, afhankelijk van de applicatie en de instellingen).</p>
+  <p><i class="bi bi-apple"></i> gebruikers stellen het automatisch vernieuwen best manueel in op elk uur.</p>
+  <p><i class="bi bi-google"></i> gebruikers voegen de kalender eerst toe via de browser. Vervolgens kan je kalender aanvinken om te synchroniseren met al je apparaten.</p>
 
   {% set base = url('home')|trim('/', 'right')|replace({'http': 'webcal', 'https': 'webcal'}) %}
   {% set class = 'text-decoration-none ms-1' %}

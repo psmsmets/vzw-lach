@@ -52,16 +52,16 @@ class PostCrudController extends AbstractCrudController
         yield TextField::new('title');
 
         yield TextEditorField::new('body')
+            ->setNumOfRows(30)
             ->setTrixEditorConfig([
                 'blockAttributes' => [
                     'default' => ['tagName' => 'p'],
-                    'heading1' => ['tagName' => 'h3'],
+                    'heading1' => ['tagName' => 'h5'],
                 ],
                 'css' => [
-                    'attachment' => 'bootstrap.css',
+                    'attachment' => '/assets/bootstrap.css',
                 ],
             ])
-            ->setNumOfRows(20)
             ->onlyOnForms()
             ;
 
