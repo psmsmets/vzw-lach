@@ -1,0 +1,21 @@
+{% for document in documents %}
+  <div class="media shadow-sm event event-link p-2 {% if not loop.last %}mb-3{% endif %} text-secondary"
+       onclick="window.open('{{ path('profile_download', {'id': document.id}) }}', '_self');">
+    <span class="badge mr-2 event event-sm bg-primary rounded-1 d-flex">
+      <i class="bi bi-cloud-download m-auto"></i>
+    </span>
+    <div class="media-body ms-2 mb-0 small lh-125">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <strong class="text-gray-dark">{{document.name|length > 30 ? document.name[:30]|trim~' ...' : document.name}}</strong>
+      </div>
+      <span class="d-block small fw-lighter">
+        <i class="bi bi-clock"></i> versie {{document.updatedAt|format_datetime('medium', 'none')}}
+        <i class="bi bi-file-earmark-arrow-down ms-2"></i> {{manager.documentSize(document)}}
+      </span>
+    </div>
+  </div>
+{% else %}
+  <div class="media shadow-sm document p-2 text-secondary">
+    <div class="media-body ms-2 mb-0 small lh-125 text-gray-dark">Geen uitgelichte documenten gevonden.</div>
+  </div>
+{% endfor %}

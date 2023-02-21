@@ -139,7 +139,7 @@ class SecurityController extends AbstractController
                 $this->em->flush();
 
                 $session->getFlashBag()->add(
-                    'alert-success',
+                    'alert-warning',
                     'Je wordt overal uitgelogd.'
                 );
 

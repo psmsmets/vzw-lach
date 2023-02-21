@@ -65,8 +65,8 @@
 
 {% block side %}
   {{ parent() }}
-  <div data-provider="documents"></div>
-  <div data-provider="adverts"></div>
+    {% include 'document/module.html.twig' %}
+    {% include 'advert/module.html.twig' %} 
 {% endblock %}
 
 {% block javascripts %}

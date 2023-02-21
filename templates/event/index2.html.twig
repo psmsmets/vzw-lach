@@ -1,0 +1,23 @@
+{% extends 'profile.html.twig' %}
+
+{% block main %}
+
+  <h1 class="text-secondary">Kalender</h1>
+
+  <div class="p-3 mb-4 bg-white shadow-sm">
+
+    <div data-provider="period-events" data-spinner="true"></div>
+
+  </div>
+
+{% endblock %}
+
+{% block side %}
+  {{ parent() }}
+  {% include 'event/ical.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('vzw-lach-event') }}
+{% endblock %}

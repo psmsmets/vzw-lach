@@ -1,0 +1,18 @@
+{% for event in events %}
+  <div class="media shadow-sm event event-link p-2 text-{% if event.cancelled %}danger{% else %}secondary{% endif %} {% if not loop.last %}mb-3{% endif %}"
+       onclick="window.location='{{ path('profile_event', {'id': event.id}) }}';">
+    <span class="badge mr-2 event event-sm bg-primary rounded-1 d-flex">
+      <span class="m-auto">{{event.startTime|format_datetime(pattern='d')}}<br>{{event.startTime|format_datetime(pattern='MMM')|trim('.')}}</span>
+    </span>
+    <div class="media-body ms-2 mb-0 small lh-125">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <strong class="text-gray-dark">{% if event.cancelled %}<s>{% endif %}{{event.title|length > 30 ? event.title[:30]|trim~' ...' : event.title}}{% if event.cancelled %}</s>{% endif %}</strong>
+      </div>
+      {% if event.location %}<span class="d-block small fw-lighter"><i class="bi bi-pin-map"></i> {{event.location|length > 30 ? event.location[:30]|trim~' ...' : event.location}}</span>{% endif %}
+    </div>
+  </div>
+{% else %}
+  <div class="media shadow-sm document p-2 text-secondary">
+    <div class="media-body ms-2 mb-0 small lh-125 text-gray-dark">Niets gevonden.</div>
+  </div>
+{% endfor %}
