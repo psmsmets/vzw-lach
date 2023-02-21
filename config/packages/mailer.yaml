@@ -2,4 +2,4 @@ framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
         envelope:
-            sender: 'noreply@leden-vzw-lach.be'
+            sender: '%app.mailer.from%'
