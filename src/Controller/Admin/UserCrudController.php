@@ -11,7 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\{BatchActionDto, EntityDto};
 use EasyCorp\Bundle\EasyAdminBundle\Field\{FormField, IdField, AssociationField, BooleanField, ChoiceField, EmailField, TextField, TelephoneField};
-use EasyCorp\Bundle\EasyAdminBundle\Filter\{BooleanFilter};
+use EasyCorp\Bundle\EasyAdminBundle\Filter\{ArrayFilter, BooleanFilter};
 use Symfony\Component\Form\Extension\Core\Type\{PasswordType, RepeatedType};
 use Symfony\Component\Form\{FormBuilderInterface, FormEvent, FormEvents};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -159,6 +159,16 @@ class UserCrudController extends AbstractCrudController
         return $filters
             ->add('createdAt')
             ->add('enabled')
+            ->add('viewmaster')
+            ->add(ArrayFilter::new('roles')
+                ->setChoices([
+                    'ROLE_USER' => 'ROLE_USER',
+                    'ROLE_MANAGER' => 'ROLE_MANAGER',
+                    'ROLE_ADMIN' => 'ROLE_ADMIN',
+                    'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
+                ])
+            )
+            ->add('lastLoginAt')
         ;
     }
 

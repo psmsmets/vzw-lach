@@ -143,12 +143,12 @@ class ProfileManager
 
     public function getPosts($obj, int $page = 1): array
     {
-        return $this->postRepository->findPosts($obj, null, false, Post::NUMBER_OF_ITEMS, $page);
+        return $this->postRepository->findPosts($obj, null, null, Post::NUMBER_OF_ITEMS, $page);
     }
 
     public function getPostPages($obj): int 
     {
-        return (int) ceil($this->postRepository->countPosts($obj, null, false) / Post::NUMBER_OF_ITEMS);
+        return (int) ceil($this->postRepository->countPosts($obj, null, null) / Post::NUMBER_OF_ITEMS);
     }
 
     public function getSpecialPosts($obj): array

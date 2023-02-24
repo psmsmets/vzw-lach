@@ -67,12 +67,6 @@ class Post
         return $this->getTitle();
     }
 
-    #[ORM\PreUpdate]
-    public function preUpdate()
-    {
-        $this->setUpdatedAt();
-    }
-
     public function getId(): ?Uuid
     {
         return $this->id;
@@ -163,6 +157,7 @@ class Post
     public function setTitle(string $title): self
     {
         $this->title = $title;
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -175,6 +170,7 @@ class Post
     public function setBody(string $body): self
     {
         $this->body = $body;
+        $this->setUpdatedAt();
 
         return $this;
     }
