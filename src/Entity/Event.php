@@ -66,6 +66,7 @@ class Event
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'events')]
     private Collection $categories;
 
+    private $nullifyEndTime = false;
     private $overrule = false;
 
     public function __construct()
@@ -90,8 +91,6 @@ class Event
     #[ORM\PreUpdate]
     public function preUpdate()
     {
-        $this->setUpdatedAt();
-
         $this->setTrueStartTime();
         $this->setTrueEndTime();
     }
@@ -193,6 +192,7 @@ class Event
     public function setStartTime(\DateTimeImmutable $startTime): self
     {
         $this->startTime = $startTime;
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -222,6 +222,7 @@ class Event
     public function setEndTime(?\DateTimeImmutable $endTime): self
     {
         $this->endTime = $endTime;
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -234,15 +235,7 @@ class Event
 
         } else {
 
-            if (is_null($this->endTime)) {
-
-                $end = $this->startTime;
-
-            } else {
-
-                $end = $this->endTime;
-
-            }
+            $end = is_null($this->endTime) ? $this->startTime : $this->endTime;
 
             return $end->setTime(23, 59, $seconds ? 59 : 00);
 
@@ -256,7 +249,7 @@ class Event
 
     private function setTrueEndTime(): self
     {
-        $this->endTime = $this->trueEndTime();
+        if (!is_null($this->endTime)) $this->endTime = $this->trueEndTime();
 
         return $this;
     }
@@ -337,11 +330,6 @@ class Event
         }
     }
 
-    public function getFormattedMonth(): ?string
-    {
-        return strftime('%B', $this->trueEndTime()->getTimestamp());
-    }
-
     public function isAllDay(): ?bool
     {
         return $this->allDay;
@@ -355,6 +343,7 @@ class Event
     public function setAllDay(bool $allDay): self
     {
         $this->allDay = $allDay;
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -391,6 +380,7 @@ class Event
     public function setTitle(string $title): self
     {
         $this->title = $title;
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -403,6 +393,7 @@ class Event
     public function setBody(string $body): self
     {
         $this->body = $body;
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -429,6 +420,7 @@ class Event
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -441,6 +433,7 @@ class Event
     public function setLocation(?string $location): self
     {
         $this->location = $location;
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -453,6 +446,7 @@ class Event
     public function setUrl(?string $url): self
     {
         $this->url = $url;
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -489,6 +483,19 @@ class Event
     public function setOverruled(bool $overrule): self
     {
         $this->overrule = $overrule;
+
+        return $this;
+    }
+
+    public function isNullifyEndTime(): ?bool
+    {
+        return $this->nullifyEndTime;
+    }
+
+    public function setNullifyEndTime(bool $nullifyEndTime): self
+    {
+        $this->nullifyEndTime = $nullifyEndTime;
+        if ($nullifyEndTime) $this->endTime = null;
 
         return $this;
     }
