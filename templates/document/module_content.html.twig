@@ -10,7 +10,7 @@
       </div>
       <span class="d-block small fw-lighter">
         <i class="bi bi-clock"></i> versie {{document.updatedAt|format_datetime('medium', 'none')}}
-        <i class="bi bi-file-earmark-arrow-down ms-2"></i> {{manager.documentSize(document)}}
+        <i class="{{document.icon}} ms-2"></i> {{manager.documentSize(document)}}
       </span>
     </div>
   </div>

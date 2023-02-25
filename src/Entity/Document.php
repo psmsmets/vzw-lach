@@ -259,7 +259,42 @@ class Document
     public function getExtension(): ?string
     {
         $elements = explode('.', $this->documentName);
-        return end($elements);
+        return strtolower(end($elements));
+    }
+
+    public function getIcon(bool $fill = false): string
+    {
+        $i = ['file', 'earmark'];
+
+        switch ($this->getExtension()) { // MIME TYPE?
+            case 'doc':
+            case 'docx':
+                $i[] = 'word';
+                break;
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+                $i[] = 'image';
+                break;
+            case 'mp3':
+            case 'wav':
+                $i[] = 'music';
+                break;
+            case 'pdf':
+                $i[] = 'pdf';
+                break;
+            case 'xls':
+            case 'xlsx':
+            case 'csv':
+                $i[] = 'excel';
+                break;
+            default:
+                $i[] = 'arrow-down';
+        }
+
+        if ($fill) $i[] = 'fill';
+
+        return sprintf("bi bi-%s", implode('-', $i));
     }
 
     public function getFullName(): ?string
