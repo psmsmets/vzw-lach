@@ -55,3 +55,6 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
     </IfModule>
 </IfModule>
 ```
+
+## .well-known : https://securitytxt.org
+Add the security policy in the folder `.well-known` according to `https://securitytxt.org`. 
