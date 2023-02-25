@@ -1,0 +1,4 @@
+Contact: mailto:security@steps4it.be
+Expires: 2023-12-31T22:59:00.000Z
+Preferred-Languages: en, nl
+Canonical: https://leden-vzw-lach.be/.well-known/security.txt

@@ -22,6 +22,15 @@ A summary based on https://symfony.com/doc/current/deployment.html
 ## .htaccess
 
 ```
+# HSTS
+order allow,deny 
+allow from all
+Header always set Access-Control-Allow-Origin "*" 
+Header always set Access-Control-Allow-Methods "POST,GET,OPTIONS,DELETE,PUT"
+Header always set Access-Control-Max-Age "3600"
+Header always set Access-Control-Allow-Headers "Content-Type,Authorization"
+Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" "expr=%{HTTPS} == 'on'"
+
 # www to non-www
 RewriteEngine On
 RewriteBase /
