@@ -83,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->viewmaster = false;
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = null;
-        $this->password = bin2hex(random_bytes(64)); // null ??
+        $this->password = bin2hex(random_bytes(64));
         $this->passwordUpdatedAt = null;
         $this->icalToken = $this->generateToken();
         $this->icalTokenUpdatedAt = null;

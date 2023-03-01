@@ -91,6 +91,7 @@ class UserCrudController extends AbstractCrudController
             ])
             ->setRequired($pageName === Crud::PAGE_NEW)
             ->onlyOnForms()
+            ->onlyWhenUpdating()
             ;
 
         yield BooleanField::new('isAdmin')->renderAsSwitch(false)->hideOnForm();
@@ -110,9 +111,9 @@ class UserCrudController extends AbstractCrudController
 
         yield FormField::addTab('Opties')->hideOnForm();
 
-        yield Field::new('createdAt');
+        yield Field::new('createdAt')->hideOnForm();
         yield Field::new('updatedAt')->onlyOnDetail();
-        yield Field::new('lastLoginAt');
+        yield Field::new('lastLoginAt')->hideOnForm();
         yield Field::new('forcedReloginAt')->onlyOnDetail();
         yield Field::new('passwordUpdatedAt')->onlyOnDetail();
         yield Field::new('icalTokenUpdatedAt')->onlyOnDetail();
@@ -140,6 +141,9 @@ class UserCrudController extends AbstractCrudController
 
             $form = $event->getForm();
             if (!$form->isValid()) {
+                return;
+            }
+            if (!$form->has('password')) {
                 return;
             }
             $user = $form->getData();
