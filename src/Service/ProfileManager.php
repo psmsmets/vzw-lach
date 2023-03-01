@@ -111,9 +111,9 @@ class ProfileManager
         return $this->associateRepository->find($uuid);
     }
 
-    public function getUpcomingEvents($obj, int $limit = 7): array
+    public function getUpcomingEvents($obj, ?int $limit = 7, ?\DateTimeInterface $t0 = new \DateTime()): array
     {
-        return $this->eventRepository->findEvents($obj, null, null, $limit);
+        return $this->eventRepository->findEvents($obj, $t0, null, $limit);
     }
 
     public function getPeriodEvents($obj, $from = null, $until = null): array
