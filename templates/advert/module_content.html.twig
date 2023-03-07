@@ -4,9 +4,9 @@
     <span class="badge mr-2 event event-sm bg-secondary rounded-1 d-flex">
       <i class="bi bi-search m-auto"></i> 
     </span>
-    <div class="media-body ms-2 mb-0 small lh-125" style="width:85%">
+    <div class="media-body ms-2 mb-0 small lh-125 text-truncate" style="width:85%">
       <div class="d-flex justify-content-between align-items-center w-100">
-        <strong class="text-gray-dark">{{advert.title|length > 30 ? advert.title[:30]|trim~' ...' : advert.title}}</strong>
+        <strong class="text-gray-dark">{{advert.title}}</strong>
       </div>
       <div class="progress my-2" role="progressbar" aria-label="{{advert.title}}"
            aria-valuenow="{{advert.progress}}" aria-valuemin="0" aria-valuemax="100" style="height: 3px">
