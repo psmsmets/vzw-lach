@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Uuid;
 
 #[Route('/api', name: 'api')]
@@ -36,7 +37,7 @@ class ApiController extends AbstractController
 
         $this->logger->debug(sprintf("Associate-id %s succesfully requested the ical object.", $associate));
 
-        return $this->createVcalendarResponse($associate);
+        return $this->createVcalendarResponse($associate, $request, $token);
     }
 
     #[Route('/ical/u/{id}/hgcvhkv.ics', name: '_ical_events_user', methods: ['GET'])]
@@ -47,15 +48,22 @@ class ApiController extends AbstractController
 
         $this->logger->debug(sprintf("User-id %s succesfully requested the ical object.", $user));
 
-        return $this->createVcalendarResponse($user);
+        return $this->createVcalendarResponse($user, $request, $token);
     }
 
-    private function createVcalendarResponse($obj) : Response
+    private function createVcalendarResponse($obj, Request $request, string $token) : Response
     {
         // https://github.com/iCalcreator/iCalcreator
         $tz = "Europe/Brussels";
         setlocale(LC_ALL, 'nl_BE');
 
+        // url to route
+        $routeName = $request->attributes->get('_route');
+        $routeParameters = $request->attributes->get('_route_params');
+        $routeParameters['token'] = $token;
+        $routeUrl = $this->generateUrl($routeName, $routeParameters, UrlGeneratorInterface::ABSOLUTE_URL);
+
+        // cal name and description
         if ($obj instanceof User) {
             $name = $obj->getEmail();
             $caldesc = sprintf(
@@ -76,8 +84,13 @@ class ApiController extends AbstractController
 
         // create a new calendar with calendaring info
         $vcalendar = Vcalendar::factory([Vcalendar::UNIQUE_ID => "leden-vzw-lach.be"])
-            ->setMethod(Vcalendar::PUBLISH)
+            //->setMethod(Vcalendar::PUBLISH)
+            ->setMethod(Vcalendar::REFRESH)
             ->setRefreshinterval('PT1H')
+            ->setDescription($caldesc)
+            ->setUrl($routeUrl)
+            ->setColor('176:24:36')
+            ->setXprop('X-PUBLISHED-TTL', 'PT1H')
             ->setXprop(Vcalendar::X_WR_CALNAME, $calname)
             ->setXprop(Vcalendar::X_WR_CALDESC, $caldesc)
             ->setXprop(Vcalendar::X_WR_RELCALID, $obj->getId()->toRfc4122())
@@ -90,11 +103,7 @@ class ApiController extends AbstractController
         // add Event to the Vcalendar
         foreach ($events as $event){
 
-            $url = sprintf("%s://%s%s",
-                isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http",
-                rtrim($_SERVER['HTTP_HOST'], '/'),
-                $this->generateUrl('profile_event', ['id' => $event->getId()])
-            );
+            $url = $this->generateUrl('profile_event', ['id' => $event->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $desc = [sprintf("Url: %s", $url)];
             if ($event->isCancelled()) $desc[] = sprintf(
