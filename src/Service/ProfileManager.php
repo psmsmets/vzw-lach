@@ -298,7 +298,7 @@ class ProfileManager
                     );
                 }
             }
-            $session->set('verifyAssociatesOnstageAfter', $now->modify('+3 days'));
+            $session->set('verifyAssociatesOnstageAfter', $now->modify('+7 days'));
         }
     }
 

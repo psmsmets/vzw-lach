@@ -6,6 +6,7 @@
   <p>Voeg de kalender toe als url/abonnement om gesynchroniseerd te blijven met de website. Je applicatie update de kalender vanzelf (minstens 1x per dag, afhankelijk van de applicatie en de instellingen).</p>
   <p><i class="bi bi-apple"></i> gebruikers stellen het automatisch vernieuwen best manueel in op elk uur.</p>
   <p><i class="bi bi-google"></i> gebruikers voegen de kalender eerst toe via de browser. Vervolgens kan je kalender aanvinken om te synchroniseren met al je apparaten.</p>
+  <p><i class="bi bi-microsoft"></i> gebruikers kiezen tussen Outlook Office en Outlook Live.</p>
 
   {% set base = url('home')|trim('/', 'right')|replace({'http': 'webcal', 'https': 'webcal'}) %}
   {% set class = 'text-decoration-none ms-1' %}
@@ -13,20 +14,25 @@
   <h6 class="text-secondary">1 kalender voor al jouw deelnemers</h6>
   <ul class="list-unstyled">
     {% set url = base~path('api_ical_events_user', {'id': app.user.id, 'token': app.user.icaltoken}) %}
+    {% set name = "HGCVHKV"|url_encode %}
     {% set msg = "De kalender voor al je deelnemers in" %}
     <li>
       {{app.user.email}}
-      <a href="{{url}}" class="{{class}}" alt="Apple Calendar"
+      <a href="{{url}}" class="{{class}}" alt="Apple Calendar" target="_Blank"
          data-toggle="tooltip" data-placement="bottom" title="{{msg}} Apple Calendar">
         <i class="bi bi-apple"></i>
       </a>
-      <a href="https://calendar.google.com/calendar/render?cid={{url}}" class="{{class}}" alt="Google Calendar"
-         data-toggle="tooltip" data-placement="bottom" title="{{msg}} Google Calendar">
+      <a href="https://calendar.google.com/calendar/render?cid={{url}}&title={{name}}" class="{{class}}" target="_Blank"
+         alt="Google Calendar" data-toggle="tooltip" data-placement="bottom" title="{{msg}} Google Calendar">
         <i class="bi bi-google"></i>
       </a>
-      <a href="https://outlook.live.com/?rru=addsubscription&url={{url}}" class="{{class}}" alt="Microsoft Outlook"
-         data-toggle="tooltip" data-placement="bottom" title="{{msg}} Microsoft Outlook">
-        <i class="bi bi-microsoft"></i>
+      <a href="https://outlook.live.com/?rru=addsubscription&url={{url}}&name={{name}}" class="{{class}}" target="_Blank"
+         alt="Microsoft Live" data-toggle="tooltip" data-placement="bottom" title="{{msg}} Microsoft Live">
+        <i class="bi bi-microsoft"></i>L
+      </a>
+      <a href="https://outlook.office.com/?rru=addsubscription&url={{url}}&name={{name}}" class="{{class}}" target="_Blank"
+         alt="Microsoft Office" data-toggle="tooltip" data-placement="bottom" title="{{msg}} Microsoft Office">
+        <i class="bi bi-microsoft"></i>O
       </a>
     </li>
   </ul>
@@ -35,20 +41,25 @@
   <ul class="list-unstyled">
   {% for associate in app.user.enabledAssociates %}
     {% set url = base~path('api_ical_events_associate', {'id': associate.id, 'token': app.user.icaltoken}) %}
+    {% set name = "HGCVHKV %s"|format(associate)|url_encode %}
     {% set msg = "De kalender van %s in"|format(associate) %}
     <li>
       {{associate}}
-      <a href="{{url}}" class="{{class}}" alt="Apple Calendar"
+      <a href="{{url}}" class="{{class}}" alt="Apple Calendar" target="_Blank"
          data-toggle="tooltip" data-placement="bottom" title="{{msg}} Apple Calendar">
         <i class="bi bi-apple"></i>
       </a>
-      <a href="https://calendar.google.com/calendar/render?title=HGCVHKV&cid={{url}}" class="{{class}}" alt="Google Calendar"
-         data-toggle="tooltip" data-placement="bottom" title="{{msg}} Google Calendar">
+      <a href="https://calendar.google.com/calendar/render?cid={{url}}&title={{name}}" class="{{class}}" target="_Blank"
+         alt="Google Calendar" data-toggle="tooltip" data-placement="bottom" title="{{msg}} Google Calendar">
         <i class="bi bi-google"></i>
       </a>
-      <a href="https://outlook.live.com/?rru=addsubscription&url={{url}}" class="{{class}}" alt="Microsoft Outlook"
-         data-toggle="tooltip" data-placement="bottom" title="{{msg}} Microsoft Outlook">
-        <i class="bi bi-microsoft"></i>
+      <a href="https://outlook.live.com/?rru=addsubscription&url={{url}}&name={{name}}" class="{{class}}" target="_Blank"
+         alt="Microsoft Live" data-toggle="tooltip" data-placement="bottom" title="{{msg}} Microsoft Live">
+        <i class="bi bi-microsoft"></i>L
+      </a>
+      <a href="https://outlook.office.com/?rru=addsubscription&url={{url}}&name={{name}}" class="{{class}}" target="_Blank"
+         alt="Microsoft Office" data-toggle="tooltip" data-placement="bottom" title="{{msg}} Microsoft Office">
+        <i class="bi bi-microsoft"></i>O
       </a>
     </li>
   {% endfor %}
