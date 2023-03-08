@@ -109,8 +109,8 @@ class AssociateMeasurements
     {
         if (
             !is_null($this->fittingSize) and
-            !is_null($this->hairLength) and
-            !is_null($this->hairColor) and
+            //!is_null($this->hairLength) and
+            //!is_null($this->hairColor) and
             !is_null($this->height) and
             !is_null($this->chestGirth) and
             !is_null($this->waistGirth) and
@@ -173,7 +173,7 @@ class AssociateMeasurements
         return $this->fittingSize;
     }
 
-    public function setFittingSize(?string $fittingSize): self
+    public function setFittingSize(?int $fittingSize): self
     {
         $this->fittingSize = $fittingSize;
 

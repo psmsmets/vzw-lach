@@ -6,6 +6,7 @@ use App\Controller\Admin\CategoryCrudController;
 use App\Controller\Admin\UserCrudController;
 use App\Entity\Associate;
 use App\Entity\AssociateDetails;
+use App\Entity\AssociateMeasurements;
 use App\Form\AssociateBaseType;
 use App\Controller\Admin\Filter\{AssociationDateTimeFilter, AssociationNumericFilter, AssociationTextFilter, GenderFilter};
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, Filters, KeyValueStore};
@@ -161,9 +162,18 @@ class AssociateCrudController extends AbstractCrudController
         yield FormField::addPanel('Uiterlijk en kledingmaat');
 
         yield BooleanField::new('measurements.completed', 'Volledig')->hideOnIndex();
-        yield Field::new('measurements.hairColor', 'Haarkleur')->hideOnIndex();
-        yield Field::new('measurements.hairType', 'Haartype')->hideOnIndex();
-        yield Field::new('measurements.hairLength', 'Haarlengte')->hideOnIndex();
+        yield ChoiceField::new('measurements.hairColor', 'Haarkleur')
+            ->setChoices(AssociateMeasurements::HAIRCOLORS)
+            ->hideOnIndex()
+            ;
+        yield ChoiceField::new('measurements.hairType', 'Haartype')
+            ->setChoices(AssociateMeasurements::HAIRTYPES)
+            ->hideOnIndex()
+            ;
+        yield ChoiceField::new('measurements.hairLength', 'Haarlengte')
+            ->setChoices(AssociateMeasurements::HAIRLENGTHS)
+            ->hideOnIndex()
+            ;
         yield Field::new('measurements.fittingSize', 'Confectiemaat')->hideOnIndex();
         yield Field::new('measurements.height', 'Lengte in cm')->hideOnIndex();
         yield Field::new('measurements.chestGirth', 'Borstomvang in cm')->hideOnIndex();

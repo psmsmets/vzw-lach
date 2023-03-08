@@ -1,6 +1,9 @@
 require('../css/vzw-lach.scss');
 
 import * as bootstrap from 'bootstrap'
+import { createPopper } from '@popperjs/core';
+
+var Clipboard = require('clipboard');
 
 //const $ = require('jquery');
 //window.$ = $;
@@ -16,14 +19,47 @@ import * as bootstrap from 'bootstrap'
 //require('bootstrap/js/dist/toast');
 
 const tooltipTriggerList = document.querySelectorAll('[data-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+const tooltipList = [...tooltipTriggerList].map(tooltipTrigger => new bootstrap.Tooltip(tooltipTrigger))
 
-const toastElList = document.querySelectorAll('.toast')
-const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
+const toastElementList = document.querySelectorAll('.toast')
+const toastList = [...toastElementList].map(toastElement => new bootstrap.Toast(toastElement))
 Array.prototype.filter.call(toastList, function(toast, {delay = 7500}) {
     toast.show();
 });
 
+function setTooltip(btn, message) {
+    btn.tooltip('hide')
+        .attr('data-original-title', message)
+        .tooltip('show');
+}
+
+function hideTooltip(btn) {
+    setTimeout(function() {
+        btn.tooltip('hide');
+    }, 1000);
+}
+
+const cbTriggerList = document.querySelectorAll('[data-clipboard-text]')
+const cbList = [...cbTriggerList].map(cbTrigger => new Clipboard(cbTrigger))
+Array.prototype.filter.call(cbList, function(clipboard) {
+
+    clipboard.on('success', function (e) {
+        //console.info('Action:', e.action);
+        //console.info('Text:', e.text);
+        //console.info('Trigger:', e.trigger);
+        //e.trigger.style.transition = "transform .5s ease-in-out";
+        //e.trigger.style.transform = "rotate(20deg) scale(1.5)";
+
+        e.clearSelection();
+        return false;
+
+    });
+
+    /*clipboard.on('error', function (e) {
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+    });*/
+});
 
 $(window).on( "load", function() {
     const asyncElList = document.querySelectorAll('[data-provider]')
