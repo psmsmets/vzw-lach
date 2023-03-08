@@ -173,7 +173,7 @@ class AssociateMeasurements
         return $this->fittingSize;
     }
 
-    public function setFittingSize(?string $fittingSize): self
+    public function setFittingSize(?int $fittingSize): self
     {
         $this->fittingSize = $fittingSize;
 

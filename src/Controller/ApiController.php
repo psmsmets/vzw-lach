@@ -62,6 +62,8 @@ class ApiController extends AbstractController
         $routeParameters = $request->attributes->get('_route_params');
         $routeParameters['token'] = $token;
         $routeUrl = $this->generateUrl($routeName, $routeParameters, UrlGeneratorInterface::ABSOLUTE_URL);
+        // https and http to webcal
+        $routeUrl = str_replace("http:", "webcal:", str_replace("https:", "webcal:", $routeUrl));
 
         // cal name and description
         if ($obj instanceof User) {
