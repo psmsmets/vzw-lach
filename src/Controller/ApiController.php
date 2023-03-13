@@ -102,6 +102,9 @@ class ApiController extends AbstractController
         // get events from obj [Associate or User]
         $events = $this->manager->getPeriodEvents($obj);
 
+        // formatted by locale
+        $fmt = new \IntlDateFormatter('nl_BE', \IntlDateFormatter::LONG, \IntlDateFormatter::SHORT);
+
         // add Event to the Vcalendar
         foreach ($events as $event){
 
@@ -109,7 +112,7 @@ class ApiController extends AbstractController
 
             $desc = [sprintf("Url: %s", $url)];
             if ($event->isCancelled()) $desc[] = sprintf(
-                "[GEANNULEERD]\nDit event is geannuleerd op %s.", $event->getCancelledAt()->format("D, d M y H:i")
+                "[GEANNULEERD]\nDit event is geannuleerd op %s.", $fmt->format($event->getCancelledAt())
             );
             $desc[] = sprintf("%s", $event->getText());
             if ($event->getUrl()) $desc[] = sprintf("Meer informatie: %s", $event->getUrl());
