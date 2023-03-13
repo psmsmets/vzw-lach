@@ -89,10 +89,19 @@ class EventCrudController extends AbstractCrudController
 
         yield DateTimeField::new('startTime');
         yield DateTimeField::new('endTime');
-        yield BooleanField::new('nullifyEndTime')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('nullifyEndTime', 'Geen einduur (tot het einde van de dag)')
+            ->renderAsSwitch(true)
+            ->onlyOnForms()
+            ;
 
-        yield BooleanField::new('allDay')->renderAsSwitch(true)->onlyOnForms();
-        yield BooleanField::new('allDay')->renderAsSwitch(false)->hideOnForm();
+        yield BooleanField::new('allDay', 'Hele dag (geen begin en einduur)')
+            ->renderAsSwitch(true)
+            ->onlyOnForms()
+            ;
+        yield BooleanField::new('allDay')
+            ->renderAsSwitch(false)
+            ->hideOnForm()
+            ;
 
         yield FormField::addTab('Who');
         yield FormField::addPanel('Who');
