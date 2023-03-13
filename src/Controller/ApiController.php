@@ -241,7 +241,7 @@ class ApiController extends AbstractController
         return $this->json([
             'success' => true,
             'html' => $this->render('event/module_content.html.twig', [
-                'events' => $this->manager->getUpcomingEvents($viewpoint, 5, null),
+                'events' => $this->manager->getUpcomingEvents($viewpoint, 6, null),
             ])->getContent(),
         ]);
     }

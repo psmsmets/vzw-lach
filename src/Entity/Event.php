@@ -78,7 +78,7 @@ class Event
         $this->cancelled = false;
         $this->archived = false;
         $this->startTime = new \DateTimeImmutable("today noon"); 
-        $this->endTime = new \DateTimeImmutable("today noon");
+        $this->endTime = $this->startTime->modify('+1 hour');
         $this->allDay = true;
         $this->categories = new ArrayCollection();
     }
@@ -221,8 +221,10 @@ class Event
 
     public function setEndTime(?\DateTimeImmutable $endTime): self
     {
-        $this->endTime = $endTime;
-        $this->setUpdatedAt();
+        if (is_null($endTime) or $endTime > $this->startTime) {
+            $this->endTime = $endTime;
+            $this->setUpdatedAt();
+        }
 
         return $this;
     }
