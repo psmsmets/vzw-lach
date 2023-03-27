@@ -57,11 +57,13 @@ class AssociateExport {
 
             if (!$associate->isEnabled() or count($associate->getCategories()) == 0) continue;
 
+            $bday = $associate->getDetails()->getBirthdate();
+
             $data = [
                 $associate->getLastname(),
                 $associate->getFirstname(),
                 $associate->getAddress()->getAddress(),
-                $associate->getDetails()->getBirthdate()->format('Y-m-d'),
+                $bday ? $bday->format('Y-m-d') : 'n/a',
                 $associate->isOnstage() ? 'acteur/figurant' : 'vrijwilliger',
                 $associate->getCategoryNames(),
             ];

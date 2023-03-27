@@ -115,7 +115,7 @@ class ApiController extends AbstractController
     #[Route('/admin/export/associate-details', name: '_export_associate_details', methods: ['GET'])]
     public function export_associate_details(Request $request): void
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $this->export->exportDetails($this->manager->associateRepository->findEnabled());
