@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Associate;
 use App\Entity\User;
-use App\Service\ProfileManager;
+use App\Service\AssociateExport;
 use App\Service\IcalService;
+use App\Service\ProfileManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +22,9 @@ class ApiController extends AbstractController
 {
     public function __construct(
         private LoggerInterface $logger,
-        private ProfileManager $manager,
+        private AssociateExport $export,
         private IcalService $ical,
+        private ProfileManager $manager,
     )
     {}
 
@@ -99,5 +101,23 @@ class ApiController extends AbstractController
                 'events' => $this->manager->getPeriodEvents($viewpoint),
             ])->getContent(),
         ]);
+    }
+
+    #[Route('/admin/export/associate-birthdays', name: '_export_associate_birthdays', methods: ['GET'])]
+    public function export_associate_birthdays(Request $request): void
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->export->exportBdays($this->manager->associateRepository->findEnabled());
+    }
+
+    #[Route('/admin/export/associate-details', name: '_export_associate_details', methods: ['GET'])]
+    public function export_associate_details(Request $request): void
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->export->exportDetails($this->manager->associateRepository->findEnabled());
     }
 }
