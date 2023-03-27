@@ -20,17 +20,13 @@ use Symfony\Component\Uid\Uuid;
 #[Route('/mijn-profiel', name: 'profile')]
 class ProfileController extends AbstractController
 {
-    private $manager;
-
     public function __construct(
-        ProfileManager $profileManager,
         private LoggerInterface $logger,
+        private ProfileManager $manager,
         private RequestStack $requestStack,
         private Security $security,
     )
-    {
-        $this->manager = $profileManager;
-    }
+    {}
 
     #[Route('/', name: '_index', methods: ['GET'])]
     public function index(Request $request): Response

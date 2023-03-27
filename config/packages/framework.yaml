@@ -17,6 +17,8 @@ framework:
         enable_annotations: true
         default_context:
             datetime_format: Y-m-d
+            enable_max_depth: true
+            # yaml_indentation: 2 # Symfony 6.2
 
     #esi: true
     #fragments: true

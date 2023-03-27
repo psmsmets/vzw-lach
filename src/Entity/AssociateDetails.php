@@ -83,6 +83,11 @@ class AssociateDetails
         return $this;
     }
 
+    public function getBirthday(): ?\DateTimeImmutable
+    {
+        return new \DateTimeImmutable(sprintf("this year %s", $this->birthdate->format('m/d')));
+    }
+
     public function hasBirthday(): bool
     {
         if (is_null($this->birthdate)) return false;

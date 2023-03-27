@@ -65,9 +65,10 @@ class AdvertRepository extends ServiceEntityRepository
     /**
      * @return Advert[] Returns an array of Advert objects
      */
-    public function findAdverts($limit = null, $page = 1, $progress = null, ?bool $completed = null): array
+    public function findAdverts(
+        $limit = null, $page = 1, $progress = null, ?bool $completed = null, bool $shuffle = false
+    ): array
     {
-        /* todo: optionally filter completed */
         $limit = is_null($limit) ? Advert::NUMBER_OF_ITEMS : $limit;
         $offset = ( $page < 1 ? 0 : $page - 1 ) * Advert::NUMBER_OF_ITEMS;
 
@@ -89,12 +90,18 @@ class AdvertRepository extends ServiceEntityRepository
             $qb->andWhere('ad.completed = :completed');
         }
 
-        $qb->addOrderBy('ad.progress', 'ASC');
-        $qb->addOrderBy('ad.publishedAt', 'DESC');
-        $qb->setFirstResult($offset);
-        $qb->setMaxResults($limit);
+        if ($shuffle) {
+            $result = $qb->getQuery()->getResult();
+            shuffle($result);
+        } else {
+            $qb->addOrderBy('ad.progress', 'ASC');
+            $qb->addOrderBy('ad.publishedAt', 'DESC');
+            $qb->setMaxResults($limit);
+            $qb->setFirstResult($offset);
+            $result = $qb->getQuery()->getResult();
+        }
 
-        return $qb->getQuery()->getResult();
+        return $shuffle ? array_slice($result, 0, $limit) : $result;
     }
 
     public function countAdverts(): int
