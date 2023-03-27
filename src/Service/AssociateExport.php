@@ -18,7 +18,8 @@ class AssociateExport {
     public function exportBdays(array $associates) : void
     {
         $user = $this->security->getUser();
-        $this->logger->info(sprintf("Admin %s (%s) requested to export associate birthdays.", $user, $user->getEmail()));
+        $this->logger->info(sprintf("User %s (%s) requested to export %d associate birthdays.",
+                                    $user, $user->getEmail(), count($associates)));
 
         $headers = ['verjaardag', 'naam', 'voornaam', 'leeftijd'];
         $datas = [];
@@ -48,7 +49,8 @@ class AssociateExport {
     public function exportDetails(array $associates) : void 
     {
         $user = $this->security->getUser();
-        $this->logger->info(sprintf("Admin %s (%s) requested to export associate details.", $user, $user->getEmail()));
+        $this->logger->info(sprintf("User %s (%s) requested to export %d associate details.",
+                                    $user, $user->getEmail(), count($associates)));
 
         $headers = ['naam', 'voornaam', 'adres', 'geboortedatum', 'functieomschrijving', 'groep(en)'];
         $datas = [];
@@ -57,11 +59,13 @@ class AssociateExport {
 
             if (!$associate->isEnabled() or count($associate->getCategories()) == 0) continue;
 
+            $bday = $associate->getDetails()->getBirthdate();
+
             $data = [
                 $associate->getLastname(),
                 $associate->getFirstname(),
                 $associate->getAddress()->getAddress(),
-                $associate->getDetails()->getBirthdate()->format('Y-m-d'),
+                $bday ? $bday->format('Y-m-d') : 'n/a',
                 $associate->isOnstage() ? 'acteur/figurant' : 'vrijwilliger',
                 $associate->getCategoryNames(),
             ];

@@ -3,8 +3,8 @@
     "vzw-lach": {
       "js": [
         "/assets/build/runtime.bff8fc39.js",
-        "/assets/build/755.62c4e74d.js",
-        "/assets/build/472.685153aa.js",
+        "/assets/build/755.600972c6.js",
+        "/assets/build/472.e363bc51.js",
         "/assets/build/vzw-lach.b5404135.js"
       ],
       "css": [
@@ -14,7 +14,7 @@
     "vzw-lach-advert": {
       "js": [
         "/assets/build/runtime.bff8fc39.js",
-        "/assets/build/755.62c4e74d.js",
+        "/assets/build/755.600972c6.js",
         "/assets/build/vzw-lach-advert.ca7ca2a0.js"
       ]
     },
@@ -27,7 +27,7 @@
     "vzw-lach-event": {
       "js": [
         "/assets/build/runtime.bff8fc39.js",
-        "/assets/build/755.62c4e74d.js",
+        "/assets/build/755.600972c6.js",
         "/assets/build/vzw-lach-event.4925c50f.js"
       ]
     },
@@ -70,8 +70,8 @@
   },
   "integrity": {
     "/assets/build/runtime.bff8fc39.js": "sha384-tJE3U0zLv/jw8k7UnIsfe1+q/1os0XMGwj+gLmctK9QvXWtdGhEvCbd96+hFM/qb",
-    "/assets/build/755.62c4e74d.js": "sha384-J5HcR1EhGFGYbqLpOcw4/r4ucv4Twwm1i/Xs930cIukGx6EyDl8Yyz3Nlf6vbSL5",
-    "/assets/build/472.685153aa.js": "sha384-ilpAksBgZljxQLtOVCOaTJoljDh5rYouvymXWi3ZKzZ9YT7QQG8hKxYxJ+opq1R2",
+    "/assets/build/755.600972c6.js": "sha384-62sMYKZxKi2mwwyMitdHzUC34QEUIFD5AHIeYda8k+fgPx7A05Auh8qZPcqT9NLM",
+    "/assets/build/472.e363bc51.js": "sha384-ixgEzRaoGNeDHwa9Jq/yCZ6RUTAwLTJtvLjPppyT93yBOnoCSxD2P2mxOus+QvuM",
     "/assets/build/vzw-lach.b5404135.js": "sha384-Io/uaUsnjGU64XU7/zVGehemIMGnt2HeCje/HMYtDq6iFoV0UODJcCCHwVd1UZy+",
     "/assets/build/vzw-lach.b3583774.css": "sha384-yCIG/QEdr/SWOXnJDr+yQsUGAb8AzWQ0OKD4NcMzNjjaQga9gnuEW+KXHFcOtur4",
     "/assets/build/vzw-lach-advert.ca7ca2a0.js": "sha384-0aqZjfRmK3rlTr8hJEyT7PX1LMVbXHOUkEnQO3KYwixH+Ngq9tJ6C5gM4sY8EpIb",

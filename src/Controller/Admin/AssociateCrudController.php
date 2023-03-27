@@ -59,11 +59,13 @@ class AssociateCrudController extends AbstractCrudController
             ->addBatchAction(Action::new('batchExportBdays', 'Exporteer verjaardagen')
                 ->linkToCrudAction('batchExportBdays')
                 ->addCssClass('btn btn-primary')
-                ->setIcon('bi bi-person-lines-fill'))
+                ->setIcon('bi bi-person-lines-fill')
+                )
             ->addBatchAction(Action::new('batchExportDetails', 'Exporteer ledendetails')
                 ->linkToCrudAction('exportDetails')
                 ->addCssClass('btn btn-primary')
-                ->setIcon('bi bi-person-fill-lock'))
+                ->setIcon('bi bi-person-fill-lock')
+                )
             ;
     }
 

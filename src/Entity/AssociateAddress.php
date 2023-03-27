@@ -55,7 +55,7 @@ class AssociateAddress
 
     public function getAddress(): ?string
     {
-        return empty($this->line1) ? '__NA__' : sprintf(
+        return empty($this->line1) ? 'n/a' : sprintf(
             "%s, %s %s, %s", $this->getLine1(), $this->getZip(), $this->getTown(), $this->getNation()
         );
     }
