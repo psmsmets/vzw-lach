@@ -18,7 +18,8 @@ class AssociateExport {
     public function exportBdays(array $associates) : void
     {
         $user = $this->security->getUser();
-        $this->logger->info(sprintf("Admin %s (%s) requested to export associate birthdays.", $user, $user->getEmail()));
+        $this->logger->info(sprintf("User %s (%s) requested to export %d associate birthdays.",
+                                    $user, $user->getEmail(), count($associates)));
 
         $headers = ['verjaardag', 'naam', 'voornaam', 'leeftijd'];
         $datas = [];
@@ -48,7 +49,8 @@ class AssociateExport {
     public function exportDetails(array $associates) : void 
     {
         $user = $this->security->getUser();
-        $this->logger->info(sprintf("Admin %s (%s) requested to export associate details.", $user, $user->getEmail()));
+        $this->logger->info(sprintf("User %s (%s) requested to export %d associate details.",
+                                    $user, $user->getEmail(), count($associates)));
 
         $headers = ['naam', 'voornaam', 'adres', 'geboortedatum', 'functieomschrijving', 'groep(en)'];
         $datas = [];
