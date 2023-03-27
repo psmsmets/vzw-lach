@@ -23,24 +23,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/inschrijven')]
 class EnrolController extends AbstractController
 {
-    private $doctrine;
-    private $entityManager;
-    private $requestStack;
-
     public function __construct(
-        ManagerRegistry $doctrine,
-        EntityManagerInterface $entityManager,
-        RequestStack $requestStack,
+        private ManagerRegistry $doctrine,
+        private EntityManagerInterface $entityManager,
+        private RequestStack $requestStack,
     )
-    {
-        $this->doctrine = $doctrine;
-        $this->entityManager = $entityManager;
-        $this->requestStack = $requestStack;
-
-        // Accessing the session in the constructor is *NOT* recommended, since
-        // it might not be accessible yet or lead to unwanted side-effects
-        // $this->session = $requestStack->getSession();
-    }
+    {}
 
     #[Route('/', name: 'enrol_index', methods: ['GET'])]
     public function index($name = null): Response
