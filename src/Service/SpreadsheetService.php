@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SpreadsheetService {
 
-    public function export(string $title, $datas, $header) {
+    public function export(string $title, $datas, $header) : void 
+    {
         $streamedResponse = new StreamedResponse();
         $streamedResponse->setCallback(function () use ($title, $datas, $header) {
 

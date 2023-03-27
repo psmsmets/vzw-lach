@@ -9,7 +9,7 @@ use App\Entity\Associate;
 use App\Entity\AssociateDetails;
 use App\Entity\AssociateMeasurements;
 use App\Form\AssociateBaseType;
-use App\Service\SpreadsheetService;
+use App\Service\AssociateExport;
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, Filters, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -17,17 +17,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\{BatchActionDto, EntityDto};
 use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, ChoiceField, DateField, ImageField, NumberField, TextField, EmailField, TelephoneField};
 use EasyCorp\Bundle\EasyAdminBundle\Filter\{ArrayFilter};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Security\Core\Security;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AssociateCrudController extends AbstractCrudController
 {
     public function __construct(
-        private LoggerInterface $logger,
-        public Security $security,
-        private SpreadsheetService $spreadsheet,
+        private AssociateExport $export,
     )
     {}
 
@@ -38,16 +34,33 @@ class AssociateCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+
+        $exportBdays = Action::new('exportBdays', 'Exporteer verjaardagen')
+            ->setIcon('bi bi-person-lines-fill')
+            ->addCssClass('btn btn-primary')
+            ->linkToRoute('api_export_associate_birthdays')
+            ->createAsGlobalAction()
+            ;
+
+        $exportDetails = Action::new('exportDetails', 'Exporteer ledendetails')
+            ->setIcon('bi bi-person-fill-lock')
+            ->addCssClass('btn btn-primary')
+            ->linkToRoute('api_export_associate_details')
+            ->createAsGlobalAction()
+            ;
+
         return $actions
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->add(Crud::PAGE_INDEX, $exportBdays)
+            ->add(Crud::PAGE_INDEX, $exportDetails)
             ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN')
-            ->addBatchAction(Action::new('exportBdays', 'Exporteer verjaardagen')
-                ->linkToCrudAction('exportBdays')
+            ->addBatchAction(Action::new('batchExportBdays', 'Exporteer verjaardagen')
+                ->linkToCrudAction('batchExportBdays')
                 ->addCssClass('btn btn-primary')
                 ->setIcon('bi bi-person-lines-fill'))
-            ->addBatchAction(Action::new('exportDetails', 'Exporteer ledendetails')
+            ->addBatchAction(Action::new('batchExportDetails', 'Exporteer ledendetails')
                 ->linkToCrudAction('exportDetails')
                 ->addCssClass('btn btn-primary')
                 ->setIcon('bi bi-person-fill-lock'))
@@ -233,37 +246,24 @@ class AssociateCrudController extends AbstractCrudController
         ;
     }
 
-    public function exportBdays(BatchActionDto $batchActionDto)
+    public function batchExportBdays(BatchActionDto $batchActionDto)
     {
-        $user = $this->security->getUser();
-        $this->logger->info(sprintf("Admin %s (%s) requested to export associate birthdays.", $user, $user->getEmail()));
-
         $className = $batchActionDto->getEntityFqcn();
         $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
 
-        $headers = ['verjaardag', 'naam', 'voornaam', 'leeftijd'];
-        $datas = [];
-        $refdate = new \DateTimeImmutable('this year 12/31');
+        $associates = [];
 
         foreach ($batchActionDto->getEntityIds() as $id) {
             $associate = $entityManager->find($className, $id);
 
             if (is_null($associate->getDetails()->getBirthdate()) or !$associate->isEnabled()) continue;
 
-            $data = [
-                $associate->getDetails()->getBirthday()->format('Y-m-d'),
-                $associate->getLastname(),
-                $associate->getFirstname(),
-                $associate->getDetails()->getAge($refdate),
-            ];
-
-            $datas[] = $data;
+            $associates[] = $associate;
         }
 
-        asort($datas);
-
-        return $this->spreadsheet->export('HGCVHKV verjaardagen', $datas, $headers);
+        return $this->export->exportBdays($associates);
     }
+
 
     public function exportDetails(BatchActionDto $batchActionDto)
     {
