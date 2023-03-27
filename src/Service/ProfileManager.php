@@ -182,7 +182,7 @@ class ProfileManager
 
     public function getSpecialAdverts(): array
     {
-        return $this->advertRepository->findAdverts(Advert::NUMBER_OF_ITEMS_SPECIAL, null, 50);
+        return $this->advertRepository->findAdverts(Advert::NUMBER_OF_ITEMS_SPECIAL, null, 50, false, true);
     }
 
     public function getFAQ(int $id): ?FAQ

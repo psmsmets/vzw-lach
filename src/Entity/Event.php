@@ -467,6 +467,16 @@ class Event
         return $this->categories;
     }
 
+    public function getCategoryNames(): string
+    {
+        $names = [];
+        foreach ($this->categories as $category) {
+            $names[] = $category->getName();
+        }
+
+        return $names ? implode(' | ', $names) : 'iedereen';
+    }
+
     public function addCategory(Category $category): self
     {
         if (!$this->categories->contains($category)) {

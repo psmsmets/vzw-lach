@@ -86,6 +86,7 @@ class IcalService {
             if ($event->isCancelled()) $desc[] = sprintf(
                 "[GEANNULEERD]\nDit event is geannuleerd op %s.", $fmt->format($event->getCancelledAt())
             );
+            $desc[] = sprintf("Groep(en): %s", $event->getCategoryNames());
             $desc[] = sprintf("%s", $event->getText());
             if ($event->getUrl()) $desc[] = sprintf("Meer informatie: %s", $event->getUrl());
 
