@@ -221,10 +221,16 @@ class Event
 
     public function setEndTime(?\DateTimeImmutable $endTime): self
     {
-        if (is_null($endTime) or $endTime > $this->startTime) {
+        if (!is_null($endTime) and $endTime > $this->startTime) {
+
+            $this->startTime->modify('+1 hour');
+
+        } else {
+
             $this->endTime = $endTime;
-            $this->setUpdatedAt();
+
         }
+        $this->setUpdatedAt();
 
         return $this;
     }

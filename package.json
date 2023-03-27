@@ -27,6 +27,7 @@
         "sass": "^1.57.0",
         "sass-loader": "^13.2.0",
         "style-loader": "^3.3.1",
+        "webpack-cli": "^5.0.1",
         "webpack-notifier": "^1.15.0"
     }
 }
