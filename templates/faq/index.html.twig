@@ -2,7 +2,7 @@
 
 {% block main %}
 
-  <h1 class="text-secondary">Vragen</h1>
+  <h1 class="text-primary"><i class="bi bi-question-circle"></i> Vragen</h1>
 
   {% if faqs|length  == 0 %}
 
@@ -17,8 +17,9 @@
     </div>
 
     {% for faq in faqs %}
-    <div class="p-3 mb-2 shadow-sm advert-link" data-bs-toggle="collapse" data-bs-target="#faq-{{ faq.id }}" aria-expanded="false" aria-controls="faq-{{ faq.id }}">
-      <h5 class="text-primary mb-0">{{ faq.question|capitalize }}</h5>
+    <div class="p-3 mb-3 mb-md-4 shadow-sm advert-link">
+      <h5 class="text-primary mb-0" data-bs-toggle="collapse" data-bs-target="#faq-{{ faq.id }}"
+          aria-expanded="false" aria-controls="faq-{{ faq.id }}">{{ faq.question|capitalize }}</h5>
 
       <div class="collapse mt-4" id="faq-{{ faq.id }}">{{ faq.answer|raw }}</div>
     </div>

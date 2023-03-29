@@ -4,7 +4,11 @@
 
 {% block main %}
 
-  <h1 class="text-secondary">Documenten</h1>
+  <h1 class="text-primary"><i class="bi bi-file-earmark-arrow-down"></i> Documenten</h1>
+
+  <div class="my-3 my-lg-4 text-secondary">
+    <div><i class="bi bi-info-square-fill"></i> Klik op een bestand om het te downloaden.</div>
+  </div>
 
   {% if folder is defined %}
     {% include 'document/folder.html.twig' with {'item': folder, 'opened': true} %}
