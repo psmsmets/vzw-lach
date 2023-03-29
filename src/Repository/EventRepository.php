@@ -72,7 +72,8 @@ class EventRepository extends ServiceEntityRepository
      * @return Event[] Returns an array of Event objects
      */
     public function findEvents(
-        $obj = null, ?\DateTimeInterface $periodStart = null, ?\DateTimeInterface $periodEnd = null, $limit = null
+        $obj = null, ?\DateTimeInterface $periodStart = null, ?\DateTimeInterface $periodEnd = null,
+        $limit = null, $tag = null
     ): array
     {
         $t0 = is_null($periodStart) ? new \DateTime('today midnight') : $periodStart;
@@ -93,6 +94,11 @@ class EventRepository extends ServiceEntityRepository
 
         $qb->setParameter('now', new \DateTime());
         $qb->andWhere('entity.publishedAt <= :now');
+
+        if (!is_null($tag) and $tag > 0) {
+            $qb->setParameter('tag', $tag);
+            $qb->andWhere($qb->expr()->isMemberOf(':tag', 'entity.tags'));
+        }
 
         if (is_null($t1)) {
             $qb->setParameter('t0', $t0);

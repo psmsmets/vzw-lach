@@ -50,6 +50,7 @@
           iedereen
         {% endfor %}
       </li>
+      {% include 'modules/tags.html.twig' with {'tags': document.tags } %}
     </ul>
 {#
     {% if not extend %}

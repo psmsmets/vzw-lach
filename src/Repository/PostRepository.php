@@ -67,7 +67,9 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @return Post[] Returns an array of Post objects
      */
-    public function findPosts($obj = null, ?bool $special = null, ?bool $pinned = null, $limit = null, $page = 1): array
+    public function findPosts(
+        $obj = null, ?bool $special = null, ?bool $pinned = null, $limit = null, $page = 1, $tag = null
+    ): array
     {
         $limit = is_null($limit) ? Post::NUMBER_OF_ITEMS : $limit;
         $offset = ( $page < 1 ? 0 : $page - 1 ) * Post::NUMBER_OF_ITEMS;
@@ -94,6 +96,11 @@ class PostRepository extends ServiceEntityRepository
             $qb->andWhere('entity.pinned = :pinned');
         }
 
+        if (!is_null($tag) and $tag > 0) {
+            $qb->setParameter('tag', $tag);
+            $qb->andWhere($qb->expr()->isMemberOf(':tag', 'entity.tags'));
+        }
+
         $qb->orderBy('entity.publishedAt', 'DESC');
         $qb->setFirstResult($offset);
         //$qb->setMaxResults($limit);
@@ -101,7 +108,7 @@ class PostRepository extends ServiceEntityRepository
         return array_slice($qb->getQuery()->getResult(), 0, $limit);
     }
 
-    public function countPosts($obj = null, ?bool $special = null, ?bool $pinned = null): int
+    public function countPosts($obj = null, ?bool $special = null, ?bool $pinned = null, ?int $tag = null): int
     {
         $qb = $this->createQueryBuilder('entity');
 
@@ -123,6 +130,11 @@ class PostRepository extends ServiceEntityRepository
         if (!is_null($pinned)) {
             $qb->setParameter('pinned', $pinned);
             $qb->andWhere('entity.pinned = :pinned');
+        }
+
+        if (!is_null($tag) and $tag > 0) {
+            $qb->setParameter('tag', $tag);
+            $qb->andWhere($qb->expr()->isMemberOf(':tag', 'entity.tags'));
         }
 
         return count($qb->getQuery()->getResult());

@@ -54,11 +54,12 @@ class ApiController extends AbstractController
     public function load_adverts(Request $request): Response
     {
         $viewpoint = $this->manager->getViewpoint();
+        $tag = (int) $request->query->get('tag', 0);
 
         return $this->json([
             'success' => true,
             'html' => $this->render('advert/module_content.html.twig', [
-                'adverts' => $this->manager->getSpecialAdverts($viewpoint),
+                'adverts' => $this->manager->getSpecialAdverts($tag),
             ])->getContent(),
         ]);
 
@@ -68,11 +69,12 @@ class ApiController extends AbstractController
     public function load_documents(Request $request): Response
     {
         $viewpoint = $this->manager->getViewpoint();
+        $tag = (int) $request->query->get('tag', 0);
 
         return $this->json([
             'success' => true,
             'html' => $this->render('document/module_content.html.twig', [
-                'documents' => $this->manager->getSpecialDocuments($viewpoint),
+                'documents' => $this->manager->getSpecialDocuments($viewpoint, null, $tag),
             ])->getContent(),
         ]);
     }
@@ -81,11 +83,12 @@ class ApiController extends AbstractController
     public function load_upcoming_events(Request $request): Response
     {
         $viewpoint = $this->manager->getViewpoint();
+        $tag = (int) $request->query->get('tag', 0);
 
         return $this->json([
             'success' => true,
             'html' => $this->render('event/module_content.html.twig', [
-                'events' => $this->manager->getUpcomingEvents($viewpoint, 6, null),
+                'events' => $this->manager->getUpcomingEvents($viewpoint, 6, null, $tag),
             ])->getContent(),
         ]);
     }

@@ -46,6 +46,9 @@ class Folder
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'folders')]
     private Collection $categories;
 
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'folders')]
+    private Collection $tags;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -53,6 +56,7 @@ class Folder
         $this->published = true;
         $this->documents = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -205,6 +209,33 @@ class Folder
     public function removeCategory(Category $category): self
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addFolder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removeFolder($this);
+        }
 
         return $this;
     }

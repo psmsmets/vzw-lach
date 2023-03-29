@@ -11,6 +11,7 @@ use App\Entity\Event;
 use App\Entity\FAQ;
 use App\Entity\Page;
 use App\Entity\Post;
+use App\Entity\Tag;
 use App\Entity\User;
 use App\Controller\Admin\AdvertCrudController;
 use App\Controller\Admin\AssociateCrudController;
@@ -20,6 +21,7 @@ use App\Controller\Admin\EventCrudController;
 use App\Controller\Admin\FAQCrudController;
 use App\Controller\Admin\PageCrudController;
 use App\Controller\Admin\PostCrudController;
+use App\Controller\Admin\TagCrudController;
 use App\Controller\Admin\UserCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -148,6 +150,9 @@ class AdminController extends AbstractDashboardController
 
             MenuItem::section('Adverts'),
             MenuItem::linkToCrud('Adverts', 'bi bi-search', Advert::class),
+
+            MenuItem::section('Tags'),
+            MenuItem::linkToCrud('Tags', 'bi bi-tags', Tag::class),
 
             MenuItem::section('FAQ')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('FAQ', 'bi bi-question-square', FAQ::class)->setPermission('ROLE_ADMIN'),

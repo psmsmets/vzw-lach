@@ -38,6 +38,7 @@
           {{ advert.updatedAt|format_datetime('medium', 'none') }}
         </li>
       {% endif %}
+      {% include 'modules/tags.html.twig' with {'tags': advert.tags } %}
     </ul>
   </div>
 
