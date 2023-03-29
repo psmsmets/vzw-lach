@@ -66,7 +66,7 @@ class AdvertRepository extends ServiceEntityRepository
      * @return Advert[] Returns an array of Advert objects
      */
     public function findAdverts(
-        $limit = null, $page = 1, $progress = null, ?bool $completed = null, bool $shuffle = false
+        $limit = null, $page = 1, $progress = null, ?bool $completed = null, ?int $tag = null, bool $shuffle = false
     ): array
     {
         $limit = is_null($limit) ? Advert::NUMBER_OF_ITEMS : $limit;
@@ -90,6 +90,11 @@ class AdvertRepository extends ServiceEntityRepository
             $qb->andWhere('ad.completed = :completed');
         }
 
+        if (!is_null($tag) and $tag > 0) {
+            $qb->setParameter('tag', $tag);
+            $qb->andWhere($qb->expr()->isMemberOf(':tag', 'ad.tags'));
+        }
+
         if ($shuffle) {
             $result = $qb->getQuery()->getResult();
             shuffle($result);
@@ -104,7 +109,7 @@ class AdvertRepository extends ServiceEntityRepository
         return $shuffle ? array_slice($result, 0, $limit) : $result;
     }
 
-    public function countAdverts(): int
+    public function countAdverts(?int $tag = null): int
     {
         $qb = $this->createQueryBuilder('ad');
 
@@ -113,6 +118,11 @@ class AdvertRepository extends ServiceEntityRepository
 
         $qb->setParameter('now', new \DateTime());
         $qb->andWhere('ad.publishedAt <= :now');
+
+        if (!is_null($tag) or $tag > 0) {
+            $qb->setParameter('tag', $tag);
+            $qb->andWhere($qb->expr()->isMemberOf(':tag', 'ad.tags'));
+        }
 
         return count($qb->getQuery()->getResult());
     }

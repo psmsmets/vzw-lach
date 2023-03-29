@@ -69,6 +69,9 @@ class Event
     private $nullifyEndTime = false;
     private $overrule = false;
 
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'events')]
+    private Collection $tags;
+
     public function __construct()
     {
         $this->id = Uuid::v6();
@@ -81,6 +84,7 @@ class Event
         $this->endTime = $this->startTime->modify('+1 hour');
         $this->allDay = true;
         $this->categories = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -514,6 +518,33 @@ class Event
     {
         $this->nullifyEndTime = $nullifyEndTime;
         if ($nullifyEndTime) $this->endTime = null;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removeEvent($this);
+        }
 
         return $this;
     }

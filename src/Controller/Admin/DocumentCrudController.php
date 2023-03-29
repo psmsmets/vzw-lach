@@ -75,9 +75,8 @@ class DocumentCrudController extends AbstractCrudController
         yield FormField::addTab('Who');
         yield FormField::addPanel('Who');
 
-        yield AssociationField::new('categories')
-            ->autocomplete()
-            ;
+        yield AssociationField::new('categories')->autocomplete()->hideOnIndex();
+        yield AssociationField::new('tags')->autocomplete()->hideOnIndex();
 
         yield FormField::addTab('Options');
         yield FormField::addPanel('Options');

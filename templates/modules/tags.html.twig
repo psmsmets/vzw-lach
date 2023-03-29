@@ -1,0 +1,8 @@
+{% if tags|length > 0 %}
+<li class="list-inline-item small"><i class="bi bi-tags"></i>
+  {% for tag in tags %}
+    <a class="text-secondary text-decoration-none" href="{{path('profile_tag', {slug: tag.slug})}}">{{ tag|lower }}</a>
+    {% if not loop.last%} | {% endif %}
+  {% endfor %}
+</li>
+{% endif %}

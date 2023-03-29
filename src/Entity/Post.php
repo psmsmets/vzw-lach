@@ -52,6 +52,9 @@ class Post
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'posts')]
     private Collection $categories;
 
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'posts')]
+    private Collection $tags;
+
     public function __construct()
     {
         $this->id = Uuid::v6();
@@ -60,6 +63,7 @@ class Post
         $this->published = true;
         $this->archived = false;
         $this->categories = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -209,6 +213,33 @@ class Post
     public function removeCategory(Category $category): self
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removePost($this);
+        }
 
         return $this;
     }

@@ -70,6 +70,9 @@ class Document
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $documentName = null;
 
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'documents')]
+    private Collection $tags;
+
     public function __construct()
     {
         $this->id = Uuid::v6();
@@ -77,6 +80,7 @@ class Document
         $this->publishedAt = \DateTimeImmutable::createFromFormat('Y-m-d H:i', date('Y-m-d H:i'));
         $this->published = true;
         $this->categories = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -305,6 +309,33 @@ class Document
     public function getFullDocumentName(): ?string
     {
         return $this->getFullName();
+    }
+
+    /**
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addDocument($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removeDocument($this);
+        }
+
+        return $this;
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+//use App\Controller\Admin\TagCrudController;
 use App\Entity\Event;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -106,7 +107,8 @@ class EventCrudController extends AbstractCrudController
         yield FormField::addTab('Who');
         yield FormField::addPanel('Who');
 
-        yield AssociationField::new('categories')->autocomplete();
+        yield AssociationField::new('categories')->autocomplete()->hideOnIndex();
+        yield AssociationField::new('tags')->autocomplete()->hideOnIndex();
 
         yield TextField::new('location')->onlyOnIndex();
         

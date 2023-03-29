@@ -1,0 +1,33 @@
+{% extends 'profile.html.twig' %}
+
+{% block lead %}
+
+    <h1 class="text-primary"><i class="bi bi-tags"></i> {{tag.name}}</h1>
+    <h6 class="text-secondary mb-4">
+      Op deze pagina staat alle gefilterde content voor de tag 
+      <span class="badge text-bg-primary align-text-top fw-light">{{tag.name}}</span>
+    </h6>
+
+{% endblock %}
+
+{% block main %}
+
+    {% for post in tag.posts %}
+      {% include 'post/template.html.twig' with { 'item': post } %}
+    {% else %}
+      Geen berichten gevonden voor de tag "<code>{{tag.name}}</code>".
+    {% endfor %}
+
+    <div class="mt-2 text-end">
+      <a href="{{path('profile_posts')}}" class="small fw-lighter text-secondary text-decoration-none">
+        <i class="bi bi-chevron-double-right"></i> naar alle berichten
+      </a>
+    </div>
+
+{% endblock %}
+
+{% block side %}
+    {% include 'event/module.html.twig' with { 'tag': tag.id } %}
+    {% include 'document/module.html.twig' with { 'tag': tag.id } %}
+    {% include 'advert/module.html.twig' with { 'tag': tag.id } %} 
+{% endblock %}

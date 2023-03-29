@@ -72,6 +72,7 @@
                     iedereen
                   {% endfor %}
                 </li>
+                {% include 'modules/tags.html.twig' with {'tags': event.tags } %}
               </ul>
               <ul class="list-inline mb-0">
               </ul>

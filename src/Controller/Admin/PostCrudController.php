@@ -69,6 +69,7 @@ class PostCrudController extends AbstractCrudController
         yield FormField::addPanel('Who');
 
         yield AssociationField::new('categories')->autocomplete()->hideOnIndex();
+        yield AssociationField::new('tags')->autocomplete()->hideOnIndex();
 
         yield FormField::addTab('Options');
         yield FormField::addPanel('Options');

@@ -35,6 +35,7 @@
           iedereen
         {% endfor %}
       </li>
+      {% include 'modules/tags.html.twig' with {'tags': post.tags } %}
     </ul>
     <ul class="list-inline mb-0">
       <li class="list-inline-item">

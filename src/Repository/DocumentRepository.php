@@ -69,7 +69,7 @@ class DocumentRepository extends ServiceEntityRepository
      * @return Document[] Returns an array of Document objects
      */
     public function findDocuments(
-        $folder = null, $obj = null, $special = null, $pinned = null, $limit = null, $page = 1
+        $folder = null, $obj = null, $special = null, $pinned = null, $limit = null, $page = 1, $tag = null,
     ): array
     {
         $limit = is_null($limit) ? Document::NUMBER_OF_ITEMS : $limit;
@@ -104,6 +104,11 @@ class DocumentRepository extends ServiceEntityRepository
             $qb->andWhere('entity.pinned = :pinned');
         }
 
+        if (!is_null($tag) and $tag > 0) {
+            $qb->setParameter('tag', $tag);
+            $qb->andWhere($qb->expr()->isMemberOf(':tag', 'entity.tags'));
+        }
+
         $qb->orderBy('entity.name', 'ASC');
         $qb->setFirstResult($offset);
         //$qb->setMaxResults($limit);
@@ -112,7 +117,7 @@ class DocumentRepository extends ServiceEntityRepository
     }
 
     public function countDocuments(
-        $folder = null, $obj = null, $special = null, $pinned = null
+        $folder = null, $obj = null, $special = null, $pinned = null, $tag = null,
     ): int
     {
         $qb = $this->createQueryBuilder('entity');
@@ -142,6 +147,11 @@ class DocumentRepository extends ServiceEntityRepository
         if (!is_null($pinned)) {
             $qb->setParameter('pinned', $pinned);
             $qb->andWhere('entity.pinned = :pinned');
+        }
+
+        if (!is_null($tag) and $tag > 0) {
+            $qb->setParameter('tag', $tag);
+            $qb->andWhere($qb->expr()->isMemberOf(':tag', 'entity.tags'));
         }
 
         return count($qb->getQuery()->getResult());

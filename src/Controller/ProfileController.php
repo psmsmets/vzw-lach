@@ -265,4 +265,15 @@ class ProfileController extends AbstractController
             'contact' => $contact,
         ]);
     }
+
+    #[Route('/tags/{slug}', name: '_tag', methods: ['GET'])]
+    public function tag(string $slug): Response
+    {
+        if (!($tag = $this->manager->getTag($slug))) {
+            return $this->redirectToRoute('profile_index');
+        }
+        return $this->render('tag/index.html.twig', [
+            'tag' => $tag,
+        ]);
+    }
 }

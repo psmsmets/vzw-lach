@@ -11,6 +11,7 @@ use App\Entity\Event;
 use App\Entity\FAQ;
 use App\Entity\Folder;
 use App\Entity\Post;
+use App\Entity\Tag;
 use App\Entity\User;
 use App\Repository\AdvertRepository;
 use App\Repository\AssociateRepository;
@@ -20,6 +21,7 @@ use App\Repository\EventRepository;
 use App\Repository\FAQRepository;
 use App\Repository\FolderRepository;
 use App\Repository\PostRepository;
+use App\Repository\TagRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -33,43 +35,24 @@ use Symfony\Component\Uid\Uuid;
 
 class ProfileManager 
 {
-    public $advertRepository;
-    public $associateRepository;
-    public $categoryRepository;
-    public $documentRepository;
-    public $eventRepository;
-    public $faqRepository;
-    public $folderRepository;
-    public $postRepository;
-    public $userRepository;
-
     public function __construct(
-        AdvertRepository $advertRepository,
-        AssociateRepository $associateRepository,
-        CategoryRepository $categoryRepository,
-        DocumentRepository $documentRepository,
-        EventRepository $eventRepository,
-        FAQRepository $faqRepository,
-        FolderRepository $folderRepository,
-        PostRepository $postRepository,
-        UserRepository $userRepository,
+        public AdvertRepository $advertRepository,
+        public AssociateRepository $associateRepository,
+        public CategoryRepository $categoryRepository,
+        public DocumentRepository $documentRepository,
+        public EventRepository $eventRepository,
+        public FAQRepository $faqRepository,
+        public FolderRepository $folderRepository,
+        public PostRepository $postRepository,
+        public TagRepository $tagRepository,
+        public UserRepository $userRepository,
         public EntityManagerInterface $em,
         public RequestStack $requestStack,
         public UrlGeneratorInterface $router,
         public Security $security,
         public ParameterBagInterface $params,
     )
-    {
-        $this->advertRepository = $advertRepository;
-        $this->associateRepository = $associateRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->documentRepository = $documentRepository;
-        $this->eventRepository = $eventRepository;
-        $this->faqRepository = $faqRepository;
-        $this->folderRepository = $folderRepository;
-        $this->postRepository = $postRepository;
-        $this->userRepository = $userRepository;
-    }
+    {}
 
     public function associateCategories(Associate $associate): array
     {
@@ -111,9 +94,9 @@ class ProfileManager
         return $this->associateRepository->find($uuid);
     }
 
-    public function getUpcomingEvents($obj, ?int $limit = 7, ?\DateTimeInterface $t0 = new \DateTime()): array
+    public function getUpcomingEvents($obj, ?int $limit = 7, ?\DateTimeInterface $t0 = new \DateTime(), ?int $tag = null): array
     {
-        return $this->eventRepository->findEvents($obj, $t0, null, $limit);
+        return $this->eventRepository->findEvents($obj, $t0, null, $limit, $tag);
     }
 
     public function getPeriodEvents($obj, $from = null, $until = null): array
@@ -180,9 +163,14 @@ class ProfileManager
         return (int) ceil($this->advertRepository->countAdverts() / Advert::NUMBER_OF_ITEMS);
     }
 
-    public function getSpecialAdverts(): array
+    public function getSpecialAdverts(?int $tag = null): array
     {
-        return $this->advertRepository->findAdverts(Advert::NUMBER_OF_ITEMS_SPECIAL, null, 50, false, true);
+        return $this->advertRepository->findAdverts(Advert::NUMBER_OF_ITEMS_SPECIAL, null, 50, false, $tag, true);
+    }
+
+    public function getTag(string $slug): ?Tag
+    {
+        return $this->tagRepository->findBySlug($slug);
     }
 
     public function getFAQ(int $id): ?FAQ
@@ -204,24 +192,24 @@ class ProfileManager
         return count($errors) == 0 ? $this->documentRepository->findDocument(Uuid::fromString($uuid), $obj) : null;
     }
 
-    public function getDocuments($obj, ?Folder $folder = null, int $page = 1, ?bool $pinned = false): array
+    public function getDocuments($obj, ?Folder $folder = null, int $page = 1, ?bool $pinned = false, ?int $tag = null): array
     {
-        return $this->documentRepository->findDocuments($folder, $obj, null, $pinned, Document::NUMBER_OF_ITEMS, $page);
+        return $this->documentRepository->findDocuments($folder, $obj, null, $pinned, Document::NUMBER_OF_ITEMS, $page, $tag);
     }
 
-    public function getDocumentPages($obj, ?Folder $folder = null, ?bool $pinned = false): int 
+    public function getDocumentPages($obj, ?Folder $folder = null, ?bool $pinned = false, ?int $tag = null): int 
     {
-        return (int) ceil($this->documentRepository->countDocuments($folder, $obj, null, $pinned) / Document::NUMBER_OF_ITEMS);
+        return (int) ceil($this->documentRepository->countDocuments($folder, $obj, null, $pinned, $tag) / Document::NUMBER_OF_ITEMS);
     }
 
-    public function getSpecialDocuments($obj, ?Folder $folder = null): array
+    public function getSpecialDocuments($obj, ?Folder $folder = null, ?int $tag = null): array
     {
-        return $this->documentRepository->findDocuments($folder, $obj, true, null, Document::NUMBER_OF_ITEMS_SPECIAL);
+        return $this->documentRepository->findDocuments($folder, $obj, true, null, Document::NUMBER_OF_ITEMS_SPECIAL, null, $tag);
     }
 
-    public function getPinnedDocuments($obj, ?Folder $folder = null): array
+    public function getPinnedDocuments($obj, ?Folder $folder = null, ?int $tag = null): array
     {
-        return $this->documentRepository->findDocuments($folder, $obj, null, true, Document::NUMBER_OF_ITEMS_PINNED);
+        return $this->documentRepository->findDocuments($folder, $obj, null, true, Document::NUMBER_OF_ITEMS_PINNED, null, $tag);
     }
 
     public function getFolderPages($obj): int 

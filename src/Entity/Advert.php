@@ -57,6 +57,9 @@ class Advert
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $body = null;
 
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'adverts')]
+    private Collection $tags;
+
     public function __construct()
     {
         $this->id = Uuid::v6();
@@ -65,6 +68,7 @@ class Advert
         $this->published = true;
         $this->completed = false;
         $this->progress = 0;
+        $this->tags = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -205,6 +209,33 @@ class Advert
     public function setBody(string $body): self
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addAdvert($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removeAdvert($this);
+        }
 
         return $this;
     }
