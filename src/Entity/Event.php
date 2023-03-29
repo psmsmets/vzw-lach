@@ -196,6 +196,7 @@ class Event
     public function setStartTime(\DateTimeImmutable $startTime): self
     {
         $this->startTime = $startTime;
+        if ($startTime > $this->endTime) $this->endTime = $startTime->modify('+1 hour');
         $this->setUpdatedAt();
 
         return $this;
