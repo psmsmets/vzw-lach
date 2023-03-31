@@ -3,7 +3,7 @@
 
 {% block main %}
 
-    <h1 class="text-primary mb-4"><i class="bi bi-lightbulb"></i> Uitgelicht</h1>
+    <h1 class="text-primary mb-2 mb-md-4"><i class="bi bi-lightbulb"></i> Uitgelicht</h1>
 
     {% for post in specials %}
       {% include 'post/template.html.twig' with {'item': post } %}
