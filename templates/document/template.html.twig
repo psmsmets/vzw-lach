@@ -7,7 +7,7 @@
 <div class="p-3 mb-4 shadow-sm {% if not extend %}document-link{% else%}bg-white{% endif %}" {% if not extend %}onclick="window.open('{{ path('profile_download', {'id': document.id}) }}', '_self');"{% endif %}>
 #}
 
-<div class="p-3 mb-4 shadow-sm {% if pinned %}border border-primary{% endif %} document-link"
+<div class="p-3 mb-3 mb-md-4 shadow-sm {% if pinned %}border border-primary{% endif %} document-link"
      onclick="window.open('{{ path('profile_download', {'id': document.id}) }}', '_self');">
 
   <h4 class="text-primary d-flex justify-content-between mb-3">
