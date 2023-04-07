@@ -74,8 +74,14 @@ class AdvertCrudController extends AbstractCrudController
         yield FormField::addTab('Who');
         yield FormField::addPanel('Who');
 
-        yield AssociationField::new('tags')->autocomplete()->hideOnIndex();
-;
+        yield AssociationField::new('tags')
+            ->autocomplete()
+            ->setFormTypeOptions([
+                'by_reference' => false,
+            ])
+            ->hideOnIndex()
+            ;
+
         yield FormField::addTab('Options');
         yield FormField::addPanel('Options');
 
