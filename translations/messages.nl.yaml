@@ -72,8 +72,13 @@ Special: Voorpagina
 Pinned: Pinned
 Image: Afbeelding
 Image file: Afbeelding
-Document: Document
-Document file: Document
+Document: Bestand
+Documents: Bestanden
+Document file: Bestand
+Folder: Bestandsmap
+Folders: Bestandsmappen
+Event: Event 
+Events: Events
 Url: Link
 Show: Toon
 Show symbols: Toon symbolen
