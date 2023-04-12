@@ -422,7 +422,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function addAssociate(Associate $associate): self
     {
         if (!$this->associates->contains($associate)) {
-            $associate->setUser($this);
+            $associate->addUser($this);
             $this->associates->add($associate);
             $this->setViewmasterFromAssociates();
         }
@@ -434,8 +434,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->associates->removeElement($associate)) {
             // set the owning side to null (unless already changed)
-            if ($associate->getUser() === $this) {
-                $associate->setUser(null);
+            if ($associate->hasUser($this)) {
+                $associate->removeUser($this);
                 $this->setViewmasterFromAssociates();
             }
         }
