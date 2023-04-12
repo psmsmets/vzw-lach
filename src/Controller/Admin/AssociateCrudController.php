@@ -17,12 +17,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\{BatchActionDto, EntityDto};
 use EasyCorp\Bundle\EasyAdminBundle\Field\{Field, AssociationField, BooleanField, ChoiceField, DateField, ImageField, NumberField, TextField, EmailField, TelephoneField};
 use EasyCorp\Bundle\EasyAdminBundle\Filter\{ArrayFilter};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AssociateCrudController extends AbstractCrudController
 {
     public function __construct(
+        private AdminUrlGenerator $adminUrlGenerator,
         private AssociateExport $export,
     )
     {}
@@ -223,6 +225,7 @@ class AssociateCrudController extends AbstractCrudController
         yield BooleanField::new('declareSecrecy', 'Akkoord geheimhouding')->hideOnIndex();
         yield BooleanField::new('declareTerms', 'Akkoord voorwaarden')->hideOnIndex();
         yield Field::new('updatedAt')->hideOnForm();
+/*
         yield AssociationField::new('user')
             ->autocomplete()
             ->setCrudController(UserCrudController::class)
@@ -231,6 +234,33 @@ class AssociateCrudController extends AbstractCrudController
 
             })
             ->hideOnIndex()
+            ;
+*/
+        yield AssociationField::new('users')
+            ->autocomplete()
+            ->setCrudController(UserCrudController::class)
+            ->setQueryBuilder(function ($queryBuilder) {
+                return $queryBuilder->andWhere('entity.enabled = true'); // your query
+
+            })
+            ->onlyOnForms()
+            ;
+        yield AssociationField::new('users')
+            // https://stackoverflow.com/questions/72350335/render-as-multiple-bagdes-with-an-associationfield-in-easyadmin
+            ->formatValue(function ($value, $entity) {
+                $users = [];
+                foreach ($entity->getUsers() as $user) {
+                    $url = $this->adminUrlGenerator
+                        ->setController(UserCrudController::class)
+                        ->setAction(Action::DETAIL)
+                        ->setEntityId($user->getId())
+                        ->generateUrl()
+                        ;
+                    $users[] = sprintf("<a class=\"btn btn-sm btn-primary\" href=\"%s\">%s</a>", $url, $user);
+                }
+                return implode("\t", $users);
+            })
+            ->onlyOnDetail()
             ;
     }
 
@@ -243,7 +273,11 @@ class AssociateCrudController extends AbstractCrudController
             ->add('singerSoloist')
             ->add(AssociationDateTimeFilter::new('details.birthdate', 'Geboortedatum'))
             ->add(GenderFilter::new('details.gender', 'Geslacht'))//->setFormTypeOption('mapped', false))
-            ->add(ArrayFilter::new('categoryPreferences')->setChoices(AssociateBaseType::PREF_CATEGORIES)->setFormTypeOption('mapped', false))
+            ->add(
+                ArrayFilter::new('categoryPreferences')
+                ->setChoices(AssociateBaseType::PREF_CATEGORIES)
+                ->setFormTypeOption('mapped', false)
+            )
             ->add('categories', 'Toegewezen groep')
         ;
     }

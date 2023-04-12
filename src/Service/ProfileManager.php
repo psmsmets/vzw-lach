@@ -298,7 +298,7 @@ class ProfileManager
         if ($viewpoint instanceof Uuid)
         {
             $associate = $this->getAssociate($viewpoint);
-            if (!$associate or $associate->getUser() !== $this->security->getUser()) {
+            if (!$associate or !$associate->hasUser($this->security->getUser())) {
                 throw $this->createAccessDeniedException();
             }
 

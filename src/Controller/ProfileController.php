@@ -56,7 +56,7 @@ class ProfileController extends AbstractController
     #[Route('/deelnemer/{id}', name: '_select', methods: ['GET'])]
     public function select(Associate $associate, Request $request): Response
     {
-        if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
+        if (!$associate->hasUser($this->getUser())) throw $this->createAccessDeniedException();
         $this->manager->setViewpoint($associate);
 
         return $this->redirect($request->headers->get('referer'));
@@ -65,7 +65,7 @@ class ProfileController extends AbstractController
     #[Route('/deelnemer/{id}/show', name: '_show', methods: ['GET'])]
     public function show(Associate $associate): Response
     {
-        if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
+        if (!$associate->hasUser($this->getUser())) throw $this->createAccessDeniedException();
 
         return $this->render('profile/show.html.twig', [
             'associate' => $associate,
@@ -77,7 +77,7 @@ class ProfileController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if ($associate->getUser() !== $this->getUser()) throw $this->createAccessDeniedException();
+        if (!$associate->hasUser($this->getUser())) throw $this->createAccessDeniedException();
 
         $form = $this->createForm(AssociateType::class, $associate);
         $form->handleRequest($request);

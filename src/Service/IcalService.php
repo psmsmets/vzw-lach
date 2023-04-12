@@ -14,14 +14,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class IcalService {
 
-    private $manager;
-
     public function __construct(
         private UrlGeneratorInterface $router,
-        private ProfileManager $profileManager,
-    ) {
-        $this->manager = $profileManager;
-    }
+        private ProfileManager $manager,
+    )
+    {}
 
     public function createVcalendarResponse($obj, Request $request, string $token) : Response
     {
@@ -122,7 +119,7 @@ class IcalService {
             // set attendees
             if ($obj instanceof Associate) {
 
-                $this->setVcalendarAttendee($vevent, $obj);
+                $this->setVcalendarAttendee($vevent, $obj, $obj->getUsers()[0]);
 
             } else {
 
@@ -133,13 +130,13 @@ class IcalService {
                     foreach ($categories as $category) {
                         foreach ($category->getEnabledAssociates() as $associate) {
                             // let only associates that match the user attend
-                            if ($associate->getUser() === $obj) $this->setVcalendarAttendee($vevent, $associate);
+                            if ($associate->hasUser($obj)) $this->setVcalendarAttendee($vevent, $associate, $obj);
                         }
                     }
                 } else {
                     // all user associates attend
                     foreach ($obj->getEnabledAssociates() as $associate) {
-                        $this->setVcalendarAttendee($vevent, $associate);
+                        $this->setVcalendarAttendee($vevent, $associate, $obj);
                     }
                 }
             }
@@ -167,12 +164,12 @@ class IcalService {
         return new Response($vcalendarString, 200, array('Content-Type' => 'text/calendar'));
     }
 
-    private function setVcalendarAttendee(Vevent $vevent, Associate $associate): void
+    private function setVcalendarAttendee(Vevent $vevent, Associate $associate, User $user): void
     {
         $email = $associate->getDetails()->getEmail();
 
         $vevent->setAttendee(
-            $email ? $email : $associate->getUser()->getEmail(),
+            $email ? $email : $user->getEmail(),
             [
                 Vcalendar::ROLE     => Vcalendar::REQ_PARTICIPANT,
                 Vcalendar::PARTSTAT => Vcalendar::ACCEPTED,
