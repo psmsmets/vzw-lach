@@ -175,15 +175,15 @@ class AssociateCrudController extends AbstractCrudController
         yield FormField::addPanel('Categories');
 
         yield AssociationField::new('categories', 'Groep(en)')
-            ->setQueryBuilder(function ($queryBuilder) {
-                return $queryBuilder->andWhere('entity.enabled = true'); 
-
-            })
+            ->autocomplete()
             ->setCrudController(CategoryCrudController::class)
             ->setFormTypeOptions([
                 'by_reference' => false,
             ])
-            ->autocomplete()
+            ->setQueryBuilder(function ($queryBuilder) {
+                return $queryBuilder->andWhere('entity.enabled = true'); 
+
+            })
             ;
         yield TextField::new('categoryNames', 'Toegewezen groep(en)')->hideOnForm();
         yield BooleanField::new('onstage')->renderAsSwitch(false)->onlyOnDetail();
@@ -239,10 +239,9 @@ class AssociateCrudController extends AbstractCrudController
         yield AssociationField::new('users')
             ->autocomplete()
             ->setCrudController(UserCrudController::class)
-            ->setQueryBuilder(function ($queryBuilder) {
-                return $queryBuilder->andWhere('entity.enabled = true'); // your query
-
-            })
+            //->setQueryBuilder(function ($queryBuilder) {
+            //    return $queryBuilder->andWhere('entity.enabled = true'); // your query
+            //})
             ->onlyOnForms()
             ;
         yield AssociationField::new('users')

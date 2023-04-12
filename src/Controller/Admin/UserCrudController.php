@@ -74,10 +74,9 @@ class UserCrudController extends AbstractCrudController
             ->setFormTypeOptions([
                 'by_reference' => false,
             ])
-            ->setQueryBuilder(function ($queryBuilder) {
-                return $queryBuilder->andWhere('entity.enabled = true'); // your query
-
-            })
+            //->setQueryBuilder(function ($queryBuilder) {
+            //    return $queryBuilder->andWhere('entity.enabled = true'); // your query
+            //})
             ;
 
         // password
