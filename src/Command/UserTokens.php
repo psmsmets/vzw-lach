@@ -14,19 +14,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class UserTokens extends Command
 {
-    private $doctrine;
-    private $entityManager;
-
     protected static $defaultName = 'app:user:tokens';
 
     public function __construct(
-        ManagerRegistry $doctrine,
-        EntityManagerInterface $entityManager
+        private ManagerRegistry $doctrine,
+        private EntityManagerInterface $entityManager
     )
     {
-        $this->doctrine = $doctrine;
-        $this->entityManager = $entityManager;
-
         parent::__construct();
     }
 

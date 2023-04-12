@@ -66,11 +66,11 @@ class Event
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'events')]
     private Collection $categories;
 
-    private $nullifyEndTime = false;
-    private $overrule = false;
-
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'events')]
     private Collection $tags;
+
+    private $nullifyEndTime = false;
+    private $overrule = false;
 
     public function __construct()
     {

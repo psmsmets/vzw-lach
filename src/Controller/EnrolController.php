@@ -83,7 +83,7 @@ class EnrolController extends AbstractController
             // associate in session and not related to the user? Reset!
             $associateRepo = $this->doctrine->getRepository(Associate::class);
             if (( $associate = $associateRepo->findOneById($session->get('associate')) )) {
-                if ($associate->getUser() !== $user) $session->set('associate', null);
+                if (!$associate->hasUser($user)) $session->set('associate', null);
             }
 
             return $this->redirectToRoute('enrol_associate_base', [], Response::HTTP_SEE_OTHER);
@@ -110,7 +110,7 @@ class EnrolController extends AbstractController
         $associateRepo = $this->doctrine->getRepository(Associate::class);
         if (!( $associate = $associateRepo->findOneById( $request->query->get('associate', $session->get('associate')) ) )) {
             $associate = new Associate();
-            $associate->setUser($user);
+            $associate->addUser($user);
         }
 
         $form = $this->createForm(AssociateBaseType::class, $associate);

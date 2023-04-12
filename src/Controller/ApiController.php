@@ -32,7 +32,7 @@ class ApiController extends AbstractController
     public function ical_events_associate(Associate $associate, Request $request): Response
     {
         $token = $request->query->get('token');
-        if ($associate->getUser()->getIcalToken() !== $token) throw $this->createAccessDeniedException();
+        if (!$associate->hasUserIcalToken($token)) throw $this->createAccessDeniedException();
 
         $this->logger->debug(sprintf("Associate-id %s succesfully requested the ical object.", $associate));
 

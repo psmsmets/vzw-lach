@@ -113,6 +113,9 @@ class Associate
     #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'associates')]
+    private Collection $users;
+
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private array $categoryPreferences = [];
 
@@ -129,6 +132,7 @@ class Associate
         $this->details = new AssociateDetails($this);
         $this->measurements = new AssociateMeasurements($this);
         $this->categories = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -499,18 +503,6 @@ class Associate
         return implode(' | ', $names);
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getCategoryPreferences(): ?array
     {
         return $this->categoryPreferences;
@@ -527,4 +519,64 @@ class Associate
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    public function hasUser(User $user): bool
+    {
+        return $this->users->contains($user);
+    }
+
+    public function hasUserIcalToken(string $token): bool
+    {
+        $match = false;
+        foreach ($this->users as $user) {
+            $match = ($match or ($user->getIcalToken() === $token));
+        }
+        return $match;
+    }
+
+    public function hasUserCsrfToken(string $token): bool
+    {
+        $match = false;
+        foreach ($this->users as $user) {
+            $match = ($match or ($user->getCsrfToken() === $token));
+        }
+        return $match;
+    }
+
 }
