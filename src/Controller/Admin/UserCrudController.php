@@ -92,10 +92,11 @@ class UserCrudController extends AbstractCrudController
                         ->setEntityId($associate->getId())
                         ->generateUrl()
                         ;
-                    $associates[] = sprintf("<a class=\"btn btn-sm btn-primary\" href=\"%s\">%s</a>", $url, $associate);
+                    $associates[] = sprintf("<a class=\"btn btn-sm btn-primary me-1\" href=\"%s\">%s</a>", $url, $associate);
                 }
                 return implode("\t", $associates);
             })
+            ->setTemplatePath('admin/field/association.html.twig')
             ->onlyOnDetail()
             ;
 
