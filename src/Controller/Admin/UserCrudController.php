@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\{BatchActionDto, EntityDto};
 use EasyCorp\Bundle\EasyAdminBundle\Field\{FormField, IdField, AssociationField, BooleanField, ChoiceField, EmailField, TextField, TelephoneField};
 use EasyCorp\Bundle\EasyAdminBundle\Filter\{ArrayFilter, BooleanFilter};
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Form\Extension\Core\Type\{PasswordType, RepeatedType};
 use Symfony\Component\Form\{FormBuilderInterface, FormEvent, FormEvents};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -19,8 +20,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserCrudController extends AbstractCrudController
 {
     public function __construct(
-        public UserPasswordHasherInterface $userPasswordHasher
-    ) {}
+        private AdminUrlGenerator $adminUrlGenerator,
+        public UserPasswordHasherInterface $userPasswordHasher,
+    )
+    {}
 
     public static function getEntityFqcn(): string
     {
@@ -77,6 +80,23 @@ class UserCrudController extends AbstractCrudController
             //->setQueryBuilder(function ($queryBuilder) {
             //    return $queryBuilder->andWhere('entity.enabled = true'); // your query
             //})
+            ;
+        yield AssociationField::new('associates')
+            // https://stackoverflow.com/questions/72350335/render-as-multiple-bagdes-with-an-associationfield-in-easyadmin
+            ->formatValue(function ($value, $entity) {
+                $users = [];
+                foreach ($entity->getAssociates() as $associate) {
+                    $url = $this->adminUrlGenerator
+                        ->setController(AssociateCrudController::class)
+                        ->setAction(Action::DETAIL)
+                        ->setEntityId($associate->getId())
+                        ->generateUrl()
+                        ;
+                    $associates[] = sprintf("<a class=\"btn btn-sm btn-primary\" href=\"%s\">%s</a>", $url, $associate);
+                }
+                return implode("\t", $associates);
+            })
+            ->onlyOnDetail()
             ;
 
         // password

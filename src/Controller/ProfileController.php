@@ -79,11 +79,21 @@ class ProfileController extends AbstractController
 
         if (!$associate->hasUser($this->getUser())) throw $this->createAccessDeniedException();
 
+        $this->logger->info(sprintf(
+            "User-id %s requested to edit the associate \"%s\".",
+            $this->security->getUser(), $associate->getId()
+        ));
+
         $form = $this->createForm(AssociateType::class, $associate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->associateRepository->save($associate, true);
+
+            $this->logger->info(sprintf(
+                "User-id %s edited the associate \"%s\".",
+                $this->security->getUser(), $associate->getId()
+            ));
 
             return $this->redirectToRoute('profile_show', ['id' => $associate->getId()], Response::HTTP_SEE_OTHER);
         }
