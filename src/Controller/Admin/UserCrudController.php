@@ -84,7 +84,7 @@ class UserCrudController extends AbstractCrudController
         yield AssociationField::new('associates')
             // https://stackoverflow.com/questions/72350335/render-as-multiple-bagdes-with-an-associationfield-in-easyadmin
             ->formatValue(function ($value, $entity) {
-                $users = [];
+                $associates = [];
                 foreach ($entity->getAssociates() as $associate) {
                     $url = $this->adminUrlGenerator
                         ->setController(AssociateCrudController::class)
