@@ -306,7 +306,7 @@ export function start_audio_player()
         simp_a_url = simp_playlist.querySelectorAll('[data-src]');
         simp_a_index = 0;
         simp_isPlaying = false;
-        simp_isNext = false; //auto play
+        simp_isNext = true; //auto play
         simp_isRandom = false; //play random
         simp_isRanext = false; //check if before random starts, simp_isNext value is true
         simp_isStream = false; //radio streaming

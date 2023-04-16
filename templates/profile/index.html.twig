@@ -17,14 +17,7 @@
       </a>
     </div>
 
-    {# include 'audio-player/module.html.twig' #}
-    <h2 class="text-secondary mt-4">Muziek</h2>
-    <div data-provider="audio-player" data-spinner="true" data-tag="{{ (tag is defined) ? tag : ''}}" data-success="audioPlayer()"></div>
-    <div class="mt-2 text-end">
-      <a href="{{path('profile_documents')}}" class="small fw-lighter text-secondary text-decoration-none">
-        <i class="bi bi-chevron-double-right"></i> naar alle muziek en documenten
-      </a>
-    </div>
+    {% include 'audio-player/module.html.twig' %}
 
     {% if viewpoint != app.user and app.user.enabledAssociates|length > 1 %}
     <div class="alert alert-secondary mt-5" role="alert">
