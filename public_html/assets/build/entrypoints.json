@@ -5,7 +5,7 @@
         "/assets/build/runtime.bff8fc39.js",
         "/assets/build/755.600972c6.js",
         "/assets/build/472.e363bc51.js",
-        "/assets/build/vzw-lach.bc7ec270.js"
+        "/assets/build/vzw-lach.f4062098.js"
       ],
       "css": [
         "/assets/build/vzw-lach.b3583774.css"
@@ -35,6 +35,15 @@
       "js": [
         "/assets/build/runtime.bff8fc39.js",
         "/assets/build/vzw-lach-form-submit.c4488eaf.js"
+      ]
+    },
+    "audio-player": {
+      "js": [
+        "/assets/build/runtime.bff8fc39.js",
+        "/assets/build/audio-player.456f8dca.js"
+      ],
+      "css": [
+        "/assets/build/audio-player.fd1cb244.css"
       ]
     },
     "ea-lightbox-prevent-scroll": {
@@ -72,12 +81,14 @@
     "/assets/build/runtime.bff8fc39.js": "sha384-tJE3U0zLv/jw8k7UnIsfe1+q/1os0XMGwj+gLmctK9QvXWtdGhEvCbd96+hFM/qb",
     "/assets/build/755.600972c6.js": "sha384-62sMYKZxKi2mwwyMitdHzUC34QEUIFD5AHIeYda8k+fgPx7A05Auh8qZPcqT9NLM",
     "/assets/build/472.e363bc51.js": "sha384-ixgEzRaoGNeDHwa9Jq/yCZ6RUTAwLTJtvLjPppyT93yBOnoCSxD2P2mxOus+QvuM",
-    "/assets/build/vzw-lach.bc7ec270.js": "sha384-EOyDsLx75+fD/8925RZ0oebkK4c/uqrpXR1Mh+b0wlMCsTtoZjDOsxr7TxIEmTGH",
+    "/assets/build/vzw-lach.f4062098.js": "sha384-viASE4mRgNqn3LQm41mwPP4lGi0sFnmCBWDVC/oQCNe5nV3TUAmzuNxnK+uO+z+k",
     "/assets/build/vzw-lach.b3583774.css": "sha384-yCIG/QEdr/SWOXnJDr+yQsUGAb8AzWQ0OKD4NcMzNjjaQga9gnuEW+KXHFcOtur4",
     "/assets/build/vzw-lach-advert.ca7ca2a0.js": "sha384-0aqZjfRmK3rlTr8hJEyT7PX1LMVbXHOUkEnQO3KYwixH+Ngq9tJ6C5gM4sY8EpIb",
     "/assets/build/vzw-lach-enrol-form.f5fad490.js": "sha384-1ZRUnuxVKfZqXrRuK2D7nEQ7p7QEUP5z3+v1O5mhNBIuzUYx5IVb2/0nLGhPjLyy",
     "/assets/build/vzw-lach-event.4925c50f.js": "sha384-ptvY294rhfyyCR8ZOogWgElIiCW6b6JRwh5skAtbcwUeVR1MwwoaVtgrgGtgNmiF",
     "/assets/build/vzw-lach-form-submit.c4488eaf.js": "sha384-vUH6PQktGP9cDLXLQdbiQoJRUwtYLZ8T9sE4eI/6/ZhM3YGgQ2OsfGAhaD0hjnVW",
+    "/assets/build/audio-player.456f8dca.js": "sha384-6ow0kzMd0ju8NJ7O39KyY7kYqhm+atPSWnwkms+5x0cOmGnvY8A4RoqhIzsBoTuW",
+    "/assets/build/audio-player.fd1cb244.css": "sha384-gt5ZtTYakq5+fTSnvg4ArHeuG9xrBVXFZqpco2htHkhN8ZcTZgHq5nX2EHuymOQa",
     "/assets/build/ea-lightbox-prevent-scroll.aa4459ad.js": "sha384-erhx4Fya3daVAokPhLQu8LYfVgUdUxjY7MgZjJVotDcmRE7h0sTbZr+cZyrDvrhm",
     "/assets/build/bootstrap.79826f7c.css": "sha384-cmRPp2s3eYv0FSkQfGDkh/H2HEA4bYbhU2n1zbR9QmoYO0L3BDQ2yqavB6GXy3a/",
     "/assets/build/safari_select_fix.a8bfcbe6.css": "sha384-ItcFc7oAmgvz+g/DtFmVpB/7AyWQHzFRglCCbu8SNg6M3HybLDeSTaXirgKYGU0w",

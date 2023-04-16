@@ -79,6 +79,20 @@ class ApiController extends AbstractController
         ]);
     }
 
+    #[Route('/private/audio-player', name: '_audio_player', methods: ['GET'])]
+    public function load_playlist(Request $request): Response
+    {
+        $viewpoint = $this->manager->getViewpoint();
+        $tag = (int) $request->query->get('tag', 0);
+
+        return $this->json([
+            'success' => true,
+            'html' => $this->render('audio-player/module_content.html.twig', [
+                'playlist' => $this->manager->getPlaylist($viewpoint, $tag),
+            ])->getContent(),
+        ]);
+    }
+
     #[Route('/private/upcoming-events', name: '_upcoming_events', methods: ['GET'])]
     public function load_upcoming_events(Request $request): Response
     {

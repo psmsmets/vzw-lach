@@ -20,4 +20,10 @@
   <style>
     body {padding-top: 56px;}
   </style>
+  {{ encore_entry_link_tags('audio-player') }}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('audio-player') }}
 {% endblock %}

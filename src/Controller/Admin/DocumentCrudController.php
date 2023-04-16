@@ -72,6 +72,9 @@ class DocumentCrudController extends AbstractCrudController
             ->setRequired(false)
             ;
 
+        yield BooleanField::new('audio')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('audio')->renderAsSwitch(false)->hideOnForm();
+
         yield FormField::addTab('Who');
         yield FormField::addPanel('Who');
 

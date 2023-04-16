@@ -62,6 +62,9 @@ class FolderCrudController extends AbstractCrudController
             ->setRequired(false)
             ;
 
+        yield BooleanField::new('playlist')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('playlist')->renderAsSwitch(false)->hideOnForm();
+
         yield FormField::addTab('Who');
         yield FormField::addPanel('Who');
 

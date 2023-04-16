@@ -23,6 +23,9 @@ class Folder
     private ?bool $published = null;
 
     #[ORM\Column]
+    private ?bool $playlist = null;
+
+    #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -83,6 +86,18 @@ class Folder
     public function setPublished(bool $published): self
     {
         $this->published = $published;
+
+        return $this;
+    }
+
+    public function isPlaylist(): ?bool
+    {
+        return $this->playlist;
+    }
+
+    public function setPlaylist(bool $playlist): self
+    {
+        $this->playlist = $playlist;
 
         return $this;
     }

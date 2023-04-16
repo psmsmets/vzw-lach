@@ -107,6 +107,28 @@ class FolderRepository extends ServiceEntityRepository
         return count($qb->getQuery()->getResult());
     }
 
+    public function findPlaylists($obj = null): array
+    {
+        $qb = $this->createQueryBuilder('entity');
+
+        $qb->leftJoin('entity.categories','categories');
+        $qb->addSelect('categories');
+        ProfileViewpoint::categoriesFilter($qb, $obj);
+
+        $qb->setParameter('published', true);
+        $qb->andWhere('entity.published = :published');
+
+        $qb->setParameter('playlist', true);
+        $qb->andWhere('entity.playlist = :playlist');
+
+        $qb->setParameter('now', new \DateTime());
+        $qb->andWhere('entity.publishedAt <= :now');
+
+        $qb->orderBy('entity.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
         if (isset($criteria['id']) && is_array($criteria['id'])) {

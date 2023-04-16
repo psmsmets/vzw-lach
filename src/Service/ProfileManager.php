@@ -222,6 +222,16 @@ class ProfileManager
         return $this->folderRepository->findFolders($obj, Folder::NUMBER_OF_ITEMS, $page);
     }
 
+    public function getPlaylist($obj, ?int $tag = null): array
+    {
+        return $this->documentRepository->findAudioFiles($obj, $tag);
+    }
+
+    public function getPlaylists($obj): array
+    {
+        return $this->folderRepository->findPlaylists($obj);
+    }
+
     public function getFolder($obj, string $slug): ?Folder 
     {
         return $this->folderRepository->findFolder($slug, $obj);
