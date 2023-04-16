@@ -67,7 +67,6 @@ $(window).on( "load", function() {
 });
 
 function api_load_async(element) {
-
     if (element.dataset.spinner) element.innerHTML = '<div class="text-center my-3"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>'
 
     $.getJSON( "/api/private/" + element.dataset.provider, {
@@ -77,8 +76,7 @@ function api_load_async(element) {
     .done(function(data) {
         if (data.success) {
             element.innerHTML = data.html;
-            $('.past').hide();
+            if (element.dataset.success) eval(element.dataset.success);
         }
     });
-
 }

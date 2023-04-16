@@ -157,6 +157,37 @@ class DocumentRepository extends ServiceEntityRepository
         return count($qb->getQuery()->getResult());
     }
 
+    public function findAudioFiles($obj = null, $tag = null): array
+    {
+        $qb = $this->createQueryBuilder('entity');
+
+        $qb->leftJoin('entity.categories','categories');
+        $qb->addSelect('categories');
+        ProfileViewpoint::categoriesFilter($qb, $obj);
+
+        $qb->leftJoin('entity.folder','folder');
+        $qb->addSelect('folder');
+
+        $qb->setParameter('published', true);
+        $qb->andWhere('entity.published = :published');
+
+        $qb->setParameter('audio', true);
+        $qb->andWhere('entity.audio = :audio');
+
+        $qb->setParameter('now', new \DateTime());
+        $qb->andWhere('entity.publishedAt <= :now');
+
+        if (!is_null($tag) and $tag > 0) {
+            $qb->setParameter('tag', $tag);
+            $qb->andWhere($qb->expr()->isMemberOf(':tag', 'entity.tags'));
+        }
+
+        $qb->addOrderBy('entity.folder', 'ASC');
+        $qb->addOrderBy('entity.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
         if (isset($criteria['id']) && is_array($criteria['id'])) {

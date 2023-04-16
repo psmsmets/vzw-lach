@@ -1,0 +1,15 @@
+{% if playlist|length > 0 %}
+  <div class="simple-audio-player" id="simp" data-config='{"shide_top":false,"shide_btm":false,"auto_load":true}'>
+    <div class="simp-playlist">
+      <ul>
+      {% for file in playlist %}
+        <li><span class="simp-source" data-src="{{ path('profile_download', {'id': file.id}) }}">{{file.name|capitalize}}</span><span class="simp-desc">{{file.folder}}</span></li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% else %}
+  <div class="media shadow-sm document p-2 text-secondary">
+    <div class="media-body ms-2 mb-0 small lh-125 text-gray-dark">Geen afspeellijst gevonden.</div>
+  </div>
+{% endif %}

@@ -37,6 +37,9 @@ class Document
     private ?bool $pinned = null;
 
     #[ORM\Column]
+    private ?bool $audio = null;
+
+    #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -131,6 +134,18 @@ class Document
     public function setPinned(bool $pinned): self
     {
         $this->pinned = $pinned;
+
+        return $this;
+    }
+
+    public function isAudio(): ?bool
+    {
+        return $this->audio;
+    }
+
+    public function setAudio(bool $audio): self
+    {
+        $this->audio = $audio;
 
         return $this;
     }

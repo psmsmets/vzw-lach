@@ -32,6 +32,7 @@ Encore
     .addEntry('vzw-lach-enrol-form', './assets/js/vzw-lach-enrol-form.js')
     .addEntry('vzw-lach-event', './assets/js/vzw-lach-event.js')
     .addEntry('vzw-lach-form-submit', './assets/js/vzw-lach-form-submit.js')
+    .addEntry('audio-player', './assets/js/audio-player.js')
     .addEntry('ea-lightbox-prevent-scroll', './assets/js/ea-lightbox-prevent-scroll.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
