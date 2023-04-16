@@ -3,7 +3,10 @@
     <div class="simp-playlist">
       <ul>
       {% for file in playlist %}
-        <li><span class="simp-source" data-src="{{ path('profile_download', {'id': file.id}) }}">{{file.name|capitalize}}</span><span class="simp-desc">{{file.folder}}</span></li>
+        <li>
+          <span class="simp-source" data-src="{{ path('profile_download', {'id': file.id}) }}">{{file.name|capitalize}}</span>
+          <span class="simp-desc ms-2 text-right fw-lighter">{{file.folder ? file.folder.name : ''}}</span>
+        </li>
       {% endfor %}
       </ul>
     </div>

@@ -1,6 +1,9 @@
+
+/*
 *,*:before,*:after{outline:0;-webkit-box-sizing:border-box;box-sizing:border-box;}
 input,button{outline:none;}
 a,a:hover,a:visited{color:#ddd;text-decoration:none;}
+*/
 .flex{display:-webkit-flex;display:flex;}
 .flex-wrap{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;}
 .flex-align{-webkit-align-items:center;align-items:center;}
@@ -8,7 +11,7 @@ a,a:hover,a:visited{color:#ddd;text-decoration:none;}
 
 /* HTML5 Audio Player with Playlist, source: https://www.codehim.com/vanilla-javascript/javascript-audio-player-with-playlist/ */
 #simp button,#simp input,#simp img{border:0;}
-#simp{font-size:14px;font-family:"Segoe UI", Tahoma, sans-serif;text-align:initial;line-height:initial;background:rgb(108,117,125);color:#fff;margin:0 auto;border-radius:6px;overflow:hidden;}
+#simp{font-size:14px;text-align:initial;line-height:initial;--bs-bg-opacity:1;background-color:rgba(var(--bs-secondary-rgb),var(--bs-bg-opacity))!important;color:#fff;margin:0 auto;border-radius:var(--bs-border-radius-sm)!important;overflow:hidden;}
 #simp .simp-album{padding:20px 25px 5px;}
 #simp .simp-album .simp-cover{margin-right:20px;}
 #simp .simp-album .simp-cover img{max-width:80px;width:100%;margin:0;padding:0;display:block;}
@@ -43,10 +46,10 @@ a,a:hover,a:visited{color:#ddd;text-decoration:none;}
 #simp ul{margin:5px 0 0;padding:0;list-style:none;max-height:245px;}
 #simp ul li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin:0;padding:8px 20px;cursor:pointer;}
 #simp ul li:last-child{padding-bottom:13px;}
-#simp ul li:nth-child(odd){background:#0e1621;}
-#simp ul li:hover{background:#242f3d;}
-#simp ul li.simp-active{background:#B01824;color:#fff;}
-#simp ul li .simp-desc{font-size:90%;opacity:.5;margin-left:5px;}
+#simp ul li:nth-child(odd){--bs-bg-opacity:1;background:rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important;}
+#simp ul li:hover{--bs-bg-opacity:1;background:rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important;}
+#simp ul li.simp-active{--bs-bg-opacity:1;background-color:rgba(var(--bs-primary-rgb),var(--bs-bg-opacity))!important;color:#fff;}
+#simp ul li.simp-desc{font-size:90%;opacity:.5;margin-left:5px;}
 /* playlist scrollbar */
 #simp ul{overflow-y:auto;overflow-x:hidden;scrollbar-color:#73797f #2f3841;}
 #simp ul::-webkit-scrollbar-track{background-color:#2f3841;}

@@ -1,2 +1,10 @@
-<h5 class="mt-5 text-secondary">Audio Player</h5>
-<div data-provider="audio-player" data-spinner="true" data-tag="{{ (tag is defined) ? tag : ''}}" data-success="audioPlayer()"></div>
+    <h2 class="text-secondary mt-4">Muziek</h2>
+    <div data-provider="audio-player" data-spinner="true" data-tag="{{ (tag is defined) ? tag : ''}}"
+         data-success="audioPlayer()" class="shadow-sm"></div>
+    <div class="mt-2 text-end">
+      <a href="{{path('profile_documents')}}" class="small fw-lighter text-secondary text-decoration-none">
+        <i class="bi bi-chevron-double-right"></i> naar alle muziek en documenten
+      </a>
+    </div>
+{#<h5 class="mt-5 text-secondary">Audio Player</h5>
+<div data-provider="audio-player" data-spinner="true" data-tag="{{ (tag is defined) ? tag : ''}}" data-success="audioPlayer()"></div>#}
