@@ -190,15 +190,6 @@ class Associate
         return $this->viewmaster;
     }
 
-/* category-based only
-    public function setViewmaster(bool $viewmaster): self
-    {
-        $this->viewmaster = $viewmaster;
-
-        return $this;
-    }
-*/
-
     public function setViewmasterFromCategories(): self
     {
         $viewmaster = false;
@@ -209,7 +200,9 @@ class Associate
 
         $this->viewmaster = $viewmaster;
 
-        $this->user->setViewmasterFromAssociates();
+        foreach ($this->users as $user) {
+            $user->setViewmasterFromAssociates();
+        }
 
         return $this;
     }
@@ -475,7 +468,6 @@ class Associate
             $this->categories->add($category);
             $this->setOnstageFromCategories();
             $this->setViewmasterFromCategories();
-            $this->user->setViewmasterFromAssociates();
         }
 
         return $this;
@@ -487,7 +479,6 @@ class Associate
             $this->categories->removeElement($category);
             $this->setOnstageFromCategories();
             $this->setViewmasterFromCategories();
-            $this->user->setViewmasterFromAssociates();
         }
 
         return $this;
@@ -522,7 +513,7 @@ class Associate
 
     public function getUser(): ?User
     {
-        return $this->user;
+        return $this->user ? $this->user : ($this->users ? $this->users[0] : null); // safety to avoid null prev code
     }
 
     public function setUser(?User $user): self
