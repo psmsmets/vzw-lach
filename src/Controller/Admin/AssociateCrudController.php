@@ -164,8 +164,42 @@ class AssociateCrudController extends AbstractCrudController
         yield FormField::addTab('Contact');
         yield FormField::addPanel('Contact');
 
-        yield EmailField::new('user.email')->hideOnIndex();
-        yield TelephoneField::new('user.phone')->hideOnIndex();
+        yield EmailField::new('users.email')
+            ->formatValue(function ($value, $entity) {
+                $users = [];
+                foreach ($entity->getUsers() as $user) {
+                    $url = $this->adminUrlGenerator
+                        ->setController(UserCrudController::class)
+                        ->setAction(Action::DETAIL)
+                        ->setEntityId($user->getId())
+                        ->generateUrl()
+                        ;
+                    $users[] = sprintf("<a class=\"btn btn-sm btn-primary me-1\" href=\"%s\">%s</a>", $url, $user->getEmail());
+                }
+                return implode("\t", $users);
+            })
+            ->setTemplatePath('admin/field/association.html.twig')
+            ->onlyOnDetail()
+            ;
+        yield TelephoneField::new('users.phone')
+            ->formatValue(function ($value, $entity) {
+                $users = [];
+                foreach ($entity->getUsers() as $user) {
+                    if (($phone = $user->getPhone())) {
+                        $url = $this->adminUrlGenerator
+                            ->setController(UserCrudController::class)
+                            ->setAction(Action::DETAIL)
+                            ->setEntityId($user->getId())
+                            ->generateUrl()
+                            ;
+                        $users[] = sprintf("<a class=\"btn btn-sm btn-primary me-1\" href=\"%s\">%s</a>", $url, $phone);
+                    }
+                }
+                return implode("\t", $users);
+            })
+            ->setTemplatePath('admin/field/association.html.twig')
+            ->onlyOnDetail()
+            ;
 
         yield EmailField::new('details.email')->hideOnIndex();
         yield TelephoneField::new('details.phone')->hideOnIndex();
@@ -299,7 +333,6 @@ class AssociateCrudController extends AbstractCrudController
 
         return $this->export->exportBdays($associates);
     }
-
 
     public function exportDetails(BatchActionDto $batchActionDto)
     {

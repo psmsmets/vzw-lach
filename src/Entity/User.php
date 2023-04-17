@@ -79,6 +79,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Associate::class, mappedBy: 'users')]
     private Collection $associates;
 
+    public const ROLES = array(
+        'ROLE_USER' => 'ROLE_USER',
+        'ROLE_ASSOCIATE' => 'ROLE_ASSOCIATE',
+        'ROLE_MANAGER' => 'ROLE_MANAGER',
+        'ROLE_ADMIN' => 'ROLE_ADMIN',
+        'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
+    );
+
     public function __construct()
     {
         $this->id = Uuid::v4();
@@ -95,6 +103,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastLoginAt = null;
         $this->forcedReloginAt = null;
         $this->associates = new ArrayCollection();
+        $this->roles = array('ROLE_USER', 'ROLE_ASSOCIATE');
     }
 
     public function __toString(): string
@@ -238,6 +247,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function addRole(string $role): self
+    {
+        if (in_array($role, self::ROLES) and !in_array($role, $this->roles)) {
+            $this->roles[] = $role;
+        }
 
         return $this;
     }

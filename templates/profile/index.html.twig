@@ -17,7 +17,9 @@
       </a>
     </div>
 
-    {% include 'audio-player/module.html.twig' %}
+    {% if is_granted('ROLE_ASSOCIATE') %}
+      {% include 'audio-player/module.html.twig' %}
+    {% endif %}
 
     {% if viewpoint != app.user and app.user.enabledAssociates|length > 1 %}
     <div class="alert alert-secondary mt-5" role="alert">
@@ -51,7 +53,9 @@
                 <td class="text-center">{% if associate.onstage %}<i class="bi bi-check-square"></i>{% endif %}</td>
                 <td>
                     <a href="{{ path('profile_show', {'id': associate.id}) }}">toon</a>
+                    {% if is_granted('ROLE_ASSOCIATE') %}
                     <a href="{{ path('profile_edit', {'id': associate.id}) }}">bewerk</a>
+                    {% endif %}
                 </td>
             </tr>
           {% else %}
@@ -67,7 +71,7 @@
 
 {% block side %}
   {{ parent() }}
-    {% include 'document/module.html.twig' %}
+    {% if is_granted('ROLE_ASSOCIATE') %}{% include 'document/module.html.twig' %}{% endif %}
     {% include 'advert/module.html.twig' %} 
 {% endblock %}
 
