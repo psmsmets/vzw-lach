@@ -76,6 +76,7 @@ class ProfileController extends AbstractController
     public function edit(Request $request, Associate $associate): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ASSOCIATE');
 
         if (!$associate->hasUser($this->getUser())) throw $this->createAccessDeniedException();
 
@@ -165,6 +166,8 @@ class ProfileController extends AbstractController
     #[Route('/documenten', name: '_documents', methods: ['GET'])]
     public function documents(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ASSOCIATE');
+
         $viewpoint = $this->manager->getViewpoint();
 
         $pages = $this->manager->getFolderPages($viewpoint);
@@ -182,6 +185,8 @@ class ProfileController extends AbstractController
     #[Route('/documenten/{slug}', name: '_folder', methods: ['GET'])]
     public function folder(string $slug, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ASSOCIATE');
+
         $viewpoint = $this->manager->getViewpoint();
 
         if (!($folder = $this->manager->getFolder($viewpoint, $slug))) {
@@ -204,6 +209,8 @@ class ProfileController extends AbstractController
     #[Route('/documenten/{id}', name: '_document', methods: ['GET'])]
     public function document(string $id): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ASSOCIATE');
+
         $viewpoint = $this->manager->getViewpoint();
 
         if (!($document = $this->manager->getDocument($viewpoint, $id))) {
@@ -220,6 +227,8 @@ class ProfileController extends AbstractController
     #[Route('/documenten/{id}/download', name: '_download', methods: ['GET'])]
     public function download(string $id): BinaryFileResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ASSOCIATE');
+
         $viewpoint = $this->manager->getViewpoint();
 
         if (!($document = $this->manager->getDocument($viewpoint, $id))) throw $this->createAccessDeniedException();

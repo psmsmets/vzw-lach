@@ -162,10 +162,12 @@ Companion: Samen met ...
 Details.Birthdate: Geboortedatum
 Details.Gender: Geslacht
 Details.Age: Leeftijd
-Details.Email: E-mailadres (pers.)
-Details.Phone: Telefoonnummer (pers.)
-User.Email: E-mailadres
-User.Phone: Telefoonnummer
+Details.Email: E-mail (pers.)
+Details.Phone: Telefoon (pers.)
+User.Email: E-mail
+User.Phone: Telefoon
+Users.Email: E-mail (gebruikers)
+Users.Phone: Telefoon (gebruikers)
 Address.Address: Adres
 Completed Enrolment: Inschrijving voltooid
 Is Admin: Is beheerder
@@ -174,6 +176,7 @@ admin: beheerder
 Role: Rol
 Roles: Rollen
 ROLE_USER: Gebruiker
+ROLE_ASSOCIATE: Deelnemer 
 ROLE_MANAGER: Manager
 ROLE_ADMIN: Beheerder
 ROLE_SUPER_ADMIN: Superbeheerder

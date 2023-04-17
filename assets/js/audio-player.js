@@ -253,7 +253,7 @@ function simp_startScript() {
     if (eles.contains('simp-mute')) {
       if (eles.contains('bi-volume-up-fill')) {
         eles.remove('bi-volume-up-fill');
-        eles.add('bi-volume-mute-fil');
+        eles.add('bi-volume-mute-fill');
         simp_v_slider.value = 0;
       } else {
         eles.remove('bi-volume-mute-fill');
@@ -326,7 +326,7 @@ export function start_audio_player()
         simp_elem += '<div class="simp-tracker simp-load"><input class="simp-progress" type="range" min="0" max="100" value="0" disabled/><div class="simp-buffer"></div></div>';
         simp_elem += '<div class="simp-time flex flex-align"><span class="start-time">00:00</span><span class="simp-slash">&#160;/&#160;</span><span class="end-time">00:00</span></div>';
         simp_elem += '<div class="simp-volume flex flex-align"><button type="button" class="simp-mute bi bi-volume-up-fill"></button><input class="simp-v-slider" type="range" min="0" max="100" value="100"/></div>';
-        simp_elem += '<div class="simp-others flex flex-align"><button type="button" class="simp-plext bi bi-play-circle" title="Auto Play"></button><button type="button" class="simp-random bi bi-shuffle" title="Random"></button><div class="simp-shide"><button type="button" class="simp-shide-top bi bi-caret-up-fill" title="Show/Hide Album"></button><button type="button" class="simp-shide-bottom bi bi-caret-down-fill" title="Show/Hide Playlist"></button></div></div>';
+        simp_elem += '<div class="simp-others flex flex-align"><button type="button" class="simp-plext bi bi-play-circle simp-active" title="Auto Play"></button><button type="button" class="simp-random bi bi-shuffle" title="Random"></button><div class="simp-shide"><button type="button" class="simp-shide-top bi bi-caret-up-fill" title="Show/Hide Album"></button><button type="button" class="simp-shide-bottom bi bi-caret-down-fill" title="Show/Hide Playlist"></button></div></div>';
         simp_elem += '</div>'; //simp-controls
   
         var simp_player = document.createElement('div');

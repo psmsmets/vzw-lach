@@ -40,10 +40,10 @@
     "audio-player": {
       "js": [
         "/assets/build/runtime.bff8fc39.js",
-        "/assets/build/audio-player.7a03af88.js"
+        "/assets/build/audio-player.541d7f40.js"
       ],
       "css": [
-        "/assets/build/audio-player.2091472c.css"
+        "/assets/build/audio-player.18827af0.css"
       ]
     },
     "ea-lightbox-prevent-scroll": {
@@ -87,8 +87,8 @@
     "/assets/build/vzw-lach-enrol-form.f5fad490.js": "sha384-1ZRUnuxVKfZqXrRuK2D7nEQ7p7QEUP5z3+v1O5mhNBIuzUYx5IVb2/0nLGhPjLyy",
     "/assets/build/vzw-lach-event.4925c50f.js": "sha384-ptvY294rhfyyCR8ZOogWgElIiCW6b6JRwh5skAtbcwUeVR1MwwoaVtgrgGtgNmiF",
     "/assets/build/vzw-lach-form-submit.c4488eaf.js": "sha384-vUH6PQktGP9cDLXLQdbiQoJRUwtYLZ8T9sE4eI/6/ZhM3YGgQ2OsfGAhaD0hjnVW",
-    "/assets/build/audio-player.7a03af88.js": "sha384-oDdKV9BdY+AnMw5Y6CBfNvGVuJRYe9Hwz7kK9C11WxWOnUNAm/lrhevDisaMOnZk",
-    "/assets/build/audio-player.2091472c.css": "sha384-TRaESXNK2fWs4JDfLHWemGtFNZy/Bvrm0XALEWTYcLEFe6R5rbGheHsvDiV4IALj",
+    "/assets/build/audio-player.541d7f40.js": "sha384-26hjxUHPrIfu0RnUXHaIyvQVviE5xcHgD7H8KX4LbHrOHiOp1q0/r7+xONnBV9yN",
+    "/assets/build/audio-player.18827af0.css": "sha384-XFnob8g2pCpUmLDcvb35hAZwoHUmF2pgXtnZVtoPDRLcSMjypjQQ66rvjAKK5yuH",
     "/assets/build/ea-lightbox-prevent-scroll.aa4459ad.js": "sha384-erhx4Fya3daVAokPhLQu8LYfVgUdUxjY7MgZjJVotDcmRE7h0sTbZr+cZyrDvrhm",
     "/assets/build/bootstrap.79826f7c.css": "sha384-cmRPp2s3eYv0FSkQfGDkh/H2HEA4bYbhU2n1zbR9QmoYO0L3BDQ2yqavB6GXy3a/",
     "/assets/build/safari_select_fix.a8bfcbe6.css": "sha384-ItcFc7oAmgvz+g/DtFmVpB/7AyWQHzFRglCCbu8SNg6M3HybLDeSTaXirgKYGU0w",

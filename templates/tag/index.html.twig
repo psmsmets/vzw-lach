@@ -28,7 +28,7 @@
 
 {% block side %}
     {% include 'event/module.html.twig' with { 'tag': tag.id } %}
-    {% include 'audio-player/module.html.twig' with { 'tag': tag.id } %}
-    {% include 'document/module.html.twig' with { 'tag': tag.id } %}
+    {# include 'audio-player/module.html.twig' with { 'tag': tag.id } #}
+    {% if is_granted('ROLE_ASSOCIATE') %}{% include 'document/module.html.twig' with { 'tag': tag.id } %}{% endif %}
     {% include 'advert/module.html.twig' with { 'tag': tag.id } %} 
 {% endblock %}

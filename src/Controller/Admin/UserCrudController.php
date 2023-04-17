@@ -39,10 +39,14 @@ class UserCrudController extends AbstractCrudController
             ->setPermission(Action::NEW, 'ROLE_ADMIN')
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN')
-            ->addBatchAction(Action::new('relogin', 'Force Relogin Users')
-                ->linkToCrudAction('forceRelogin')
+            ->addBatchAction(Action::new('forceUserRelogin', 'Force Relogin Users')
+                ->linkToCrudAction('forceUserRelogin')
                 ->addCssClass('btn btn-primary')
                 ->setIcon('bi bi-person-fill-slash'))
+            ->addBatchAction(Action::new('addRoleAssociate', 'Set User Role Associate')
+                ->linkToCrudAction('addRoleAssociate')
+                ->addCssClass('btn btn-primary')
+                ->setIcon('bi bi-person-fill-check'))
             ;
     }
 
@@ -116,15 +120,10 @@ class UserCrudController extends AbstractCrudController
 
         yield BooleanField::new('isAdmin')->renderAsSwitch(false)->hideOnForm();
         yield ChoiceField::new('roles')
-            ->setChoices([
-                'ROLE_USER' => 'ROLE_USER',
-                'ROLE_MANAGER' => 'ROLE_MANAGER',
-                'ROLE_ADMIN' => 'ROLE_ADMIN',
-                'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
-            ])
+            ->setChoices(User::ROLES)
             ->allowMultipleChoices()
             ->autocomplete()
-            ->hideOnIndex()
+            //->hideOnIndex()
             ;
         yield BooleanField::new('viewmaster')->renderAsSwitch(false)->hideOnForm();
         //yield BooleanField::new('viewmaster')->renderAsSwitch(true)->onlyOnForms();
@@ -184,14 +183,7 @@ class UserCrudController extends AbstractCrudController
             ->add('createdAt')
             ->add('enabled')
             ->add('viewmaster')
-            ->add(ArrayFilter::new('roles')
-                ->setChoices([
-                    'ROLE_USER' => 'ROLE_USER',
-                    'ROLE_MANAGER' => 'ROLE_MANAGER',
-                    'ROLE_ADMIN' => 'ROLE_ADMIN',
-                    'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
-                ])
-            )
+            ->add(ArrayFilter::new('roles')->setChoices(User::ROLES))
             ->add('lastLoginAt')
         ;
     }
@@ -203,6 +195,21 @@ class UserCrudController extends AbstractCrudController
         foreach ($batchActionDto->getEntityIds() as $id) {
             $user = $entityManager->find($className, $id);
             $user->forceRelogin();
+        }
+
+        $entityManager->flush();
+
+        return $this->redirect($batchActionDto->getReferrerUrl());
+    }
+
+    public function addRoleAssociate(BatchActionDto $batchActionDto)
+    {
+        $className = $batchActionDto->getEntityFqcn();
+        $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
+        foreach ($batchActionDto->getEntityIds() as $id) {
+            $user = $entityManager->find($className, $id);
+            $roles = $user->getRoles();
+            $user->addRole('ROLE_ASSOCIATE');
         }
 
         $entityManager->flush();

@@ -26,10 +26,12 @@
             <a class="nav-link {% if path('profile_events') in currentPath %}active{% endif %}"
                href="{{path('profile_events')}}">Kalender</a>
           </li>
+          {% if is_granted('ROLE_ASSOCIATE') %}
           <li class="nav-item">
             <a class="nav-link {% if path('profile_documents') in currentPath %}active{% endif %}"
                href="{{path('profile_documents')}}">Documenten</a>
           </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link {% if path('profile_adverts') in currentPath %}active{% endif %}"
                href="{{path('profile_adverts')}}">Zoekertjes</a>
@@ -38,7 +40,7 @@
             <a class="nav-link {% if path('profile_faq') in currentPath %}active{% endif %}"
                href="{{path('profile_faq')}}">Vragen</a>
           </li>
-          {% if app.user.isAdmin %}
+          {% if is_granted('ROLE_MANAGER') %}
           <li class="nav-item">
             <a class="nav-link"
                href="{{path('admin')}}"><i class="bi bi-lock-fill"></i> Beheer</a>

@@ -61,7 +61,8 @@ security:
                     doctrine: true
 
     role_hierarchy:
-        ROLE_MANAGER:     ROLE_USER
+        ROLE_ASSOCIATE:   ROLE_USER
+        ROLE_MANAGER:     ROLE_ASSOCIATE
         ROLE_ADMIN:       ROLE_MANAGER
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
@@ -72,7 +73,7 @@ security:
          - { path: ^/beheer, roles: ROLE_MANAGER }
          - { path: ^/api/private, roles: ROLE_USER }
          - { path: ^/mijn-profiel, roles: ROLE_USER }
-         - { path: ^/mijn-profiel/deelnemer/\s/bewerk, roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/mijn-profiel/deelnemer/\s/bewerk, roles: [ROLE_ASSOCIATE,IS_AUTHENTICATED_FULLY] }
 
 when@test:
     security:
