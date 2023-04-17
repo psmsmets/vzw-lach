@@ -192,7 +192,7 @@ class ProfileManager
         return count($errors) == 0 ? $this->documentRepository->findDocument(Uuid::fromString($uuid), $obj) : null;
     }
 
-    public function getDocuments($obj, ?Folder $folder = null, int $page = 1, ?bool $pinned = false, ?int $tag = null): array
+    public function getDocuments($obj, $folder = null, int $page = 1, ?bool $pinned = false, ?int $tag = null): array
     {
         return $this->documentRepository->findDocuments($folder, $obj, null, $pinned, Document::NUMBER_OF_ITEMS, $page, $tag);
     }
