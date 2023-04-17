@@ -176,7 +176,7 @@ class ProfileController extends AbstractController
         return $this->render('document/index.html.twig', [
             'pinned' => $this->manager->getPinnedDocuments($viewpoint),
             'folders' => $this->manager->getFolders($viewpoint),
-            'documents' => $this->manager->getDocuments($viewpoint, null, $page, false),
+            'documents' => $this->manager->getDocuments($viewpoint, false, $page, false),
             'page' => $page,
             'pages' => $pages,
         ]);

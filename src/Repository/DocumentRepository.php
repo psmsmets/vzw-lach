@@ -87,6 +87,10 @@ class DocumentRepository extends ServiceEntityRepository
             $qb->setParameter('folder', $folder);
             $qb->andWhere('entity.folder = :folder');
         }
+        elseif ($folder === false) {
+            $qb->leftJoin('entity.folder','folder');
+            $qb->andWhere('entity.folder is null');
+        }
 
         $qb->setParameter('published', true);
         $qb->andWhere('entity.published = :published');
