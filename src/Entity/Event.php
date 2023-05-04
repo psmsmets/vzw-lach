@@ -195,8 +195,11 @@ class Event
 
     public function setStartTime(\DateTimeImmutable $startTime): self
     {
+        if ($this->published) return $this;
+
         $this->startTime = $startTime;
         if ($startTime > $this->endTime) $this->endTime = $startTime->modify('+1 hour');
+
         $this->setUpdatedAt();
 
         return $this;
@@ -226,6 +229,8 @@ class Event
 
     public function setEndTime(?\DateTimeImmutable $endTime): self
     {
+        // if ($this->published) return $this;
+
         if (!is_null($endTime) and $endTime < $this->startTime) {
 
             $this->endTime = $this->startTime->modify('+1 hour');
@@ -392,6 +397,8 @@ class Event
 
     public function setTitle(string $title): self
     {
+        // if ($this->published) return $this;
+
         $this->title = $title;
         $this->setUpdatedAt();
 

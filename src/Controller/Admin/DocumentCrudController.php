@@ -62,8 +62,17 @@ class DocumentCrudController extends AbstractCrudController
             ->onlyOnForms()
             ;
 
-        yield TextareaField::new('description')
-            ->setNumOfRows(6)
+        yield TextEditorField::new('description')
+            ->setTrixEditorConfig([
+                'blockAttributes' => [
+                    'default' => ['tagName' => 'p'],
+                    'heading1' => ['tagName' => 'h3'],
+                ],
+                'css' => [
+                    'attachment' => 'bootstrap.css',
+                ],
+            ])
+            ->setNumOfRows(20)
             ->onlyOnForms()
             ;
 
