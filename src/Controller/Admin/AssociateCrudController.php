@@ -251,6 +251,8 @@ class AssociateCrudController extends AbstractCrudController
 
         yield FormField::addTab('Options');
 
+       yield AssociationField::new('users')->onlyOnIndex();
+
         yield BooleanField::new('enabled')->renderAsSwitch(false)->onlyOnDetail();
         yield BooleanField::new('enabled')->renderAsSwitch(true)->onlyOnForms();
         yield Field::new('id')->onlyOnDetail();

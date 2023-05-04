@@ -138,6 +138,7 @@ class EventCrudController extends AbstractCrudController
         yield BooleanField::new('published')
             ->renderAsSwitch(true)
             ->onlyOnForms()
+            ->hideWhenCreating()
             ->setHelp('Opgelet: dit kan niet ongedaan worden!')
             ;
         yield BooleanField::new('published')->renderAsSwitch(false)->hideOnForm();
