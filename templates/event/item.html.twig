@@ -80,6 +80,49 @@
 
   </div>
 
+{% if event.enrol %}
+  {% for form in forms %}
+  <div class="p-3 bg-white shadow-sm mb-4">
+    <h5 class="pb-0 mb-3 d-flex justify-content-between text-primary">
+      <span>
+        <i class="bi bi-{{ form.vars.data.enrolled ? 'check-'}}square-fill"></i> 
+        {{form.vars.data.associate.fullName}} 
+        {{ form.vars.data.enrolled ? 'is ingeschreven' : 'inschrijven'}}
+      </span>
+      <small>
+        {% if date() > event.enrolBefore %}
+          <span class="badge rounded-1 text-bg-secondary ml-1">Gesloten</span>
+        {% endif %}
+      </small>
+    </h5>
+    {{ form_start(form) }}
+      {{ form_widget(form) }}
+      {% if date() < event.enrolBefore and is_granted('ROLE_ASSOCIATE') %}
+        <button class="btn btn-outline-{{ form.vars.data.enrolled ? 'dark' : 'primary'}}" type="submit" id="enrol"
+          {{ form.vars.data.enrolled and not event.enrolUpdate ? 'disabled' }}>
+          {% if form.vars.data.enrolled %}
+            <i class="bi bi-check2-square"></i> Ingeschreven
+          {% else %}
+            <i class="bi bi-square"></i> Inschrijven
+          {% endif %}
+        </button>
+        {% if event.enrolMaybe %}
+          <button class="btn btn-outline-secondary" type="submit" id="maybe">
+            <i class="bi bi-question-square"></i> Misschien
+          </button>
+        {% endif %}
+      {% endif %}
+      {% if date() > event.enrolBefore %}
+        De deadline om in te schrijven is verstreken.
+      {% endif %}
+      {% if not is_granted('ROLE_ASSOCIATE') %}
+        Je hebt geen rechten om in te schrijven.
+      {% endif %}
+    {{ form_end(form) }}
+  </div>
+  {% endfor %}
+{% endif %}
+
   <ul class="list-inline mt-2">
     <li class="list-inline-item"><a href="{{ path('profile_events') }}" class="fw-lighter text-secondary text-decoration-none"><i class="bi bi-chevron-double-left"></i> terug naar het overzicht</a></li>
   </ul>

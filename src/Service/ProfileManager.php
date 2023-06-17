@@ -7,6 +7,7 @@ use App\Entity\Associate;
 use App\Entity\AssociateAddress;
 use App\Entity\Category;
 use App\Entity\Document;
+use App\Entity\Enrolment;
 use App\Entity\Event;
 use App\Entity\FAQ;
 use App\Entity\Folder;
@@ -17,6 +18,7 @@ use App\Repository\AdvertRepository;
 use App\Repository\AssociateRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\DocumentRepository;
+use App\Repository\EnrolmentRepository;
 use App\Repository\EventRepository;
 use App\Repository\FAQRepository;
 use App\Repository\FolderRepository;
@@ -40,6 +42,7 @@ class ProfileManager
         public AssociateRepository $associateRepository,
         public CategoryRepository $categoryRepository,
         public DocumentRepository $documentRepository,
+        public EnrolmentRepository $enrolmentRepository,
         public EventRepository $eventRepository,
         public FAQRepository $faqRepository,
         public FolderRepository $folderRepository,

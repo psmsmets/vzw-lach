@@ -119,6 +119,9 @@ class Associate
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private array $categoryPreferences = [];
 
+    #[ORM\OneToMany(mappedBy: 'associate', targetEntity: Enrolment::class)]
+    private Collection $enrolments;
+
     public function __construct()
     {
         $this->id = Uuid::v4();
@@ -133,6 +136,7 @@ class Associate
         $this->measurements = new AssociateMeasurements($this);
         $this->categories = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->enrolments = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -568,6 +572,36 @@ class Associate
             $match = ($match or ($user->getCsrfToken() === $token));
         }
         return $match;
+    }
+
+    /**
+     * @return Collection<int, Enrolment>
+     */
+    public function getEnrolments(): Collection
+    {
+        return $this->enrolments;
+    }
+
+    public function addEnrolment(Enrolment $enrolment): static
+    {
+        if (!$this->enrolments->contains($enrolment)) {
+            $this->enrolments->add($enrolment);
+            $enrolment->setAssociate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnrolment(Enrolment $enrolment): static
+    {
+        if ($this->enrolments->removeElement($enrolment)) {
+            // set the owning side to null (unless already changed)
+            if ($enrolment->getAssociate() === $this) {
+                $enrolment->setAssociate(null);
+            }
+        }
+
+        return $this;
     }
 
 }

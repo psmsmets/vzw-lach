@@ -7,6 +7,7 @@ use App\Entity\Associate;
 use App\Entity\Category;
 use App\Entity\Document;
 use App\Entity\Folder;
+use App\Entity\Enrolment;
 use App\Entity\Event;
 use App\Entity\FAQ;
 use App\Entity\Page;
@@ -143,6 +144,9 @@ class AdminController extends AbstractDashboardController
 
             MenuItem::section('Events')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Events', 'bi bi-calendar-week', Event::class)->setPermission('ROLE_ADMIN'),
+
+            MenuItem::section('Enrolments')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Enrolments', 'bi bi-check-square-fill', Enrolment::class)->setPermission('ROLE_ADMIN'),
 
             MenuItem::section('Documents')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Documents', 'bi bi-file-earmark-arrow-down', Document::class)->setPermission('ROLE_ADMIN'),

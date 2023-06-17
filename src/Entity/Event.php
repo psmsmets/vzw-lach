@@ -63,6 +63,48 @@ class Event
     #[ORM\Column(length: 255, nullable: true)]
     private $url = null;
 
+    #[ORM\Column]
+    private ?bool $enrol = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $enrolBefore = null;
+
+    #[ORM\Column]
+    private ?int $enrolBeforeDays = null;
+
+    #[ORM\Column]
+    private ?bool $enrolMaybe = null;
+
+    #[ORM\Column]
+    private ?bool $enrolUpdate = null;
+
+    #[ORM\Column]
+    private ?bool $enrolNote = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private $enrolOption1 = null;
+
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private $enrolOptions1 = [];
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private $enrolOption2 = null;
+
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private $enrolOptions2 = [];
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private $enrolOption3 = null;
+
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private $enrolOptions3 = [];
+
+    #[ORM\Column]
+    private ?bool $enrolFreeOfCharge = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $enrolCharge = null;
+
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'events')]
     private Collection $categories;
 
@@ -71,6 +113,9 @@ class Event
 
     private $nullifyEndTime = false;
     private $overrule = false;
+
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Enrolment::class)]
+    private Collection $enrolments;
 
     public function __construct()
     {
@@ -85,6 +130,11 @@ class Event
         $this->allDay = true;
         $this->categories = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->enrol = false;
+        $this->enrolBeforeDays = 2;
+        $this->enrolFreeOfCharge = true;
+        $this->enrolCharge = null;
+        $this->enrolments = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -472,6 +522,226 @@ class Event
     }
 
     /**
+     * Enrol
+     */
+    public function hasEnrol(): ?bool
+    {
+        return $this->enrol;
+    }
+
+    public function getEnrol(): ?bool
+    {
+        return $this->enrol;
+    }
+
+    public function setEnrol(bool $enrol): self
+    {
+        $this->enrol = $enrol;
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function getEnrolBefore(): ?\DateTimeImmutable
+    {
+        return $this->enrolBefore;
+    }
+
+    private function setEnrolBefore(): self
+    {
+        $this->enrolBefore = $this->startTime
+            ->modify('midnight')
+            ->sub(new \DateInterval('P'.$this->enrolBeforeDays.'D'))
+            ;
+
+        return $this;
+    }
+
+    public function getEnrolBeforeDays(): ?int
+    {
+        return $this->enrolBeforeDays;
+    }
+
+    public function setEnrolBeforeDays(int $enrolBeforeDays): self
+    {
+        $this->enrolBeforeDays = $enrolBeforeDays < 0 ? 0 : $enrolBeforeDays;
+        $this->setEnrolBefore();
+
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function getEnrolFreeOfCharge(): ?bool
+    {
+        return $this->enrolFreeOfCharge;
+    }
+
+    public function setEnrolFreeOfCharge(bool $enrolFreeOfCharge): self
+    {
+        if ($this->published) return $this;
+
+        $this->enrolFreeOfCharge = $enrolFreeOfCharge;
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function isEnrolFreeOfCharge(): ?bool
+    {
+        return $this->enrolFreeOfCharge;
+    }
+
+    public function getEnrolCharge(): ?float
+    {
+        return $this->enrolCharge;
+    }
+
+    public function setEnrolCharge(float $enrolCharge): self
+    {
+        $this->enrolCharge = $enrolCharge;
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function hasEnrolMaybe(): ?bool
+    {
+        return $this->enrolMaybe;
+    }
+
+    public function getEnrolMaybe(): ?bool
+    {
+        return $this->enrolMaybe;
+    }
+
+    public function setEnrolMaybe(bool $enrolMaybe): self
+    {
+        $this->enrolMaybe = $enrolMaybe;
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function hasEnrolUpdate(): ?bool
+    {
+        return $this->enrolUpdate;
+    }
+
+    public function getEnrolUpdate(): ?bool
+    {
+        return $this->enrolUpdate;
+    }
+
+    public function setEnrolUpdate(bool $enrolUpdate): self
+    {
+        $this->enrolUpdate = $enrolUpdate;
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function hasEnrolNote(): ?bool
+    {
+        return $this->enrolNote;
+    }
+
+    public function getEnrolNote(): ?bool
+    {
+        return $this->enrolNote;
+    }
+
+    public function setEnrolNote(bool $enrolNote): self
+    {
+        $this->enrolNote = $enrolNote;
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function getEnrolOption1(): ?string
+    {
+        return $this->enrolOption1;
+    }
+
+    public function setEnrolOption1(?string $enrolOption1): self
+    {
+        $this->enrolOption1 = $enrolOption1;
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function getEnrolOptions1(): array
+    {
+        return (array) $this->enrolOptions1;
+    }
+
+    public function setEnrolOptions1(array $enrolOptions1): self
+    {
+        $this->enrolOptions1 = (array) $enrolOptions1;
+
+        return $this;
+    }
+
+    public function getEnrolOption2(): ?string
+    {
+        return $this->enrolOption2;
+    }
+
+    public function setEnrolOption2(?string $enrolOption2): self
+    {
+        $this->enrolOption2 = $enrolOption2;
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function getEnrolOptions2(): array
+    {
+        return (array) $this->enrolOptions2;
+    }
+
+    public function setEnrolOptions2(array $enrolOptions2): self
+    {
+        $this->enrolOptions2 = (array) $enrolOptions2;
+
+        return $this;
+    }
+
+    public function getEnrolOption3(): ?string
+    {
+        return $this->enrolOption3;
+    }
+
+    public function setEnrolOption3(?string $enrolOption3): self
+    {
+        $this->enrolOption3 = $enrolOption3;
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function getEnrolOptions3(): array
+    {
+        return (array) $this->enrolOptions3;
+    }
+
+    public function setEnrolOptions3(array $enrolOptions3): self
+    {
+        $this->enrolOptions3 = (array) $enrolOptions3;
+
+        return $this;
+    }
+
+/*
+    public function getNumberOfEnrolments(): ?int
+    {
+        return count($this->enrolments);
+    }
+*/
+
+    /**
      * @return Collection<string, Category>
      */
     public function getCategories(): Collection
@@ -552,6 +822,36 @@ class Event
     {
         if ($this->tags->removeElement($tag)) {
             $tag->removeEvent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Enrolment>
+     */
+    public function getEnrolments(): Collection
+    {
+        return $this->enrolments;
+    }
+
+    public function addEnrolment(Enrolment $enrolment): static
+    {
+        if (!$this->enrolments->contains($enrolment)) {
+            $this->enrolments->add($enrolment);
+            $enrolment->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnrolment(Enrolment $enrolment): static
+    {
+        if ($this->enrolments->removeElement($enrolment)) {
+            // set the owning side to null (unless already changed)
+            if ($enrolment->getEvent() === $this) {
+                $enrolment->setEvent(null);
+            }
         }
 
         return $this;

@@ -13,12 +13,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class AssociateDetailsType extends AbstractType
 {
-    private $params;
-
-    public function __construct(ParameterBagInterface $params)
-    {
-        $this->params = $params;
-    }
+    public function __construct(private ParameterBagInterface $params)
+    {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
