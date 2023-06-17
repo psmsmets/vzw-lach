@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Associate;
+use App\Entity\Enrolment;
+use App\Entity\Event;
 use App\Entity\Page;
+use App\Entity\User;
 use App\Form\AssociateType;
+use App\Form\EnrolmentType;
 use App\Service\ProfileManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -147,8 +151,8 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/kalender/{id}', name: '_event', methods: ['GET'])]
-    public function event(string $id): Response
+    #[Route('/kalender/{id}', name: '_event', methods: ['GET', 'POST'])]
+    public function event(Request $request, string $id): Response
     {
         $viewpoint = $this->manager->getViewpoint();
 
@@ -158,8 +162,54 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('profile_events');
         }
 
+        $forms = [];
+        $views = [];
+
+        if ( $event->hasEnrol() and new \DateTime('now') < $event->getEnrolBefore() ) {
+
+            if ($viewpoint instanceof User) {
+                foreach($viewpoint->getEnabledAssociates() as $associate) {
+                    $enrolment = $this->manager->enrolmentRepository->findOneBy([
+                        'associate' => $associate, 'event' => $event
+                    ]);
+                    $enrolment = $enrolment ? $enrolment : new Enrolment($event, $associate);
+                    $forms[] = $this->createForm(EnrolmentType::class, $enrolment);
+                }
+            } else {
+                $enrolment = $this->manager->enrolmentRepository->findOneBy([
+                    'associate' => $viewpoint, 'event' => $event
+                ]);
+                $enrolment = $enrolment ? $enrolment : new Enrolment($event, $viewpoint);
+                $forms[] = $this->createForm(EnrolmentType::class, $enrolment);
+            }
+
+            foreach ($forms as $form)
+            {
+                $form->handleRequest($request);
+                $enrolment = $form->getData();
+                $match = $enrolment->getAssociate()->getId()->toRfc4122() === $form->get('associate')->getData();
+
+
+                if ( $form->isSubmitted() && $form->isValid() && $match ) {
+
+                    $this->denyAccessUnlessGranted('ROLE_ASSOCIATE');
+
+                    $this->manager->em->persist($enrolment);
+                    $this->manager->em->flush();
+
+                    return $this->redirectToRoute('profile_event', ['id' => $id], Response::HTTP_SEE_OTHER);
+
+                }
+
+
+                $views[] = $form->createView();
+            }
+
+        }
+
         return $this->render('event/item.html.twig', [
             'event' => $event,
+            'forms' => $views,
         ]);
     }
 

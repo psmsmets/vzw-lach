@@ -12,7 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, IdField, BooleanField, DateTimeField, TextField, TextareaField, TextEditorField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{ArrayField, AssociationField, IdField, BooleanField, DateTimeField, IntegerField, MoneyField, TextField, TextareaField, TextEditorField};
 use EasyCorp\Bundle\EasyAdminBundle\Filter\{DateTimeFilter, BooleanFilter};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
@@ -123,7 +123,43 @@ class EventCrudController extends AbstractCrudController
             ;
 
         yield TextField::new('location')->onlyOnIndex();
-        
+
+        yield FormField::addTab('Inschrijven');
+        yield FormField::addPanel('Inschrijven');
+
+        yield BooleanField::new('enrol')
+            ->renderAsSwitch(true)
+            ->onlyOnForms()
+            ->setHelp('Opgelet: dit kan enkel aangepast worden voor publicatie!')
+            ;
+        yield BooleanField::new('enrol')->renderAsSwitch(false)->hideOnForm();
+
+        yield IntegerField::new('enrolBeforeDays')->hideOnIndex();
+        yield DateTimeField::new('enrolBefore')->onlyOnDetail();
+
+        yield BooleanField::new('enrolFreeOfCharge')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('enrolFreeOfCharge')->renderAsSwitch(false)->onlyOnDetail();
+
+        yield BooleanField::new('enrolMaybe')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('enrolMaybe')->renderAsSwitch(false)->onlyOnDetail();
+
+        yield BooleanField::new('enrolUpdate')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('enrolUpdate')->renderAsSwitch(false)->onlyOnDetail();
+
+        yield BooleanField::new('enrolNote')->renderAsSwitch(true)->onlyOnForms();
+        yield BooleanField::new('enrolNote')->renderAsSwitch(false)->onlyOnDetail();
+
+        yield TextField::new('enrolOption1')->hideOnIndex();
+        yield ArrayField::new('enrolOptions1')->hideOnIndex();
+
+        yield TextField::new('enrolOption2')->hideOnIndex();
+        yield ArrayField::new('enrolOptions2')->hideOnIndex();
+
+        yield TextField::new('enrolOption3')->hideOnIndex();
+        yield ArrayField::new('enrolOptions3')->hideOnIndex();
+
+        yield AssociationField::new('enrolments')->hideOnForm();
+
         yield FormField::addTab('Options');
         yield FormField::addPanel('Options');
 
