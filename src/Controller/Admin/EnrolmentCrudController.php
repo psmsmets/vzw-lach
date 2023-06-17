@@ -55,6 +55,7 @@ class EnrolmentCrudController extends AbstractCrudController
         yield FormField::addPanel('When');
 
         yield AssociationField::new('event')
+            ->hideWhenUpdating()
             ->autocomplete()
             ->setCrudController(EventCrudController::class)
             ->setFormTypeOptions([
@@ -69,6 +70,7 @@ class EnrolmentCrudController extends AbstractCrudController
         yield FormField::addPanel('Who');
 
         yield AssociationField::new('associate')
+            ->hideWhenUpdating()
             ->autocomplete()
             ->setCrudController(AssociateCrudController::class)
             ->setFormTypeOptions([
