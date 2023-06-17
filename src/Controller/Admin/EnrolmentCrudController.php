@@ -44,7 +44,7 @@ class EnrolmentCrudController extends AbstractCrudController
             ->setDateTimeFormat('medium', 'short')
             //->setTimezone('Europe/Brussels')
             ->setNumberFormat('%.2d')
-            ->setDefaultSort(['event' => 'ASC', 'associate' => 'ASC'])
+            ->setDefaultSort(['event' => 'ASC', 'associate.firstname' => 'ASC', 'associate.lastname' => 'ASC'])
             ->setPaginatorPageSize(50)
             ;
     }
