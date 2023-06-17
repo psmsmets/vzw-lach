@@ -599,8 +599,6 @@ class Event
 
     public function setEnrolCharge(float $enrolCharge): self
     {
-        if ($this->published) return $this;
-
         $this->enrolCharge = $enrolCharge;
         $this->setUpdatedAt();
 

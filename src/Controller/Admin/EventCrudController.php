@@ -137,6 +137,7 @@ class EventCrudController extends AbstractCrudController
         yield IntegerField::new('enrolBeforeDays')->hideOnIndex();
         yield DateTimeField::new('enrolBefore')->onlyOnDetail();
 
+        yield MoneyField::new('enrolCharge')->setCurrency('EUR')->hideOnIndex();
         yield BooleanField::new('enrolFreeOfCharge')->renderAsSwitch(true)->onlyOnForms();
         yield BooleanField::new('enrolFreeOfCharge')->renderAsSwitch(false)->onlyOnDetail();
 

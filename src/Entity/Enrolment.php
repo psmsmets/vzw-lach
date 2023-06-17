@@ -32,6 +32,9 @@ class Enrolment
     #[ORM\Column]
     private ?bool $cancelled = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $charge = null;
+
     #[ORM\Column]
     private ?bool $paid = null;
 
@@ -182,6 +185,19 @@ class Enrolment
     public function setPaid(bool $paid): self
     {
         $this->paid = $paid;
+        $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    public function getTotalCharge(): ?float
+    {
+        return $this->charge;
+    }
+
+    public function setTotalCharge(float $charge): self
+    {
+        $this->charge = $charge;
         $this->setUpdatedAt();
 
         return $this;

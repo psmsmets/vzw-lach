@@ -194,6 +194,8 @@ class ProfileController extends AbstractController
 
                     $this->denyAccessUnlessGranted('ROLE_ASSOCIATE');
 
+                    $enrolment->setTotalCharge($event->getEnrolCharge());
+
                     $this->manager->em->persist($enrolment);
                     $this->manager->em->flush();
 

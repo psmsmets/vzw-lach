@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-//use App\Controller\Admin\TagCrudController;
 use App\Entity\Associate;
 use App\Entity\Enrolment;
 use App\Entity\Event;
@@ -14,7 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, BooleanField, ChoiceField, DateTimeField, TextField, TextareaField};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, BooleanField, ChoiceField, DateTimeField, MoneyField, TextField, TextareaField};
 use EasyCorp\Bundle\EasyAdminBundle\Filter\{DateTimeFilter, BooleanFilter};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
@@ -87,6 +86,14 @@ class EnrolmentCrudController extends AbstractCrudController
         yield TextField::new('option1');
         yield TextField::new('option2');
         yield TextField::new('option3');
+
+        yield MoneyField::new('totalCharge')->setCurrency('EUR');
+
+        yield BooleanField::new('paid')
+            ->renderAsSwitch(true)
+            ->onlyOnForms()
+            ;
+        yield BooleanField::new('paid')->renderAsSwitch(false)->hideOnForm();
 
         yield TextareaField::new('note')->hideOnIndex();
         yield BooleanField::new('note')->renderAsSwitch(false)->onlyOnIndex();
