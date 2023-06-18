@@ -92,6 +92,33 @@
 
     </div>
 
+    <h3 class="text-secondary mb-2 mb-md-4 mt-4"><i class="bi bi-check2-square"></i> Inschrijvingen</h3>
+    {% for enrolment in associate.enrolments %}
+      <div class="p-3 bg-white shadow-sm mb-4 event event-link"
+       onclick="window.location='{{ path('profile_event', {'id': enrolment.event.id}) }}';">
+        <h5 class="pb-0 mb-3 d-flex justify-content-between text-primary">
+          <span>
+            <i class="bi bi-{{ enrolment.enrolled ? 'check-'}}square-fill"></i> 
+            {{ enrolment.event.title()}}
+          </span>
+          <small>
+            {% if date() > enrolment.event.enrolBefore %}
+              <span class="badge rounded-1 text-bg-secondary ml-1">Gesloten</span>
+            {% endif %}
+          </small>
+        </h5>
+        <h6 class="mb-2">{{enrolment.event.getFormattedPeriod|lower}}</h6>
+        <ul class="mt-3">
+          {% if enrolment.option1 %}<li>{{enrolment.event.enrolOption1 ? enrolment.event.enrolOption1 + ': ' : ''}}{{ enrolment.option1 }}</li>{% endif %}
+          {% if enrolment.option2 %}<li>{{enrolment.event.enrolOption2 ? enrolment.event.enrolOption2 + ': ' : ''}}{{ enrolment.option2 }}</li>{% endif %}
+          {% if enrolment.option3 %}<li>{{enrolment.event.enrolOption3 ? enrolment.event.enrolOption3 + ': ' : ''}}{{ enrolment.option3 }}</li>{% endif %}
+        </ul>
+        {% if not enrolment.event.enrolFreeOfCharge %}<p>Betaald: {% if enrolment.paid %}<span class="badge text-bg-success">ja</span>{% else %}<span class="badge text-bg-warning">nee</span>{% endif %}</p>{% endif %}
+      </div>
+    {% else %}
+      <div class="p-3 bg-white shadow-sm mb-4">Je hebt nog geen inschrijvingen.</div>
+    {% endfor %}
+
     <ul class="list-inline">
       <li class="list-inline-item"><a href="{{ path('profile_index') }}"><i class="bi bi-chevron-double-left"></i> terug naar het overzicht</a></li>
       {% if is_granted('ROLE_ASSOCIATE') %}
