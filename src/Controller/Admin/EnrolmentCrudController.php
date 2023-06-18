@@ -11,8 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\{Action, Actions, Crud, Filters, KeyValueStore};
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\{BatchActionDto, EntityDto, SearchDto};
 use EasyCorp\Bundle\EasyAdminBundle\Field\{AssociationField, BooleanField, ChoiceField, DateTimeField, MoneyField, TextField, TextareaField};
 use EasyCorp\Bundle\EasyAdminBundle\Filter\{DateTimeFilter, BooleanFilter};
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -33,6 +32,10 @@ class EnrolmentCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
             ->setPermission(Action::NEW, 'ROLE_SUPER_ADMIN')
             ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN')
+            ->addBatchAction(Action::new('paid', 'Mark Paid')
+                ->linkToCrudAction('markPaid')
+                ->addCssClass('btn btn-primary')
+                ->setIcon('bi bi-person-check'))
             ;
     }
 
@@ -55,6 +58,7 @@ class EnrolmentCrudController extends AbstractCrudController
         yield FormField::addPanel('When');
 
         yield AssociationField::new('event')
+            ->hideWhenUpdating()
             ->autocomplete()
             ->setCrudController(EventCrudController::class)
             ->setFormTypeOptions([
@@ -69,6 +73,7 @@ class EnrolmentCrudController extends AbstractCrudController
         yield FormField::addPanel('Who');
 
         yield AssociationField::new('associate')
+            ->hideWhenUpdating()
             ->autocomplete()
             ->setCrudController(AssociateCrudController::class)
             ->setFormTypeOptions([
@@ -122,5 +127,20 @@ class EnrolmentCrudController extends AbstractCrudController
             ->add('option3')
             ->add('cancelled')
         ;
+    }
+
+    public function markPaid(BatchActionDto $batchActionDto)
+    {
+        $className = $batchActionDto->getEntityFqcn();
+        $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
+
+        foreach ($batchActionDto->getEntityIds() as $id) {
+            $enrolment = $entityManager->find($className, $id);
+            $enrolment->setPaid(true);
+        }
+
+        $entityManager->flush();
+
+        return $this->redirect($batchActionDto->getReferrerUrl());
     }
 }

@@ -72,6 +72,11 @@
                     iedereen
                   {% endfor %}
                 </li>
+                {% if event.enrol %}
+                <li class="list-inline-item small"><i class="bi bi-check2-square"></i>
+                  inschrijven voor {{ event.enrolBefore|format_datetime('medium', 'short') }}
+                </li>
+                {% endif %}
                 {% include 'modules/tags.html.twig' with {'tags': event.tags } %}
               </ul>
               <ul class="list-inline mb-0">
