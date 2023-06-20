@@ -43,7 +43,7 @@ class Tag
     #[ORM\ManyToMany(targetEntity: Document::class, inversedBy: 'tags')]
     private Collection $documents;
 
-    #[ORM\ManyToMany(targetEntity: Folder::class, inversedBy: 'adverts')]
+    #[ORM\ManyToMany(targetEntity: Folder::class, inversedBy: 'tags')]
     private Collection $folders;
 
     #[ORM\ManyToMany(targetEntity: Advert::class, inversedBy: 'tags')]

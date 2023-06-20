@@ -127,11 +127,12 @@ class Event
         $this->archived = false;
         $this->startTime = new \DateTimeImmutable("today noon"); 
         $this->endTime = $this->startTime->modify('+1 hour');
-        $this->allDay = true;
+        $this->allDay = false;
         $this->categories = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->enrol = false;
         $this->enrolBeforeDays = 2;
+        $this->setEnrolBefore();
         $this->enrolFreeOfCharge = true;
         $this->enrolCharge = null;
         $this->enrolments = new ArrayCollection();

@@ -56,9 +56,9 @@ Title short: Verkorte titel
 Name: Naam
 Description: Omschrijving
 Content: Inhoud
-Start time: Starttijd
-End time: Eindtijd
-All day: Hele dag
+Start Time: Starttijd
+End Time: Eindtijd
+All Day: Hele dag
 Location: Locatie
 Cancel: Annuleren
 Cancelled: Geannuleerd
@@ -201,3 +201,25 @@ Progress: Voortgang
 Required: Benodigd
 Acquired: Verkregen
 Onstage: Onstage
+Frontpage: Frontpagina
+FAQ: FAQ
+Enrolments: Inschrijvingen
+Enrolment: Inschrijving
+Mark Paid: Markeer als betaald
+LabelOption1: Omschrijving optie 1
+Option1: Optie 1
+Options1: Opties 1
+LabelOption2: Omschrijving optie 2
+Option2: Optie 2
+Options2: Opties 2
+LabelOption3: Omschrijving optie 3
+Option3: Optie 3
+Options3: Opties 3
+Total Charge: Totaal bedrag
+Paid: Betaald
+Note: Opmerking
+Parent: Parent
+Viewmaster: Viewmaster
+Playlist: Afspeellijst
+Document Name: Bestand
+Audio: Geluidsbestand
