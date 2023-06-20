@@ -73,9 +73,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $forcedReloginAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Associate::class)]
-    private Collection $associatesOneToMany;
-
     #[ORM\ManyToMany(targetEntity: Associate::class, mappedBy: 'users')]
     private Collection $associates;
 

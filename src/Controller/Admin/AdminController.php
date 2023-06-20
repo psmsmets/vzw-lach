@@ -128,7 +128,7 @@ class AdminController extends AbstractDashboardController
         return [
             // MenuItem::linkToLogout('Logout', 'fa fa-exit'),
             // MenuItem::linkToDashboard('Dashboard', 'bi bi-house-door-fill'),
-            MenuItem::linkToRoute('Frontpagina', 'bi bi-house-check-fill', 'home'),
+            MenuItem::linkToRoute('Frontpage', 'bi bi-house-check-fill', 'home'),
 
             MenuItem::section('Users')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Users', 'bi bi-person-fill-gear', User::class)->setPermission('ROLE_ADMIN'),

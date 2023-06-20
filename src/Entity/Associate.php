@@ -109,10 +109,6 @@ class Associate
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'associates')]
     private Collection $categories;
 
-    #[ORM\ManyToOne(inversedBy: 'associates')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?User $user = null;
-
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'associates')]
     private Collection $users;
 
@@ -514,15 +510,14 @@ class Associate
 
         return $this;
     }
-
     public function getUser(): ?User
     {
-        return $this->user ? $this->user : ($this->users ? $this->users[0] : null); // safety to avoid null prev code
+        return $this->users[0]; // safety to avoid null prev code
     }
 
     public function setUser(?User $user): self
     {
-        $this->user = $user;
+        //$this->user = $user; // safety to avoid null prev code
 
         return $this;
     }
