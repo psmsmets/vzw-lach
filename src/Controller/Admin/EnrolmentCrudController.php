@@ -24,6 +24,18 @@ class EnrolmentCrudController extends AbstractCrudController
         return Enrolment::class;
     }
 
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters
+    ): QueryBuilder
+    {
+        $qb = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        $qb->andWhere('event.startTime >= :ref');
+        $qb->andWhere('entity.paid = true');
+        $qb->setParameter('ref', (new \DateTimeImmutable('today midnight'))->modify('-3 days'));
+
+        return $qb;
+    }
+
     public function configureActions(Actions $actions): Actions
     {
         return $actions
@@ -126,6 +138,7 @@ class EnrolmentCrudController extends AbstractCrudController
             ->add('option2')
             ->add('option3')
             ->add('cancelled')
+            ->add('paid')
         ;
     }
 

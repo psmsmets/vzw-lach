@@ -159,14 +159,32 @@ class EventCrudController extends AbstractCrudController
         yield BooleanField::new('enrolNote')->renderAsSwitch(true)->onlyOnForms();
         yield BooleanField::new('enrolNote')->renderAsSwitch(false)->onlyOnDetail();
 
-        yield TextField::new('enrolOption1')->hideOnIndex();
-        yield ArrayField::new('enrolOptions1')->hideOnIndex();
+        yield TextField::new('enrolOption1')
+            ->hideOnIndex()
+            ->setHelp('Laat leeg om geen omschrijving te tonen voor keuzelijst 1 op het inschrijfformulier')
+            ;
+        yield ArrayField::new('enrolOptions1')
+            ->hideOnIndex()
+            ->setHelp('Laat leeg om geen keuzelijst 1 te tonen op het inschrijfformulier')
+            ;
 
-        yield TextField::new('enrolOption2')->hideOnIndex();
-        yield ArrayField::new('enrolOptions2')->hideOnIndex();
+        yield TextField::new('enrolOption2')
+            ->hideOnIndex()
+            ->setHelp('Laat leeg om geen omschrijving te tonen voor keuzelijst 2 op het inschrijfformulier')
+            ;
+        yield ArrayField::new('enrolOptions2')
+            ->hideOnIndex()
+            ->setHelp('Laat leeg om geen keuzelijst 2 te tonen op het inschrijfformulier')
+            ;
 
-        yield TextField::new('enrolOption3')->hideOnIndex();
-        yield ArrayField::new('enrolOptions3')->hideOnIndex();
+        yield TextField::new('enrolOption3')
+            ->hideOnIndex()
+            ->setHelp('Laat leeg om geen omschrijving te tonen voor keuzelijst 3 op het inschrijfformulier')
+            ;
+        yield ArrayField::new('enrolOptions3')
+            ->hideOnIndex()
+            ->setHelp('Laat leeg om geen keuzelijst 3 te tonen op het inschrijfformulier')
+            ;
 
         yield AssociationField::new('enrolments')->hideOnForm();
 
@@ -203,13 +221,13 @@ class EventCrudController extends AbstractCrudController
 
     public function configureFilters(Filters $filters): Filters
     {
-//dd(DateTimeFilter::new('startTime'));
         return $filters
             ->add('published')
             ->add(DateTimeFilter::new('startTime'))
             ->add('endTime')
             ->add('allDay')
             ->add('cancelled')
+            ->add('enrol')
         ;
     }
 }
