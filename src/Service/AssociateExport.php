@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\Entity\Event;
+
 use App\Service\SpreadsheetService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -76,6 +78,48 @@ class AssociateExport {
         asort($datas);
 
         $this->spreadsheet->export('HGCVHKV ledendetails', $datas, $headers);
+
+        return;
+    }
+
+    public function exportEventEnrolments(Event $event) : void
+    {
+        $user = $this->security->getUser();
+        $this->logger->info(sprintf("User %s (%s) requested to export event %s enrolments.",
+                                    $user, $user->getEmail(), $event));
+
+        $headers = [];
+
+        $headers[] = 'naam';
+        $headers[] = 'voornaam';
+        if ($event->getEnrolOptions1()) $headers[] = 'keuze 1';
+        if ($event->getEnrolOptions2()) $headers[] = 'keuze 2';
+        if ($event->getEnrolOptions3()) $headers[] = 'keuze 3';
+        $headers[] = 'totaal';
+        $headers[] = 'betaald';
+
+        $datas = [];
+
+        foreach ($event->getEnrolments() as $enrolment) {
+
+            if (!$enrolment->isEnrolled() or $enrolment->hasCancelled()) continue;
+
+            $data = [];
+
+            $data[] = $enrolment->getAssociate()->getLastname();
+            $data[] = $enrolment->getAssociate()->getFirstname();
+            if ($event->getEnrolOptions1()) $data[] = $enrolment->getOption1();
+            if ($event->getEnrolOptions2()) $data[] = $enrolment->getOption2();
+            if ($event->getEnrolOptions3()) $data[] = $enrolment->getOption3();
+            $data[] = $enrolment->getTotalCharge() / 100.;
+            $data[] = $enrolment->hasPaid() ? 'ja' : 'nee';
+
+            $datas[] = $data;
+        }
+
+        asort($datas);
+
+        $this->spreadsheet->export($event, $datas, $headers);
 
         return;
     }

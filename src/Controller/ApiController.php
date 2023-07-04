@@ -137,4 +137,15 @@ class ApiController extends AbstractController
 
         $this->export->exportDetails($this->manager->associateRepository->findEnabled());
     }
+
+    #[Route('/admin/export/event-enrolments/{id}', name: '_export_event_enrolments', methods: ['GET'])]
+    public function export_event_enrolments(Request $request, string $id): void
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if (!($event = $this->manager->getEvent(null, $id))) return;
+
+        if ($event->hasEnrol()) $this->export->exportEventEnrolments($event);
+    }
 }
