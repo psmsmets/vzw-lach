@@ -44,6 +44,20 @@ session.continue: Verder doen
 calendar: kalender
 enrol: inschrijven
 Enrol: Inschrijven
+Enrol Before: Inschrijven voor
+Enrol Before Days: Inschrijven X dagen vooraf
+Enrol Option1: Omschrijving keuzelijst 1
+Enrol Options1: Keuzelijst 1
+Enrol Option2: Omschrijving keuzelijst 2
+Enrol Options2: Keuzelijst 2
+Enrol Option3: Omschrijving keuzelijst 3
+Enrol Options3: Keuzelijst 3
+Enrol Charge: Kostprijs
+Enrol Free Of Charge: Gratis
+Enrol Maybe: Status misschien toevoegen
+Enrol Update: Aanpassen inschrijving toegestaan
+Enrol Note: Opmerkingenveld
+Export Enrolments: Inschrijvingen exporteren
 type: type
 slug: slug
 enabled: actief

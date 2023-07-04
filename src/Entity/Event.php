@@ -140,7 +140,7 @@ class Event
 
     public function __toString(): string
     {
-        return sprintf("%s (%s #%d)", $this->startTime->format('Y-m-d'), $this->getTitle(), count($this->categories));
+        return sprintf("%s (%s)", $this->startTime->format('Y-m-d'), $this->getTitle());
     }
 
     #[ORM\PreUpdate]

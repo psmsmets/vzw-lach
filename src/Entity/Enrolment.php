@@ -103,7 +103,7 @@ class Enrolment
         return $this;
     }
 
-    public function isCancelled(): ?bool
+    public function hasCancelled(): ?bool
     {
         return $this->cancelled;
     }
