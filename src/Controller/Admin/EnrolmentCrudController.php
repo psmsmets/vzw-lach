@@ -30,7 +30,7 @@ class EnrolmentCrudController extends AbstractCrudController
     {
         $qb = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
         $qb->andWhere('event.startTime >= :ref');
-        $qb->andWhere('entity.paid = true');
+        $qb->orWhere('entity.paid = false');
         $qb->setParameter('ref', (new \DateTimeImmutable('today midnight'))->modify('-3 days'));
 
         return $qb;
