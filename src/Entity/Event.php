@@ -134,7 +134,7 @@ class Event
         $this->enrolBeforeDays = 2;
         $this->setEnrolBefore();
         $this->enrolFreeOfCharge = true;
-        $this->enrolCharge = null;
+        $this->enrolCharge = 0.;
         $this->enrolments = new ArrayCollection();
     }
 

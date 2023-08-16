@@ -56,7 +56,7 @@ class EventRepository extends ServiceEntityRepository
 
         ProfileViewpoint::categoriesFilter($qb, $obj);
 
-        $qb->setParameter('published', true);
+        $qb->setParameter('published', true); // fixed??!!
         $qb->andWhere('entity.published = :published');
 
         $qb->setParameter('now', new \DateTime());

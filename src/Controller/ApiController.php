@@ -144,8 +144,19 @@ class ApiController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if (!($event = $this->manager->getEvent(null, $id))) return;
+        $event = $this->manager->getEvent(null, $id);
 
-        if ($event->hasEnrol()) $this->export->exportEventEnrolments($event);
+        if (!($event = $this->manager->getEvent(null, $id))) throw $this->createNotFoundException('Geen inschrijving!');
+
+        if ($event->hasEnrol()) {
+
+            $this->export->exportEventEnrolments($event);
+
+        } else {
+
+            throw $this->createNotFoundException('Geen inschrijving!');
+
+        }
+
     }
 }

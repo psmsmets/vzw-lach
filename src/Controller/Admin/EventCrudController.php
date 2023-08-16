@@ -38,12 +38,15 @@ class EventCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
 
-        $exportEnrolments = Action::new('exportEnrolments', 'Export Enrolments', 'bi bi-arrow-down-square')
+        $exportEnrolments = Action::new('exportEnrolments', 'Export Enrolments')
+            ->setIcon('bi bi-person-lines-fill')
             ->linkToRoute('api_export_event_enrolments', function (Event $event): array {
                 return [
                     'id' => $event->getId(),
                 ];
-            });
+            })
+            //->createAsGlobalAction()
+            ;
 
         return $actions
             ->add(Crud::PAGE_DETAIL, $exportEnrolments)
